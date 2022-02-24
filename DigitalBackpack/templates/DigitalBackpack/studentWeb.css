@@ -1,0 +1,139 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+.header {
+  width: auto;
+  height: 5.3vw;
+  background-color: #333333;
+}
+
+.headBox {
+  width: 14vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+}
+
+.mainBody {
+  width: 99.99vw;
+  height: 46.5vw;
+  background-color: #336699;
+}
+
+.classList {
+  display: inline-block;
+  width: 84vw;
+  height: 3vw;
+  margin-left: 10px;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+}
+
+.classTitle {
+  display: inline-block;
+  width: 5vw;
+  height: 3vw;
+  border-right: 3px solid #000000;
+  margin: auto;
+  text-align: center;
+}
+
+.onlineConnect {
+  display: inline-block;
+  float: right;
+  width: 11vw;
+  height: 3.5vw;
+  border: 5px solid #000000;
+  margin-right: 10px;
+  background-color: #e6e6e6;
+}
+
+.assignmentHeadBox {
+  display: inline-block;
+  position: absolute;
+  width: 48vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+}
+
+.assignmentBox {
+  display: inline-block;
+  float: left;
+  width: 48vw;
+  height: 41.5vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.submissionsHeadBox {
+  display: inline-block;
+  position: absolute;
+  width: 45vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-left: 2.92vw;
+}
+
+.submissionsBox {
+  display: inline-block;
+  float: right;
+  width: 45vw;
+  height: 25vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  margin-right: 1vw;
+  margin-bottom: .5vw;
+}
+
+.resourcesHeadBox {
+  display: inline-block;
+  width: 45vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-left: 2.92vw;
+}
+
+.resourcesBox {
+  display: inline-block;
+  float: right;
+  width: 45vw;
+  height: 11vw;
+  border: 5px solid #000000;
+  border-top: none;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  margin-right: 1vw;
+}
+
+#assignments {
+  margin-top: 1vw;
+  margin-left: 1vw;
+}
+
+#submissions {
+  margin-top: 1vw;
+  margin-right: 1vw;
+}
+
+#resources {
+  margin-top: 1vw;
+  margin-right: 1vw;
+}
