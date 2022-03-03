@@ -1,0 +1,90 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <div id="popup">
+            <h2>
+                Resource Ratings
+            </h2>
+            <form action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
+                {% csrf_token %}
+                <h3>
+                    w3schools.com
+                </h3>
+                <label for="w3schools.com">
+                    1 star
+                </label>
+                <input name="w3schools.com" type="radio" value="1"/>
+                <label for="w3schools.com">
+                    2 star
+                </label>
+                <input name="w3schools.com" type="radio" value="2"/>
+                <label for="w3schools.com">
+                    3 star
+                </label>
+                <input name="w3schools.com" type="radio" value="3"/>
+                <label for="w3schools.com">
+                    4 star
+                </label>
+                <input name="w3schools.com" type="radio" value="4"/>
+                <label for="w3schools.com">
+                    5 star
+                </label>
+                <input name="w3schools.com" type="radio" value="5"/>
+                <h3>
+                    wikipedia.com
+                </h3>
+                <label for="wikipedia.com">
+                    1 star
+                </label>
+                <input name="wikipedia.com" type="radio" value="1"/>
+                <label for="wikipedia.com">
+                    2 star
+                </label>
+                <input name="wikipedia.com" type="radio" value="2"/>
+                <label for="wikipedia.com">
+                    3 star
+                </label>
+                <input name="wikipedia.com" type="radio" value="3"/>
+                <label for="wikipedia.com">
+                    4 star
+                </label>
+                <input name="wikipedia.com" type="radio" value="4"/>
+                <label for="wikipedia.com">
+                    5 star
+                </label>
+                <input name="wikipedia.com" type="radio" value="5"/>
+                <h3>
+                    math-facts.com
+                </h3>
+                <label for="math-facts.com">
+                    1 star
+                </label>
+                <input name="math-facts.com" type="radio" value="1"/>
+                <label for="math-facts.com">
+                    2 star
+                </label>
+                <input name="math-facts.com" type="radio" value="2"/>
+                <label for="math-facts.com">
+                    3 star
+                </label>
+                <input name="math-facts.com" type="radio" value="3"/>
+                <label for="math-facts.com">
+                    4 star
+                </label>
+                <input name="math-facts.com" type="radio" value="4"/>
+                <label for="math-facts.com">
+                    5 star
+                </label>
+                <input name="math-facts.com" type="radio" value="5"/>
+                <input type="submit" value="Submit Ratings"/>
+            </form>
+        </div>
+    </body>
+</html>
