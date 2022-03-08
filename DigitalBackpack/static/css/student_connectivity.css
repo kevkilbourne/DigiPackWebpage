@@ -1,0 +1,18 @@
+.heatmap_box {
+	display: flex;
+	justify-content: center;
+	width: 50vw;
+   height: 45vw;
+   border: 5px solid #000000;
+   background-color: #e6e6e6;
+
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	padding: 20px;
+}
+
+#heatmap {
+
+}
