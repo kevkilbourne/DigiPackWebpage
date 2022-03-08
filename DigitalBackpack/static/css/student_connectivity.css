@@ -1,18 +1,40 @@
 .heatmap_box {
 	display: flex;
 	justify-content: center;
-	width: 50vw;
-   height: 45vw;
+	width: 40vw;
+   height: 40vw;
    border: 5px solid #000000;
    background-color: #e6e6e6;
+	position: relative;
 
-	position: absolute;
+	transform: translate(-50%, -50%);
+	padding: 8px;
 	left: 50%;
 	top: 50%;
-	transform: translate(-50%, -50%);
-	padding: 20px;
 }
 
-#heatmap {
+.header {
+  width: 100vw;
+  height: 5.3vw;
+  background-color: #333333;
+  margin: 0px;
+  padding: 0px;
+}
 
+.headBox {
+  width: 14vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.mainBody {
+  text-align: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: #336699;
+  margin: 0px;
+  padding: 0px;
 }

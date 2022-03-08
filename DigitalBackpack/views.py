@@ -20,7 +20,7 @@ def connection_page(request):
 
     # Sets up general heatmap attributes including size, title, and x and y axes
     plt.figure(figsize=(8, 8))
-    plt.title("Your Recent Connections")
+    # plt.title("Your Recent Connections")
     plt.xlabel("Days of the week", size=15)
     plt.ylabel("Time of day", size=15)
 
@@ -39,7 +39,6 @@ def connection_page(request):
     # ----------------- Getting heatmap to browser ----------------- #
 
     # plt.savefig - Saves the figure as specified format for later usage
-    # complete_file = "DigitalBackpack/templates/DigitalBackpack/heatmap_timeframe.png"
     complete_file = "DigitalBackpack/static/img/heatmap_timeframe.png"
     plt.savefig(complete_file, format='png')
 

@@ -28,6 +28,7 @@ button {
   border: 5px solid #000000;
   background-color: #e6e6e6;
   vertical-align: middle;
+  text-align: center;
 }
 
 .mainBody {
