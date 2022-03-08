@@ -7,6 +7,10 @@ h1 {
   text-align: center;
 }
 
+p {
+  font-size: 39px;
+}
+
 button {
   display: inline-block;
   width: 10vw;
@@ -14,6 +18,16 @@ button {
   float: left;
   position: absolute;
   font-size: 1.5em;
+}
+
+.notFlagged {
+  color: #e6e6e6;
+  font-weight: normal;
+}
+
+.flagged {
+  color: #D2042D;
+  font-weight: bolder;
 }
 
 .header {
