@@ -1,0 +1,179 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  font-size: 39px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.flex-container > button {
+  float: right;
+  align-self: stretch;
+}
+
+.flex-container > button, h1 {
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+}
+
+.notFlagged {
+  background-color: #e6e6e6;
+  font-weight: normal;
+  color: black;
+}
+
+.flagged {
+  background-color: #D2042D;
+  font-weight: bolder;
+  color: black;
+}
+
+.header {
+  width: auto;
+  height: 5.5vw;
+  background-color: #333333;
+}
+
+.headBox {
+  width: 14vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+}
+
+.mainBody {
+  width: 99.99vw;
+  height: 46vw;
+  background-color: #336699;
+}
+
+.classList {
+  display: inline-block;
+  width: 98vw;
+  height: 3vw;
+  margin-left: 0.3vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+}
+
+.classTitle {
+  display: inline-block;
+  width: 5vw;
+  height: 3vw;
+  border-right: 3px solid #000000;
+  margin: auto;
+  text-align: center;
+}
+
+.classRosterHeadBox {
+  display: inline-block;
+  position: absolute;
+  width: 14vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-top: 1vw;
+  margin-left: 1vw;
+}
+
+.classRosterBox {
+  display: inline-block;
+  float: left;
+  width: 14vw;
+  height: 40vw;
+  border: 5px solid #000000;
+  border-top: none;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-top: 1vw;
+  margin-left: 1vw;
+}
+
+
+.assignmentHeadBox {
+  position: absolute;
+  width: 40vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-left: 16vw;
+  margin-top: 1vw;
+}
+
+.assignmentBox {
+  display: inline-block;
+  float: left;
+  width: 40vw;
+  height: 40vw;
+  border: 5px solid #000000;
+  border-top: none;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  margin-top: 1vw;
+  margin-left: .5vw;
+}
+
+.submissionsHeadBox {
+  display: inline-block;
+  position: absolute;
+  width: 40vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-left: 1vw;
+  margin-top: 1vw;
+}
+
+.submissionsBox {
+  display: inline-block;
+  float: right;
+  width: 40vw;
+  height: 23vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  margin-right: 1.9vw;
+  margin-top: 1vw;
+  margin-bottom: .5vw;
+}
+
+.resourcesHeadBox {
+  display: inline-block;
+  width: 40vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  margin-left: 1vw;
+}
+
+.resourcesBox {
+  display: inline-block;
+  float: right;
+  width: 40vw;
+  height: 11.5vw;
+  border: 5px solid #000000;
+  border-top: none;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  margin-right: 1.9vw;
+}
