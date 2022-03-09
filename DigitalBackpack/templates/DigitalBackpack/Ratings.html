@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+	<link rel="stylesheet" href="{% static 'css/ratings.css' %}">
+    </head>
+    <body>
+      <header>
+        <div class="header">
+          <div class="headBox">
+            <h1>Digital Backpack</h1>
+          </div>
+        </div>
+      </header>
+      <main>
+        <span id="formContainer" class="container">
+          <h2 class="title">
+              Resource Ratings
+          </h2>
+          <form class="ratings" action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
+            {% csrf_token %}
+            {{ form.as_table }}
+	    <input type="submit" value="Submit" id="submit">
+          </form>
+        </span>
+      </main>
+      <aside>
+        <div class="lborder"></div>
+	<div class="rborder"></div>
+    </body>
+</html>
