@@ -1,14 +1,12 @@
 {% load static %}
-
 <!DOCTYPE html>
 
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>
-      Teacher DigiPack
-    </title>
-    <link rel="stylesheet" href="{% static 'css/teacherWeb.css' %}">
+    <title>Teacher DigiPack</title>
+    <link rel="stylesheet" href="teacherWeb.css">
+    <script src="../static/js/studentFlag.js"></script>
   </head>
 
   <body>
@@ -28,13 +26,24 @@
           <h1>Class Roster</h1>
         </div>
         <div class="classRosterBox">
-
+          <br><br><br><br><br><br>
+          <button class="studentFlag" id="notFlagged">Vova Saruta</button>\
+          <br><br><br><br><br>
+          <button class="studentFlag" id="notFlagged">Jon Nation</button>
+          <br><br><br><br><br>
+          <button class="studentFlag" id="notFlagged">Nick Caporusso</button>
+          <br><br><br><br><br>
+          <button class="studentFlag" id="notFlagged">Kevin Kilbourne</button>
+          <br><br><br><br><br>
+          <button class="studentFlag" id="notFlagged">Jake Novin</button>
         </div>
       </div>
 
       <div class="assignments">
         <div class="assignmentHeadBox">
           <h1>Active Assignments</h1>
+        </div>
+        <div>
           <button type="button" name="button">Add Assignment</button>
         </div>
         <div class="assignmentBox">
