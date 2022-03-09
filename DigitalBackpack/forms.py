@@ -1,5 +1,4 @@
 from django import forms
-from django_starfield import Stars
 
 class RatingForm(forms.Form):
     def __init__(self,*args,**kwargs):
