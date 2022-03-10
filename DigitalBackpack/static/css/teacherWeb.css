@@ -7,13 +7,37 @@ h1 {
   text-align: center;
 }
 
-button {
-  display: inline-block;
-  width: 10vw;
-  height: 4vw;
-  float: left;
-  position: absolute;
-  font-size: 1.5em;
+p {
+  font-size: 39px;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.flex-container > button {
+  float: right;
+  align-self: stretch;
+}
+
+.flex-container > button, h1 {
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+}
+
+.notFlagged {
+  background-color: #e6e6e6;
+  font-weight: normal;
+  color: black;
+}
+
+.flagged {
+  background-color: #D2042D;
+  font-weight: bolder;
+  color: black;
 }
 
 .header {
@@ -28,7 +52,6 @@ button {
   border: 5px solid #000000;
   background-color: #e6e6e6;
   vertical-align: middle;
-  text-align: center;
 }
 
 .mainBody {
@@ -82,14 +105,13 @@ button {
 
 
 .assignmentHeadBox {
-  display: inline-block;
   position: absolute;
-  width: 30vw;
+  width: 40vw;
   height: 4vw;
   border: 5px solid #000000;
   background-color: #e6e6e6;
   vertical-align: middle;
-  margin-left: .5vw;
+  margin-left: 16vw;
   margin-top: 1vw;
 }
 

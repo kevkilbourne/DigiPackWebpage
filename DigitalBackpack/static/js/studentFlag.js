@@ -1,40 +1,25 @@
-var button = document.querySelectorAll('button');
-
-button.forEach(button =>
-  {
-    button.addEventListener('click', () => swapFlag(button.id));
-  });
-
-function swapFlag(studentID)
+function swapFlag(event, element)
 {
     // change ID from "notFlagged" to "flagged"
-    if (studentID == "flagged")
+    if (element.className == "flagged")
     {
       // change id value
-      studentID = "notFlagged";
+      element.className = "notFlagged";
 
       // prompt user that it was successful
       alert("Student has been successfully unflagged.");
 
-      window.addEventListener('load', (event) => {
-        console.log('page is fully loaded');
-      });
-
-      return studentID;
+      return element;
     }
 
-    else if (studentID == "notFlagged")
+    else if (element.className == "notFlagged")
     {
       // change id value
-      studentID = "flagged";
+      element.className = "flagged";
 
       // prompt user that it was successful
       alert("Student has been successfully flagged.");
 
-      window.addEventListener('load', (event) => {
-        console.log('page is fully loaded');
-      });
-
-      return studentID;
+      return element;
     }
 }

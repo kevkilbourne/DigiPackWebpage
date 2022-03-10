@@ -5,8 +5,10 @@
   <head>
     <meta charset="utf-8">
     <title>Teacher DigiPack</title>
+
     <link rel="stylesheet" href="{% static 'css/teacherWeb.css' %}">
     <script src="{% static 'js/studentFlag.js' %}"></script>
+
   </head>
 
   <body>
@@ -27,24 +29,22 @@
         </div>
         <div class="classRosterBox">
           <br><br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Vova Saruta</button>\
+          <button id="studentFlag1" class="notFlagged" onclick="swapFlag(event, this)">Bob Steve</button>
           <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Jon Nation</button>
+          <button id="studentFlag2" class="notFlagged" onclick="swapFlag(event, this)">Bob Adam</button>
           <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Nick Caporusso</button>
+          <button id="studentFlag3" class="notFlagged" onclick="swapFlag(event, this)">Bob Nick</button>
           <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Kevin Kilbourne</button>
+          <button id="studentFlag4" class="notFlagged" onclick="swapFlag(event, this)">Bob Kevin</button>
           <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Jake Novin</button>
+          <button id="studentFlag5" class="notFlagged" onclick="swapFlag(event, this)">Bob Jake</button>
         </div>
       </div>
 
       <div class="assignments">
-        <div class="assignmentHeadBox">
+        <div class="flex-container assignmentHeadBox">
           <h1>Active Assignments</h1>
-        </div>
-        <div>
-          <button type="button" name="button">Add Assignment</button>
+          <button type="button">Add Assignment</button>
         </div>
         <div class="assignmentBox">
 
