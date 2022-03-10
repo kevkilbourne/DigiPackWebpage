@@ -1,17 +1,44 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse
-
+from django.http import HttpResponseRedirect
+import sqlite3
+import importlib
 import numpy as np
 import matplotlib.pyplot as plt, mpld3
 import seaborn as sns
 from pandas import read_csv
-
+import DigitalBackpack.models as models
+from .forms import RatingForm 
 
 def student_page(request):
     return render(request, 'DigitalBackpack/StudentWebpage.html')
 
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
+
+
+def ratings(request): 
+    # if we've received input for loading into the db
+    if request.method == 'POST':
+        # initialize loading variables
+        input = request.POST
+        
+        # call our model submission
+        success = models.submitRatings(input)
+
+        # redirect our student back to their homepage
+        return redirect('student_page')
+
+    else:
+        # grab our sites
+        ratingSites = request.GET
+        form = RatingForm(None, sites=ratingSites)
+
+
+        # if they are sent via get to send ratings, give them the page
+        return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
+
 
 def connection_page(request):
     # Open .csv file and read
@@ -56,5 +83,3 @@ def connection_page(request):
     # html_file.write(html_str)
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
-
-
