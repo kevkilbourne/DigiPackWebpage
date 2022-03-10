@@ -1,3 +1,12 @@
+@font-face {
+    src: url(fonts/Montserrat-VariableFont_wght.ttf);
+    font-family: Montserrat;
+}
+
+html {
+    font-family: Montserrat;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -35,7 +44,7 @@ p {
 }
 
 .flagged {
-  background-color: #D2042D;
+  background-color: #fc5c51;
   font-weight: bolder;
   color: black;
 }
@@ -47,11 +56,26 @@ p {
 }
 
 .headBox {
-  width: 14vw;
+  width: 17vw;
   height: 4vw;
   border: 5px solid #000000;
   background-color: #e6e6e6;
   vertical-align: middle;
+  text-align: center;
+}
+
+.headBoxVersion {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 20px;
+  margin-right: 6px;
+  width: 8vw;
+  height: 3vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .mainBody {
@@ -103,6 +127,14 @@ p {
   margin-left: 1vw;
 }
 
+#rosterHR {
+    border: 1px solid #808080;
+    border-radius: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 9px;
+    margin-bottom: 9px;
+}
 
 .assignmentHeadBox {
   position: absolute;
