@@ -1,0 +1,129 @@
+@font-face {
+    src: url(fonts/Montserrat-VariableFont_wght.ttf);
+    font-family: Montserrat;
+}
+
+html {
+    font-family: Montserrat;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  width: auto;
+  height: 5.5vw;
+  background-color: #333333;
+}
+
+.headBox {
+  font-size: 95%;
+  width: 17vw;
+  height: 4vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mainBody {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 99.99vw;
+  height: 88.65vh;
+  background-color: #336699;
+}
+
+#homepageTextContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: 45%;
+  height: 90%;
+}
+
+.picture1 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  padding: 10px;
+}
+
+.picture2 {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: inline-block;
+  padding: 10px;
+  margin-right: 100px;
+}
+
+#homepageText {
+  color: white;
+  font-size: 95px;
+  padding-left: 25px;
+}
+
+#loginContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45%;
+  height: 87.5%;
+  background-color: #b5b5b5;
+  border: solid 4px black;
+  margin: 4%;
+}
+
+#loginBox {
+  width: 92%;
+  height: 90%;
+  background-color: white;
+  border: solid 3px black;
+  padding: 3%;
+}
+
+.userType {
+  text-align: center;
+}
+
+.toStudentPage {
+  position: relative;
+  left: -50px;
+  width: 25%;
+
+  transition-duration: 0.4s;
+  font-size: 24px;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.toTeacherPage {
+  position: relative;
+  left: 50px;
+  width: 25%;
+
+  transition-duration: 0.4s;
+  font-size: 24px;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.toStudentPage:hover {
+  background-color: #636363;
+  color: white;
+}
+
+.toTeacherPage:hover {
+  background-color: #636363;
+  color: white;
+}
