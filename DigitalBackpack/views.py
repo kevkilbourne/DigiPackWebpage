@@ -11,6 +11,9 @@ from pandas import read_csv
 import DigitalBackpack.models as models
 from .forms import RatingForm 
 
+def landing_page(request):
+    return render(request, 'DigitalBackpack/LandingWebpage.html')
+
 def student_page(request):
     return render(request, 'DigitalBackpack/StudentWebpage.html')
 

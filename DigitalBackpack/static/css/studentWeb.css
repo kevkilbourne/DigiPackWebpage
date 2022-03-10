@@ -23,6 +23,7 @@ h1 {
 }
 
 .headBox {
+  font-size: 95%;
   width: 17vw;
   height: 4vw;
   border: 5px solid #000000;
