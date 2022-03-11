@@ -23,8 +23,13 @@
           </h2>
           <form class="ratings" action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
             {% csrf_token %}
-            {{ form.as_table }}
-	    <input type="submit" value="Submit" id="submit">
+            {% if form.fields %}
+                {{ form.as_table }}
+                <input type="submit" value="Submit Ratings" id="submit">
+            {% else %}
+                <p>No ratings needed at this time</p>
+                <input type="submit" value="Return to Homepage" id="submit">
+            {% endif %}
           </form>
         </span>
       </main>
