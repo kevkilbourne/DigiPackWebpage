@@ -7,4 +7,5 @@ urlpatterns = [
     path( 'teacher/', views.teacher_page, name='teacher_page' ),
     path( 'ratings/', views.ratings, name='ratings'),
     path( 'student/connectivity/', views.connection_page, name='connection_timeframe_page' ),
+    path( 'teacher/add_assignment/', views.add_assignment_page, name='connection_timeframe_page' ),
 ]

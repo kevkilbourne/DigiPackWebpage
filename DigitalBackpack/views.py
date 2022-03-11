@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt, mpld3
 import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
-from .forms import RatingForm 
+from .forms import RatingForm
 
 def landing_page(request):
     return render(request, 'DigitalBackpack/LandingWebpage.html')
@@ -20,13 +20,16 @@ def student_page(request):
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
 
+def add_assignment_page(request):
+    return render(request, 'DigitalBackpack/AssignmentWebpage.html')
 
-def ratings(request): 
+
+def ratings(request):
     # if we've received input for loading into the db
     if request.method == 'POST':
         # initialize loading variables
         input = request.POST
-        
+
         # call our model submission
         success = models.submitRatings(input)
 
