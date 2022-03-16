@@ -9,13 +9,17 @@ import matplotlib.pyplot as plt, mpld3
 import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
-from .forms import RatingForm 
+from .forms import RatingForm
+import csv, datetime
+
 
 def landing_page(request):
     return render(request, 'DigitalBackpack/LandingWebpage.html')
 
+
 def student_page(request):
     return render(request, 'DigitalBackpack/StudentWebpage.html')
+
 
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
@@ -44,9 +48,53 @@ def ratings(request):
 
 
 def connection_page(request):
+    # ----------------- Recording time and updating .csv ----------------- #
+
+    # Gathers time information
+    current_datetime = datetime.datetime.now()
+    day = current_datetime.weekday()
+    hour = current_datetime.hour
+
+    # Opens .csv file to be converted to 2D array
+    with open("DigitalBackpack/static/csv/updated_timeframes.csv", newline='') as file:
+        result_list = list(csv.reader(file))
+
+    # Converts .csv to 2D array
+    data_array = np.array(result_list)
+
+    # datetime.weekday() provides weekdays as indexes (where 'day' = 0 through 6) starting with Monday
+    # Finds the correct position within 2D array and sets value to 1 (meaning connection detected)
+    if day == 0:
+        data_array[hour][0] = 1
+    elif day == 1:
+        data_array[hour][1] = 1
+    elif day == 2:
+        data_array[hour][2] = 1
+    elif day == 3:
+        data_array[hour][3] = 1
+    elif day == 4:
+        data_array[hour][4] = 1
+    elif day == 5:
+        data_array[hour][5] = 1
+    else:
+        data_array[hour][6] = 1
+
+    # Converts newly updated 2D array back into .csv file
+    updated_timeframes = data_array
+    with open("DigitalBackpack/static/csv/updated_timeframes.csv", "w+", newline='') as new_file:
+        csv_writer = csv.writer(new_file, delimiter=',')
+        csv_writer.writerows(updated_timeframes)
+
+    file.close()
+    new_file.close()
+
+    # ----------------- Creation of Heatmap ----------------- #
+
     # Open .csv file and read
-    dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
-    # print(dataset)
+    try:
+        dataset = read_csv("DigitalBackpack/static/csv/updated_timeframes.csv")
+    except FileNotFoundError:
+        dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
 
     # Sets up general heatmap attributes including size, title, and x and y axes
     plt.figure(figsize=(8, 8))
@@ -86,3 +134,4 @@ def connection_page(request):
     # html_file.write(html_str)
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
+
