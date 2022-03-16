@@ -10,6 +10,7 @@ import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
 from .forms import RatingForm
+from DigitalBackpack.forms import SearchingALgorithmForm
 
 def landing_page(request):
     return render(request, 'DigitalBackpack/LandingWebpage.html')
@@ -20,9 +21,24 @@ def student_page(request):
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
 
-def add_assignment_page(request):
-    return render(request, 'DigitalBackpack/AssignmentWebpage.html')
+def get_add_assignment_page(request):
+    if request.method == 'GET':
+        form = SearchingALgorithmForm()
+        return render(request, 'DigitalBackpack/AssignmentWebpage.html', {'form': form})
 
+    else:
+        form = SearchingALgorithmForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['post']
+
+        input = form['post'].value()
+
+        print(input)
+
+        models.SearchingAlgorithm(input)
+
+        args = {'form': form, 'text': text}
+        return render(request, 'DigitalBackpack/AssignmentWebpage.html', args)
 
 def ratings(request):
     # if we've received input for loading into the db

@@ -12,13 +12,16 @@
   <body>
   <h1> TESTING Searching Algorithm </h1>
 
-  <form action="/Searching_Algorithm/Searching_Algorithm.py" method="post">
+  <form method="post">
 
-     <textarea name="Keywords"></textarea>
-     <a href="teacher/" style="text-decoration:none">
-              <button type="submit">Submit Keywords</button>
-     </a>
-     
+    <h3> Hello </h3>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+
   </form>
+
+  <h1>{{ text }}</h1>
+
   </body>
 </html>

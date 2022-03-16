@@ -21,9 +21,11 @@ class RatingForm(forms.Form):
                ('5', '5')]
     ratings = []
     #sites = forms.IntegerField(label="test", widget=Stars)
-    
+
     # loop through our sites
     #for site in sites:
      #   ratings.append(forms.CharField(label=site, widget=forms.RadioSelect(choices=CHOICES)))
-        
 
+
+class SearchingALgorithmForm(forms.Form):
+    post = forms.CharField()
