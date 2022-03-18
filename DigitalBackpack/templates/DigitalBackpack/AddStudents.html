@@ -1,0 +1,15 @@
+{% extends "DigitalBackpack/base.html" %}
+
+{% block content %}
+{% load static %}
+<script src="{% static 'js/addStudent.js' %}"></script>
+<form id="addStudentForm" class="formContent" method="POST" action="{% url 'submit_student_additions' %}">
+    {% csrf_token %}
+    <fieldset id="addStudentFieldset" class="form-group">
+      <legend>Add Students</legend>
+      {{ form.as_p }}
+      <button type="submit" id="add-another" formaction="{% url 'add_students' %}" onclick="addInput()">Add Student</button>
+      <input type="submit" value="Submit Student List">
+    </fieldset>
+  </form>
+{% endblock content %}
