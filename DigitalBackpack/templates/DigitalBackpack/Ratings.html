@@ -21,7 +21,7 @@
           <h2 class="title">
               Resource Ratings
           </h2>
-          <form class="ratings" action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
+          <form class="formContent" action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
             {% csrf_token %}
             {% if form.fields %}
                 {{ form.as_table }}

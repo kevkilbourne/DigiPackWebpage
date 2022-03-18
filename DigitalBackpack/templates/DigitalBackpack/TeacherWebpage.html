@@ -5,11 +5,17 @@
   <head>
     <meta charset="utf-8">
     <title>Teacher DigiPack</title>
+
     <link rel="stylesheet" href="{% static 'css/teacherWeb.css' %}">
     <script src="{% static 'js/studentFlag.js' %}"></script>
+
   </head>
 
   <body>
+    <div class="headBoxVersion">
+        <h3>Teacher View</h3>
+    </div>
+
     <div class="header">
       <div class="headBox">
         <h1>Digital Backpack</h1>
@@ -27,24 +33,26 @@
         </div>
         <div class="classRosterBox">
           <br><br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Vova Saruta</button>\
-          <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Jon Nation</button>
-          <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Nick Caporusso</button>
-          <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Kevin Kilbourne</button>
-          <br><br><br><br><br>
-          <button class="studentFlag" id="notFlagged">Jake Novin</button>
+          <button id="studentFlag1" class="notFlagged" onclick="swapFlag(event, this)">Terrance Fields</button>
+          <hr id="rosterLines">
+          <button id="studentFlag2" class="notFlagged" onclick="swapFlag(event, this)">Carolyn Price</button>
+          <hr id="rosterLines">
+          <button id="studentFlag3" class="notFlagged" onclick="swapFlag(event, this)">Bruce Lane</button>
+          <hr id="rosterLines">
+          <button id="studentFlag4" class="notFlagged" onclick="swapFlag(event, this)">Jeffrey Gonzales</button>
+          <hr id="rosterLines">
+          <button id="studentFlag5" class="notFlagged" onclick="swapFlag(event, this)">Ana Day</button>
+          <hr id="rosterLines">
+          <button id="studentFlag5" class="notFlagged" onclick="swapFlag(event, this)">Byron Stephens</button>
+          <hr id="rosterLines">
+          <button id="studentFlag5" class="notFlagged" onclick="swapFlag(event, this)">Christopher Duncan</button>
         </div>
       </div>
 
       <div class="assignments">
-        <div class="assignmentHeadBox">
+        <div class="flex-container assignmentHeadBox">
           <h1>Active Assignments</h1>
-        </div>
-        <div>
-          <button type="button" name="button">Add Assignment</button>
+          <button type="button" id="addAssignmentButton">Add Assignment</button>
         </div>
         <div class="assignmentBox">
 
