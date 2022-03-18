@@ -1,10 +1,19 @@
+@font-face {
+    src: url(fonts/Montserrat-VariableFont_wght.ttf);
+    font-family: Montserrat;
+}
+
+html {
+    font-family: Montserrat;
+}
+
 .heatmap_box {
 	display: flex;
 	justify-content: center;
 	width: 40vw;
-   height: 40vw;
-   border: 5px solid #000000;
-   background-color: #e6e6e6;
+    height: 40vw;
+    border: 5px solid #000000;
+    background-color: #e6e6e6;
 	position: relative;
 
 	transform: translate(-50%, -50%);
@@ -22,7 +31,8 @@
 }
 
 .headBox {
-  width: 14vw;
+  font-family: Montserrat;
+  width: 17vw;
   height: 4vw;
   border: 5px solid #000000;
   background-color: #e6e6e6;

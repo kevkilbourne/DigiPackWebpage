@@ -12,6 +12,7 @@ from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
 
+
 # group_required helper decorator
 #
 # ensure's a user is authenticated and present in a group in order to access certain views
@@ -53,6 +54,10 @@ def login_reroute(request):
 #
 # returns student homepage
 @group_required('Students')
+def landing_page(request):
+    return render(request, 'DigitalBackpack/LandingWebpage.html')
+
+
 def student_page(request):
     return render(request, 'DigitalBackpack/StudentWebpage.html')
 
