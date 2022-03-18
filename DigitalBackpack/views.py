@@ -18,37 +18,8 @@ def landing_page(request):
 
 
 def student_page(request):
-    return render(request, 'DigitalBackpack/StudentWebpage.html')
 
-
-def teacher_page(request):
-    return render(request, 'DigitalBackpack/TeacherWebpage.html')
-
-
-def ratings(request): 
-    # if we've received input for loading into the db
-    if request.method == 'POST':
-        # initialize loading variables
-        input = request.POST
-        
-        # call our model submission
-        success = models.submitRatings(input)
-
-        # redirect our student back to their homepage
-        return redirect('student_page')
-
-    else:
-        # grab our sites
-        ratingSites = request.GET
-        form = RatingForm(None, sites=ratingSites)
-
-
-        # if they are sent via get to send ratings, give them the page
-        return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
-
-
-def connection_page(request):
-    # ----------------- Recording time and updating .csv ----------------- #
+    # ----------------- Recording time and updating Heatmap .csv ----------------- #
 
     # Gathers time information
     current_datetime = datetime.datetime.now()
@@ -88,12 +59,63 @@ def connection_page(request):
     file.close()
     new_file.close()
 
+    return render(request, 'DigitalBackpack/StudentWebpage.html')
+
+
+def teacher_page(request):
+    return render(request, 'DigitalBackpack/TeacherWebpage.html')
+
+
+def ratings(request): 
+    # if we've received input for loading into the db
+    if request.method == 'POST':
+        # initialize loading variables
+        input = request.POST
+        
+        # call our model submission
+        success = models.submitRatings(input)
+
+        # redirect our student back to their homepage
+        return redirect('student_page')
+
+    else:
+        # grab our sites
+        ratingSites = request.GET
+        form = RatingForm(None, sites=ratingSites)
+
+
+        # if they are sent via get to send ratings, give them the page
+        return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
+
+
+def connection_page(request):
+
     # ----------------- Creation of Heatmap ----------------- #
+
+    # Gathers time information
+    current_datetime = datetime.datetime.now()
+    day = current_datetime.weekday()
 
     # Open .csv file and read
     try:
         dataset = read_csv("DigitalBackpack/static/csv/updated_timeframes.csv")
     except FileNotFoundError:
+        dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
+
+    # Checking to see if recording the future date is necessary
+    future_day = None
+    if day == 6:
+        future_day = (current_datetime + datetime.timedelta(weeks=1)).strftime("%d")
+
+    # Sets flag that enables resetting of the heatmap
+    new_week_flag = False
+    if current_datetime.strftime("%d") == future_day:
+        # Calculates new future date and sets it to a week in the future
+        future_day = (current_datetime + datetime.timedelta(weeks=1)).strftime("%d")
+        new_week_flag = True
+
+    # If it is the reset day (Sunday) and it's been a weeks time, erase previous week's heatmap to start the week over
+    if new_week_flag:
         dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
 
     # Sets up general heatmap attributes including size, title, and x and y axes
