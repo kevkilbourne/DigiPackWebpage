@@ -35,6 +35,8 @@ def get_add_assignment_page(request):
 
         print(input)
 
+        models.SearchingAlgorithm(input)
+
         # Websites = models.SearchingAlgorithm(input)
         #
         # print(Websites)
