@@ -1,5 +1,7 @@
 from django.db import models
 import sqlite3
+from django.utils import timezone
+from django.contrib.auth.models import User
 
 import googlesearch
 import shutil
@@ -13,8 +15,26 @@ path_wkhtmltopdf = r'DigitalBackpack\static\wkhtmltopdf\bin\wkhtmltopdf.exe'
 #Sets the configurations to the path
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
+class Teachers(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    first = models.CharField(max_length=100)
+    last = models.CharField(max_length=100)
+    classname = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.user.username + " - " + self.classname
+
 # Create your models here.
 
+class Students(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    email = models.EmailField()
+    classname = models.ForeignKey(Teachers, on_delete=models.CASCADE)
+    first = models.CharField(max_length=100, blank=True)
+    last = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.email + " - " + self.classname.classname
 
 def submitRatings(post):
     # initialize function variables

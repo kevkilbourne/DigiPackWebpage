@@ -1,0 +1,15 @@
+{% extends "DigitalBackpack/base.html" %}
+{% block content %}
+
+  <form class="formContent" method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend>Student Login</legend>
+      {{ form.as_p }}
+      <input type="submit" value="Log In">
+    </fieldset>
+  </form>
+  <p>Need an Account?</p>
+  <a href={% url 'student_registration' %}>Sign Up Today</a>
+{% endblock content %}
+
