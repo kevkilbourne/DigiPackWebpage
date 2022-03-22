@@ -35,7 +35,9 @@ def get_add_assignment_page(request):
 
         print(input)
 
-        models.SearchingAlgorithm(input)
+        # Websites = models.SearchingAlgorithm(input)
+        #
+        # print(Websites)
 
         args = {'form': form, 'text': text}
         return render(request, 'DigitalBackpack/AssignmentWebpage.html', args)
