@@ -153,7 +153,7 @@ def SearchingAlgorithm(post):
            pdfkit.from_url(Websites, WebsiteStrings[index]+'.pdf', configuration=config)
            #Copies the file and sends it to a new destination
            #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
-           shutil.move("DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
+           shutil.move("DigiPackWebpage\" + WebsiteStrings[index]+'.pdf', DirectPath)
            #Deletes the original pdf file
            #os.remove(WebsiteStrings[index]+'.pdf')
            #increments index
