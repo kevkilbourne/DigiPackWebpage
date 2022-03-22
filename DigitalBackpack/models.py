@@ -8,7 +8,7 @@ import pdfkit
 from googlesearch import search
 
 #Finds where the executable program is
-path_wkhtmltopdf = r'C:\Users\jnati\Documents\GitHub\DigiPackWebpage\wkhtmltopdf\bin\wkhtmltopdf.exe'
+path_wkhtmltopdf = r'DigitalBackpack\static\wkhtmltopdf\bin\wkhtmltopdf.exe'
 #Sets the configurations to the path
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
@@ -153,7 +153,7 @@ def SearchingAlgorithm(post):
            pdfkit.from_url(Websites, WebsiteStrings[index]+'.pdf', configuration=config)
            #Copies the file and sends it to a new destination
            #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
-           shutil.move("C:/Users/jnati/Documents/GitHub/DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
+           shutil.move("DigitalBackpack/" + WebsiteStrings[index]+'.pdf', DirectPath)
            #Deletes the original pdf file
            #os.remove(WebsiteStrings[index]+'.pdf')
            #increments index
