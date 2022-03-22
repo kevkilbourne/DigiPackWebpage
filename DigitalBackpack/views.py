@@ -8,11 +8,15 @@ import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
 from .forms import RatingForm
+
 import csv, datetime
 from .forms import RatingForm, TeacherRegistrationForm, ClassRegistrationForm, AddStudentForm, StudentRegistrationForm, StudentAccountCompletionForm
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
+
+from DigitalBackpack.forms import SearchingALgorithmForm
+
 
 
 # group_required helper decorator
@@ -113,6 +117,7 @@ def student_page(request):
 @group_required('Teachers')
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
+
 
 # class registration page
 #
@@ -337,15 +342,41 @@ def student_registration(request):
         # render our form
         return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
 
+
+
+def get_add_assignment_page(request):
+    if request.method == 'GET':
+        form = SearchingALgorithmForm()
+        return render(request, 'DigitalBackpack/AssignmentWebpage.html', {'form': form})
+
+    else:
+        form = SearchingALgorithmForm(request.POST)
+        if form.is_valid():
+            text = form.cleaned_data['post']
+
+        input = form['post'].value()
+
+        print(input)
+
+        models.SearchingAlgorithm(input)
+
+        # Websites = models.SearchingAlgorithm(input)
+        #
+        # print(Websites)
+
+        args = {'form': form, 'text': text}
+        return render(request, 'DigitalBackpack/AssignmentWebpage.html', args)
+
 # ratings view
 #
 # view for the website rating system.
-def ratings(request): 
+def ratings(request):
+
     # if we've received input for loading into the db
     if request.method == 'POST':
         # initialize loading variables
         input = request.POST
-        
+
         # call our model submission
         success = models.submitRatings(input)
 

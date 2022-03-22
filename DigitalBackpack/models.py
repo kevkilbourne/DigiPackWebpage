@@ -3,14 +3,28 @@ import sqlite3
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+import googlesearch
+import shutil
+import os
+import pdfkit
+from googlesearch import search
+
+#Finds where the executable program is
+#path_wkhtmltopdf = r'C:\Users\jnati\Documents\GitHub\DigiPackWebpage\wkhtmltopdf\bin\wkhtmltopdf.exe'
+path_wkhtmltopdf = r'DigitalBackpack\static\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#Sets the configurations to the path
+config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+
 class Teachers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     first = models.CharField(max_length=100)
     last = models.CharField(max_length=100)
     classname = models.CharField(max_length=100)
-
+    
     def __str__(self):
         return self.user.username + " - " + self.classname
+
+# Create your models here.
 
 class Students(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -50,7 +64,7 @@ def submitRatings(post):
                           SET rating = ?, numRatings = ?
                           WHERE website = ?
                        """
-                    
+
 
     # connect to and initialize database
     try:
@@ -71,7 +85,7 @@ def submitRatings(post):
             print("Key: " + key)
             # perform key validity checking
             if '.' in key:
-            
+
                 # pull query from the database, if it exists
                 cursor.execute(SQL_SELECT_QUERY, (key,))
                 dataTuple = cursor.fetchall()
@@ -83,7 +97,7 @@ def submitRatings(post):
 
                     # indicate this addition to the database
                     print(key + " rating initialized to WebRatings Database: " + str(post.get(key)) + "(1)")
-                
+
                 else:
                     # reset our data tuple to the information inside, since we know it is present
                     dataTuple = dataTuple[0]
@@ -103,3 +117,68 @@ def submitRatings(post):
             return False
 
     return True
+
+def SearchingAlgorithm(post):
+    #initalize variables
+    index = 0;
+    Query = []
+    QueryString = ""
+    WebsiteResult = []
+    TextInput = ""
+    PDFConversion = []
+    WebsiteNumber = 1
+    WebsiteStrings = []
+    DirectPath = os.path.expanduser("~")+"/Downloads/"
+    DirectPath = DirectPath.replace('/', '\\')
+
+
+    print('DIRECT PATH: ' + DirectPath)
+
+    #Ask for input from the user
+    TextInput = post
+
+    #Adds the user's input and splits them into list for each comma used
+    #Query = TextInput.split(', ')
+
+    #For each website in the google search. Search on Google using the keywords that we provide
+    for Websites in search(TextInput, tld="com", num = 10, stop = 10, pause = 2):
+        #Checks to see if the collected website is not a .pdf file already
+        if('pdf' not in Websites):
+            #If so, then it checks if the collected website is not a YouTube page
+            if('youtube.com' not in Websites):
+                #If so, adds the website to the results list
+                WebsiteResult.append(Websites)
+
+    #Checks the length of the Results List
+    LengthWebsiteResult = len(WebsiteResult)
+
+    #While the website number is less then the length of the results list
+    while(WebsiteNumber-1 < LengthWebsiteResult):
+        #Appends a Resource_# to a website String used to name the file
+        WebsiteStrings.append("Resource_" + str(WebsiteNumber))
+        #increments WebsiteNumber by 1
+        WebsiteNumber += 1
+
+    #Resets the index for its next use
+    index = 0
+
+    #For every website in the results list
+    for Websites in WebsiteResult:
+        #Checks if the WebsiteStrings is not equal to None
+        if(WebsiteStrings[index] != None):
+           print(f"Converting: {Websites}...")
+
+           #Converts the html website into a pdf website calling the file to the
+           #correct numbering system in WebsiteStrings.
+           #This then downloads into the same spot where this python file is located
+           pdfkit.from_url(Websites, WebsiteStrings[index]+'.pdf', configuration=config)
+           #Copies the file and sends it to a new destination
+           #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
+           #shutil.move("C:/Users/jnati/Documents/GitHub/DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
+           shutil.move("DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
+           #Deletes the original pdf file
+           #os.remove(WebsiteStrings[index]+'.pdf')
+           #increments index
+           index += 1
+
+           print(f"Conversion Done!")
