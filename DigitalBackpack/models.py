@@ -1,7 +1,5 @@
 from django.db import models
 import sqlite3
-from django.utils import timezone
-from django.contrib.auth.models import User
 
 import googlesearch
 import shutil
@@ -10,31 +8,12 @@ import pdfkit
 from googlesearch import search
 
 #Finds where the executable program is
-#path_wkhtmltopdf = r'C:\Users\jnati\Documents\GitHub\DigiPackWebpage\wkhtmltopdf\bin\wkhtmltopdf.exe'
 path_wkhtmltopdf = r'DigitalBackpack\static\wkhtmltopdf\bin\wkhtmltopdf.exe'
 #Sets the configurations to the path
 config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
-class Teachers(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    first = models.CharField(max_length=100)
-    last = models.CharField(max_length=100)
-    classname = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return self.user.username + " - " + self.classname
-
 # Create your models here.
 
-class Students(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    email = models.EmailField()
-    classname = models.ForeignKey(Teachers, on_delete=models.CASCADE)
-    first = models.CharField(max_length=100, blank=True)
-    last = models.CharField(max_length=100, blank=True)
-
-    def __str__(self):
-        return self.email + " - " + self.classname.classname
 
 def submitRatings(post):
     # initialize function variables
@@ -126,8 +105,6 @@ def SearchingAlgorithm(post):
     WebsiteResult = []
     TextInput = ""
     PDFConversion = []
-    WebsiteNumber = 1
-    WebsiteStrings = []
     DirectPath = os.path.expanduser("~")+"/Downloads/"
     DirectPath = DirectPath.replace('/', '\\')
 
@@ -136,9 +113,6 @@ def SearchingAlgorithm(post):
 
     #Ask for input from the user
     TextInput = post
-
-    #Adds the user's input and splits them into list for each comma used
-    #Query = TextInput.split(', ')
 
     #For each website in the google search. Search on Google using the keywords that we provide
     for Websites in search(TextInput, tld="com", num = 10, stop = 10, pause = 2):
@@ -149,8 +123,19 @@ def SearchingAlgorithm(post):
                 #If so, adds the website to the results list
                 WebsiteResult.append(Websites)
 
+    return WebsiteResult
+
+
+def DownloadWebsites(LinksList):
+
+    index = 0
+    WebsiteNumber = 1
+    WebsiteStrings = []
+    DirectPath = os.path.expanduser("~")+"/Downloads/"
+    DirectPath = DirectPath.replace('/', '\\')
+
     #Checks the length of the Results List
-    LengthWebsiteResult = len(WebsiteResult)
+    LengthWebsiteResult = len(LinksList)
 
     #While the website number is less then the length of the results list
     while(WebsiteNumber-1 < LengthWebsiteResult):
@@ -159,11 +144,8 @@ def SearchingAlgorithm(post):
         #increments WebsiteNumber by 1
         WebsiteNumber += 1
 
-    #Resets the index for its next use
-    index = 0
-
     #For every website in the results list
-    for Websites in WebsiteResult:
+    for Websites in LinksList:
         #Checks if the WebsiteStrings is not equal to None
         if(WebsiteStrings[index] != None):
            print(f"Converting: {Websites}...")
@@ -174,8 +156,7 @@ def SearchingAlgorithm(post):
            pdfkit.from_url(Websites, WebsiteStrings[index]+'.pdf', configuration=config)
            #Copies the file and sends it to a new destination
            #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
-           #shutil.move("C:/Users/jnati/Documents/GitHub/DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
-           shutil.move("DigiPackWebpage/" + WebsiteStrings[index]+'.pdf', DirectPath)
+           shutil.move(WebsiteStrings[index]+'.pdf', DirectPath)
            #Deletes the original pdf file
            #os.remove(WebsiteStrings[index]+'.pdf')
            #increments index

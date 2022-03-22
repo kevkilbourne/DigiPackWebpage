@@ -17,11 +17,17 @@
     <h3> Hello </h3>
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Submit</button>
+    <button type="submit" name="GrabWebsite">Submit</button>
 
   </form>
 
-  <h1>{{ text }}</h1>
+
+           {% for link in links %}
+           <a href={{link}}>{{link}}</a><br/>
+           {% endfor %}
+
+           <button type="submit" name="DownloadWebsite">Download Resources </button>
+           
 
 
   <h3> Please Enter Assignment's Name:</h3>
