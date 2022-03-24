@@ -1,3 +1,12 @@
+@font-face {
+    src: url(fonts/Montserrat-VariableFont_wght.ttf);
+    font-family: Montserrat;
+}
+
+html {
+    font-family: Montserrat;
+}
+
 body {
   padding: 0;
   margin: 0;
@@ -31,13 +40,73 @@ p {
 .notFlagged {
   background-color: #e6e6e6;
   font-weight: normal;
+
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid black;
+  transition-duration: 0.2s;
+  width: 60%;
+  position: relative;
+  left: 13px;
+}
+
+.flaggedlvl1 {
+  background-color: #f08080;
+  font-weight: bolder;
+
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid black;
+  transition-duration: 0.2s;
+  width: 60%;
+  position: relative;
+  left: 13px;
+}
+
+.flaggedlvl2 {
+  background-color: #ff0000;
+  font-weight: bolder;
+
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid black;
+  transition-duration: 0.2s;
+  width: 60%;
+  position: relative;
+  left: 13px;
+}
+
+.flaggedlvl3 {
+  background-color: #8b0000;
+  font-weight: bolder;
+
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid black;
+  transition-duration: 0.2s;
+  width: 60%;
+  position: relative;
+  left: 13px;
+}
+
+.notFlagged:hover {
+  background-color: #ebebeb;
   color: black;
 }
 
-.flagged {
-  background-color: #D2042D;
-  font-weight: bolder;
+.flagged:hover {
+  background-color: #ebebeb;
   color: black;
+}
+
+#addAssignmentButton {
+  text-align: center;
+  font-size: 15px;
+  position: absolute;
+  right: 15px;
+  top: 10;
+  width: 20%;
+  height: 60%;
 }
 
 .header {
@@ -47,11 +116,29 @@ p {
 }
 
 .headBox {
-  width: 14vw;
+  width: 17vw;
   height: 4vw;
   border: 5px solid #000000;
   background-color: #e6e6e6;
   vertical-align: middle;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.headBoxVersion {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-top: 20px;
+  margin-right: 6px;
+  width: 8vw;
+  height: 3vw;
+  border: 5px solid #000000;
+  background-color: #e6e6e6;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .mainBody {
@@ -88,6 +175,9 @@ p {
   vertical-align: middle;
   margin-top: 1vw;
   margin-left: 1vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .classRosterBox {
@@ -103,6 +193,14 @@ p {
   margin-left: 1vw;
 }
 
+#rosterLines {
+    border: 1px solid #808080;
+    border-radius: 5px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
 
 .assignmentHeadBox {
   position: absolute;
@@ -113,6 +211,7 @@ p {
   vertical-align: middle;
   margin-left: 16vw;
   margin-top: 1vw;
+  align-items: center;
 }
 
 .assignmentBox {
