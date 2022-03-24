@@ -16,6 +16,8 @@ urlpatterns = [
     path( 'teacher/', views.teacher_page, name='teacher_page' ),
     path( 'teacher/addstudents/', views.add_students, name='add_students' ),
     path( 'teacher/submitStudentAdditions/', views.submit_student_addition, name='submit_student_additions' ),
+    path( 'teacher/newAssignment/', views.new_assignment, name='new_assignment' ),
+    path( 'teacher/submitNewAssignment/', views.submit_new_assignment, name='submit_new_assignment' ),
     path( 'ratings/', views.ratings, name='ratings'),
     path( 'student/connectivity/', views.connection_page, name='connection_timeframe_page' ),
 ]

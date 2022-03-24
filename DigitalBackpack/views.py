@@ -9,7 +9,7 @@ from pandas import read_csv
 import DigitalBackpack.models as models
 from .forms import RatingForm
 import csv, datetime
-from .forms import RatingForm, TeacherRegistrationForm, ClassRegistrationForm, AddStudentForm, StudentRegistrationForm, StudentAccountCompletionForm
+from .forms import RatingForm, TeacherRegistrationForm, ClassRegistrationForm, AddStudentForm, StudentRegistrationForm, StudentAccountCompletionForm, AssignmentForm
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
@@ -27,7 +27,7 @@ def group_required(*group_names):
                 return True
         return False
 
-    return user_passes_test(in_groups, login_url=landing_page)
+    return user_passes_test(in_groups, login_url='landing_page')
 
 # landing page view
 #
@@ -225,7 +225,7 @@ def submit_student_addition(request):
             # loop through our remaining form items
             for studentEmail in form:
                 # see if this user already has an account present
-                if models.Students.objects.filter(email=form.get(studentEmail)).first().first:
+                if models.Students.objects.filter(email=form.get(studentEmail)).first():
                     # if they do, grab their user data to load into the new student account
                     student = models.Students(email = form.get(studentEmail),
                                               classname = models.Teachers.objects.get(id=receivingClass),
@@ -336,6 +336,89 @@ def student_registration(request):
 
         # render our form
         return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
+
+# add assignment view
+#
+# view for the teacher's assignment addition form
+@group_required('Teachers')
+def new_assignment(request):
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+        
+        if 'keywords' in request.POST:
+            keywords = request.POST.get('keywords', '')
+            resources = models.SearchingAlgorithm(keywords)
+
+            return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form, 'resources': resources })
+
+    else:
+        form = AssignmentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+    return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form})
+
+@group_required('Teachers')
+def submit_new_assignment(request):
+    if request.method == 'POST':
+        print(request.POST)
+        # build a form based off of the provided students to add
+        form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+
+        # ensure form is valid
+        if form.is_valid():
+            # if it is, create our new assignment
+
+            # grab our form's cleaned data
+            form = form.cleaned_data
+
+            # pop off our class for use, as well as our number of arguments
+            receivingClass = form.pop('classChoice')
+            newTitle = form.pop('assignmentTitle')
+            newDueDate = form.pop('assignmentDueDate')
+            newInstructions = form.pop('assignmentInstructions')
+            if(form.get('assignmentAttachment')):
+                newAttachment = form.pop('assignmentAttachment', None)
+
+                # if there is, load everything in with the attachment
+                assignment = models.Assignments(title = newTitle,
+                                                dueDate = newDueDate,
+                                                classname = models.Teachers.objects.get(id=receivingClass),
+                                                instructions = newInstructions,
+                                                attachment = newAttachment)
+
+            else:
+                # otherwise, make one without
+                assignment = models.Assignments(title = newTitle,
+                                                dueDate = newDueDate,
+                                                classname = models.Teachers.objects.get(id=receivingClass),
+                                                instructions = newInstructions)
+
+            # regardless of how we initialize, save our changes
+            assignment.save()
+
+            # now we move on to creating our resources
+            
+            # grab the assignment ID
+            assignmentID = assignment.id
+            
+            # see if the teacher fetched resources
+            try:
+                resources = request.POST.getlist('resources')
+                models.DownloadWebsites(resources, str(assignmentID))
+
+            except KeyError as error:
+                print("Teacher opted for no resources")
+
+            # print success
+            print("successfully created assignment")
+
+            # redirect back to teacher page
+            return redirect('teacher_page')
+
+        else:
+            # if something goes wrong, kick back to the new assignment page
+            return redirect('new_assignment')
+
+    else:
+        return redirect('new_assignment')
 
 # ratings view
 #
