@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome to the DigitalBackpack!</title>
+
+    <link rel="stylesheet" href="{% static 'css/landingWeb.css' %}">
+
+  </head>
+
+  <body>
+
+    <div class="header">
+      <div class="headBox">
+        <h1>Digital Backpack</h1>
+        <div class="picture1">
+          <img src="../static/img/Team_Logout_logo.png" alt="Team Logout" height="85" width="85">
+        </div>
+        <div class="picture2">
+          <img src="../static/img/CANIS.png" alt="CANIS" height="85" width="130">
+        </div>
+      </div>
+    </div>
+
+    <div class="mainBody">
+      <div id="homepageTextContainer">
+        <h1 id="homepageText">An Extension of Modern Day Education</h1>
+      </div>
+
+      <div id="loginContainer">
+        <div id="loginBox">
+          <h2 style="font-size:58px; padding-left:10px;">Welcome to the DigitalBackpack!</h2>
+          <hr style="border: 2px solid #808080;">
+          <br><br>
+          <h3 style="font-size: 25px;">Which user are you?</h3>
+          <br><br><br>
+          <div class="userType">
+
+            <a href="/login/student/" style="text-decoration:none">
+
+            <a href="student/" style="text-decoration:none">
+
+              <button type="button" class="toStudentPage">
+                <h3>Student</h3>
+              </button>
+            </a>
+
+
+            <a href="/login/teacher/" style="text-decoration:none">
+
+            <a href="teacher/" style="text-decoration:none">
+
+              <button type="button" class="toTeacherPage">
+                <h3>Teacher</h3>
+              </button>
+            </a>
+            <br><br><br>
+            <hr style="border: 2px solid #808080;">
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </body>
+</html>
