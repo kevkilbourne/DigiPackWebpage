@@ -1,0 +1,30 @@
+{% extends "DigitalBackpack/base.html" %}
+
+{% block content %}
+{% load static %}
+<script src="{% static 'js/newAssignment.js' %}"></script>
+<form id="newAssignmentForm" class="formContent" method="POST" action="{% url 'submit_new_assignment' %}">
+    {% csrf_token %}
+    <fieldset id="newAssignmentFieldset" class="form-group">
+      <legend>Create New Assignment</legend>
+      {{ form.as_p }}
+      <label for="keywords">Search Keywords:</label>
+      <input type="text" id="keywords" name="keywords">
+      <button type="submit" id="fetch-resources" formaction="{% url 'new_assignment' %}">Fetch Resources</button>
+      {% if resources %}
+        <fieldset id="resourceFieldset">
+	  <legend>Resources</legend>
+          {% for resource in resources %}
+	  <div>
+	    <input type="hidden" class="resource" name="resources" id="{{ resource }}" value="{{ resource }}">
+	    <a href="{{ resource }}" target="_blank" rel="noopener noreferrer">{{ resource }}</a>
+	    <span class="delete" onclick="deleteResource(event, this)">&times;</span>
+	    <br>
+	  </div>
+          {% endfor %}
+	</fieldset>
+      {% endif %}
+      <input type="submit" value="Submit Student List">
+    </fieldset>
+  </form>
+{% endblock content %}
