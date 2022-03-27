@@ -1,5 +1,7 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 import sqlite3
 import importlib
 import numpy as np
@@ -8,11 +10,14 @@ import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
 from .forms import RatingForm
+
 import csv, datetime
 from .forms import RatingForm, TeacherRegistrationForm, ClassRegistrationForm, AddStudentForm, StudentRegistrationForm, StudentAccountCompletionForm, AssignmentForm
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
+
+from DigitalBackpack.forms import SearchingALgorithmForm
 
 
 # group_required helper decorator
@@ -59,168 +64,28 @@ def login_reroute(request):
 def landing_page(request):
     return render(request, 'DigitalBackpack/LandingWebpage.html')
 
-# student view page
-#
-# records time student logs onto page and updates .csv
-# returns student homepage
 def student_page(request):
-
-    # ----------------- Recording time and updating Heatmap .csv ----------------- #
-
-    # Gathers time information
-    current_datetime = datetime.datetime.now()
-    day = current_datetime.weekday()
-    hour = current_datetime.hour
-
-    # Opens .csv file to be converted to 2D array
-    with open("DigitalBackpack/static/csv/updated_timeframes.csv", newline='') as file:
-        result_list = list(csv.reader(file))
-
-    # Converts .csv to 2D array
-    data_array = np.array(result_list)
-
-    # datetime.weekday() provides weekdays as indexes (where 'day' = 0 through 6) starting with Monday
-    # Finds the correct position within 2D array and sets value to 1 (meaning connection detected)
-    if day == 0:
-        data_array[hour][0] = 1
-    elif day == 1:
-        data_array[hour][1] = 1
-    elif day == 2:
-        data_array[hour][2] = 1
-    elif day == 3:
-        data_array[hour][3] = 1
-    elif day == 4:
-        data_array[hour][4] = 1
-    elif day == 5:
-        data_array[hour][5] = 1
-    else:
-        data_array[hour][6] = 1
-
-    # Converts newly updated 2D array back into .csv file
-    updated_timeframes = data_array
-    with open("DigitalBackpack/static/csv/updated_timeframes.csv", "w+", newline='') as new_file:
-        csv_writer = csv.writer(new_file, delimiter=',')
-        csv_writer.writerows(updated_timeframes)
-
-    file.close()
-    new_file.close()
-
     return render(request, 'DigitalBackpack/StudentWebpage.html')
 
-# teacher view page
-#
-# returns teacher homepage
-@group_required('Teachers')
 def teacher_page(request):
     return render(request, 'DigitalBackpack/TeacherWebpage.html')
 
-# class registration page
-#
-# form allowing teachers to create new classes under their account
-@group_required('Teachers')
-def class_registration(request):
-    # if we've received input for loading into the db
-    if request.method == 'POST':
-        # call our model submission
-        form = ClassRegistrationForm(request.POST, request.POST)
+def get_add_assignment_page(request):
 
-        # ensure form is valid
-        if form.is_valid():
-
-            # grab our cleaned data
-            data = form.cleaned_data
-
-            # pass our cleaned date to the model for database interacton
-            teacher = models.Teachers(user = User.objects.filter(username=data['username']).first(),
-                                      first = data['first'],
-                                      last = data['last'],
-                                      classname = data['classname'])
-            
-            # save this information to the database
-            teacher.save()
-
-            # indicate success
-            print("Successfully created class " + data['classname'] + ", taught by " + User.objects.filter(username=data['username']).first().username)
-
-        else:
-            # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
-
-        # redirect our teacher to add students to this class
-        return redirect('add_students')
+    if request.method == 'GET':
+        form = SearchingALgorithmForm()
+        return render(request, 'DigitalBackpack/AssignmentWebpage.html', {'form': form})
 
     else:
-        # pass our session to the form
-        form = ClassRegistrationForm(None, username=request.session)
+        if 'GrabWebsite' in request.POST:
+            form = SearchingALgorithmForm(request.POST)
+            if form.is_valid():
+                text = form.cleaned_data['post']
 
-        # render our form
-        return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
+            input = form['post'].value()
 
-# student account completion view
-#
-# grab additional user info from students to complete their account
-@group_required('Students')
-def student_account_completion(request):
-    # if we've received input for updating the db
-    if request.method == 'POST':
-        # call our form creation
-        form = StudentAccountCompletionForm(request.POST, request.POST)
+            print(input)
 
-        # ensure form is valid
-        if form.is_valid():
-            # grab our cleaned data
-            data = form.cleaned_data
-
-            # update our first name
-            models.Students.objects.filter(email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(first=data.get('first'))
-            models.Students.objects.filter(email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(last=data.get('last'))
-            models.Students.objects.filter(email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(user=User.objects.get(username=data.get('username')))
-
-            # redirect our student to the homepage
-            return redirect('student_page')
-
-        else:
-            # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
-
-    else:
-        # pass our session info to the form
-        form = StudentAccountCompletionForm(None, username=request.session)
-
-        # render page
-        return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
-
-# add students form view
-#
-# form allowing teachers to add students to any of the classes associated with their account
-@group_required('Teachers')
-def add_students(request):
-    if request.method == 'POST':
-        form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    else:
-        form = AddStudentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/AddStudents.html', {'form': form})
-
-# submit student additions view
-#
-# additional redirect to add_students view to allow for dynamic form allocation when not submitting
-# NOTE: invisible view, will not present anything to user before redirect
-@group_required('Teachers')
-def submit_student_addition(request):
-    if request.method == 'POST':
-        # build a form based off of the provided students to add
-        form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-
-        # ensure form is valid
-        if form.is_valid():
-            # if it is, load new students in
-
-            # grab our form's cleaned data
-            form = form.cleaned_data
-
-            # pop off our class for use, as well as our number of arguments
-            receivingClass = form.pop('classChoice')
-            emailCount = form.pop('extraFieldCount')
 
             # loop through our remaining form items
             for studentEmail in form:
@@ -231,60 +96,20 @@ def submit_student_addition(request):
                                               classname = models.Teachers.objects.get(id=receivingClass),
                                               first = models.Students.objects.filter(email=form.get(studentEmail)).first().first,
                                               last = models.Students.objects.filter(email=form.get(studentEmail)).first().last)
+                    
+            Websites = models.SearchingAlgorithm(input)
 
-                else:
-                    # otherwise, do the base initialization for the new student
-                    student = models.Students(email = form.get(studentEmail),
-                                              classname = models.Teachers.objects.get(id=receivingClass))
 
-                # regardless of how we initialize, save our changes
-                student.save()
-                
-                # indicate success to our additions
-                print("Added student " + str(form.get(studentEmail) + " to " + str(receivingClass)))
+            print(Websites)
 
-            # redirect back to the homepage
-            return redirect('teacher_page')
+            models.DownloadWebsites(Websites)
 
-    # if anything goes wrong, kick back to the add students page
-    return redirect('add_students')
-
-# teacher registration view
-#
-# form for registering a new teacher account
-def teacher_registration(request):
-    # see if we've received new class input
-    if request.method == 'POST':
-        print(request.POST)
-        # if so, load the filled form
-        form = TeacherRegistrationForm(request.POST)
-        
-        # check if our form is valid
-        if form.is_valid():
-            
-            # if so, load new info into our user database
-            
-            # grab our user 
-            uname = form.cleaned_data['username']
-            
-            # save our form and user to the authentication db
-            form.save()
-
-            # and finally add them to the teacher group
-            teacherGroup, created = Group.objects.get_or_create(name='Teachers')
-            newUser = User.objects.get(username=uname)
-            newUser.groups.add(teacherGroup)
-            teacherGroup.user_set.add(newUser)
-
-            # authenticate user
-            user_login = authenticate(username=form.cleaned_data['username'],
-                                      password=form.cleaned_data['password1'],)
-            login(request, user_login)
-
-            # redirect to class registration
-            return redirect('class_registration')
+            args = {'form': form, 'links': Websites}
+            return render(request, 'DigitalBackpack/AssignmentWebpage.html', args)
 
         else:
+            print("THIS IS ELSE")
+
 
             return render(request, 'DigitalBackpack/TeacherRegistration.html', {'form': form})
 
@@ -423,12 +248,12 @@ def submit_new_assignment(request):
 # ratings view
 #
 # view for the website rating system.
-def ratings(request): 
+def ratings(request):
     # if we've received input for loading into the db
     if request.method == 'POST':
         # initialize loading variables
         input = request.POST
-        
+
         # call our model submission
         success = models.submitRatings(input)
 
@@ -444,35 +269,11 @@ def ratings(request):
         # if they are sent via get to send ratings, give them the page
         return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
 
+
 def connection_page(request):
-
-    # ----------------- Creation of Heatmap ----------------- #
-
-    # Gathers time information
-    current_datetime = datetime.datetime.now()
-    day = current_datetime.weekday()
-
     # Open .csv file and read
-    try:
-        dataset = read_csv("DigitalBackpack/static/csv/updated_timeframes.csv")
-    except FileNotFoundError:
-        dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
-
-    # Checking to see if recording the future date is necessary
-    future_day = None
-    if day == 6:
-        future_day = (current_datetime + datetime.timedelta(weeks=1)).strftime("%d")
-
-    # Sets flag that enables resetting of the heatmap
-    new_week_flag = False
-    if current_datetime.strftime("%d") == future_day:
-        # Calculates new future date and sets it to a week in the future
-        future_day = (current_datetime + datetime.timedelta(weeks=1)).strftime("%d")
-        new_week_flag = True
-
-    # If it is the reset day (Sunday) and it's been a weeks time, erase previous week's heatmap to start the week over
-    if new_week_flag:
-        dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
+    dataset = read_csv("DigitalBackpack/static/csv/timeframes.csv")
+    # print(dataset)
 
     # Sets up general heatmap attributes including size, title, and x and y axes
     plt.figure(figsize=(8, 8))
@@ -512,4 +313,3 @@ def connection_page(request):
     # html_file.write(html_str)
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
-

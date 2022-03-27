@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <title>Teacher DigiPack</title>
+
+    <link rel="stylesheet" href="/static/css/teacherWeb.css">
+    <script src="/static/js/Add_Assignment.js"></script>
+
+  </head>
+
+  <body>
+  <h1> TESTING Searching Algorithm </h1>
+
+  <form method="post">
+
+    <h3> Hello </h3>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" name="GrabWebsite">Submit</button>
+
+  </form>
+
+
+           {% for link in links %}
+           <a href={{link}}>{{link}}</a><br/>
+           {% endfor %}
+
+           <button type="submit" name="DownloadWebsite">Download Resources </button>
+           
+
+
+  <h3> Please Enter Assignment's Name:</h3>
+  <input type="text" id="AssignName">
+
+  <h3> Please Enter Assignment's Due Date (As MM/DD/YYYY):</h3>
+  <input type="text" id="AssignDD">
+
+  <h3> Please Enter Assignment's Files (Instructions, Resources, Pictures):</h3>
+  <input type="file" id="myFile" name="filename">
+
+  </body>
+</html>

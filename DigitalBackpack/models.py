@@ -1,5 +1,6 @@
 from django.db import models
 import sqlite3
+
 from django.utils import timezone
 from django.contrib.auth.models import User
 from pathlib import Path
@@ -10,24 +11,20 @@ import os
 import pdfkit
 from googlesearch import search
 
-class Teachers(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    first = models.CharField(max_length=100)
-    last = models.CharField(max_length=100)
-    classname = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.user.username + " - " + self.classname
+import googlesearch
+import shutil
+import os
+import pdfkit
+from googlesearch import search
 
-class Students(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
-    email = models.EmailField()
-    classname = models.ForeignKey(Teachers, on_delete=models.CASCADE)
-    first = models.CharField(max_length=100, blank=True)
-    last = models.CharField(max_length=100, blank=True)
+#Finds where the executable program is
+path_wkhtmltopdf = r'DigitalBackpack\static\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#Sets the configurations to the path
+config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
 
-    def __str__(self):
-        return self.email + " - " + self.classname.classname
+# Create your models here.
+
 
 class Assignments(models.Model):
     title = models.CharField(max_length=100)
@@ -64,7 +61,7 @@ def submitRatings(post):
                           SET rating = ?, numRatings = ?
                           WHERE website = ?
                        """
-                    
+
 
     # connect to and initialize database
     try:
@@ -85,7 +82,7 @@ def submitRatings(post):
             print("Key: " + key)
             # perform key validity checking
             if '.' in key:
-            
+
                 # pull query from the database, if it exists
                 cursor.execute(SQL_SELECT_QUERY, (key,))
                 dataTuple = cursor.fetchall()
@@ -97,7 +94,7 @@ def submitRatings(post):
 
                     # indicate this addition to the database
                     print(key + " rating initialized to WebRatings Database: " + str(post.get(key)) + "(1)")
-                
+
                 else:
                     # reset our data tuple to the information inside, since we know it is present
                     dataTuple = dataTuple[0]
@@ -147,6 +144,7 @@ def SearchingAlgorithm(post):
     return WebsiteResult
 
 
+
 def DownloadWebsites(LinksList, path):
 
     BASE_DIR = Path(__file__).resolve().parent.parent
@@ -160,6 +158,19 @@ def DownloadWebsites(LinksList, path):
     LengthWebsiteResult = len(LinksList)
     if not os.path.exists(DirectPath):
         os.makedirs(DirectPath)
+
+def DownloadWebsites(LinksList):
+
+    index = 0
+    WebsiteNumber = 1
+    WebsiteStrings = []
+    DirectPath = os.path.expanduser("~")+"/Downloads/"
+    DirectPath = DirectPath.replace('/', '\\')
+
+    #Checks the length of the Results List
+    LengthWebsiteResult = len(LinksList)
+
+
     #While the website number is less then the length of the results list
     while(WebsiteNumber-1 < LengthWebsiteResult):
         #Appends a Resource_# to a website String used to name the file
@@ -176,10 +187,17 @@ def DownloadWebsites(LinksList, path):
            #Converts the html website into a pdf website calling the file to the
            #correct numbering system in WebsiteStrings.
            #This then downloads into the same spot where this python file is located
+
            pdfkit.from_url(Websites, DirectPath + WebsiteStrings[index] +'.pdf')
            #Copies the file and sends it to a new destination
            #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
            #shutil.move(WebsiteStrings[index]+'.pdf', DirectPath)
+
+           pdfkit.from_url(Websites, WebsiteStrings[index]+'.pdf', configuration=config)
+           #Copies the file and sends it to a new destination
+           #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
+           shutil.move(WebsiteStrings[index]+'.pdf', DirectPath)
+
            #Deletes the original pdf file
            #os.remove(WebsiteStrings[index]+'.pdf')
            #increments index
