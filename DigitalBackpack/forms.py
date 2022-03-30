@@ -1,5 +1,4 @@
 from django import forms
-
 from django.forms import ModelForm
 from .models import Teachers, Students, Assignments
 from django.contrib.auth.models import User
@@ -122,7 +121,6 @@ class AddStudentForm(forms.Form):
             self.fields['email_{index}'.format(index=index)] = \
                     forms.EmailField(required=False)
 
-
 class AssignmentForm(forms.Form):
     
     classChoice = forms.ChoiceField()
@@ -163,12 +161,4 @@ class RatingForm(forms.Form):
                ('4', '4'),
                ('5', '5')]
     ratings = []
-    #sites = forms.IntegerField(label="test", widget=Stars)
 
-    # loop through our sites
-    #for site in sites:
-     #   ratings.append(forms.CharField(label=site, widget=forms.RadioSelect(choices=CHOICES)))
-
-
-class SearchingALgorithmForm(forms.Form):
-    post = forms.CharField()
