@@ -8,99 +8,68 @@ function swapFlag(event, element)
 {
   if (element.className == "notFlagged")
   {
-    // change id value
-    element.className = "flaggedlvl1";
+    let teacherInput = prompt("What level would you like to flag the student, 1 or 2?");
+
+    switch (teachInput)
+    {
+      case "1":
+        // change id value
+        element.className = "flaggedlvl1";
+
+        // prompt user that it was successful
+        alert("Student has been successfully flagged to level 1 (base).");
+
+        return element;
+        break;
+
+      case "2":
+        // change id value
+        element.className = "flaggedlvl2";
+
+        // prompt user that it was successful
+        alert("Student has been successfully flagged to level 2 (severe).");
+
+        let teacherInput = prompt("Would you like to send an email, text, both, or none?");
+
+          switch (teachInput)
+          {
+            case "email":
+              sendEmail(sendTo, sendFrom, message);
+              break;
+
+            case "text":
+              sendText(sendTo, sendFrom, message);
+              break;
+
+            case "both":
+              sendEmail(sendTo, sendFrom, message);
+              sendText(sendTo, sendFrom, message);
+              break;
+
+            case "none":
+              break;
+
+            default:
+              break;
+          }
+
+        return element;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  else
+  {
+    element.className = "notFlagged";
 
     // prompt user that it was successful
-    alert("Student has been successfully flagged to level 1 (base).");
+    alert("Student has been successfully unflagged.");
 
     return element;
   }
-
-    // change ID from "flaggedlvl1" to "flaggedlvl2"
-    else if (element.className == "flaggedlvl1")
-    {
-      // change id value
-      element.className = "flaggedlvl2";
-
-      // prompt user that it was successful
-      alert("Student has been successfully flagged to level 2 (intermediate).");
-
-      let teachInput = prompt("Would you like to send this students parents an email? (yes or no)").toLowerCase();
-
-      switch (teachInput)
-      {
-        case "yes":
-          // send to message page to send email
-          console.log("lvl 2 email");
-          let sendTo = prompt("Who is the email going to?");
-          console.log(sendTo);
-          let sendFrom = prompt("What is your email?");
-          console.log(sendFrom);
-          let message = prompt("Write your message below.");
-          console.log(message);
-
-          sendEmail(sendTo, sendFrom, message);
-          break;
-
-        case "no":
-          break;
-
-        default:
-          break;
-      }
-
-      return element;
-    }
-
-    // change ID from "flaggedlvl2" to "flaggedlvl3"
-    else if (element.className == "flaggedlvl2")
-    {
-      // change id value
-      element.className = "flaggedlvl3";
-
-      // prompt user that it was successful
-      alert("Student has been successfully flagged to level 3 (severe).");
-
-      let teachInput = prompt("Would you like to send this students parents a text? (yes or no)").toLowerCase();
-
-      switch (teachInput)
-      {
-        case "yes":
-          // send to message page to send email
-          console.log("lvl 3 email");
-          let sendTo = prompt("Who is the text going to?");
-          console.log(sendTo);
-          let sendFrom = prompt("What is your numer?");
-          console.log(sendFrom);
-          let message = prompt("Write your message below.");
-          console.log(message);
-
-          // sendEmail(sendTo, sendFrom, message);
-          break;
-
-        case "no":
-          break;
-
-        default:
-
-      }
-
-      return element;
-    }
-
-    // change ID from "flaggedlvl3" to "notFlagged"
-    else if (element.className == "flaggedlvl3")
-    {
-      // change id value
-      element.className = "notFlagged";
-
-      // prompt user that it was successful
-      alert("Student has been successfully unflagged.");
-
-      return element;
-    }
-}
 
 
 function sendEmail(sendTo, sendFrom, message)
@@ -108,7 +77,7 @@ function sendEmail(sendTo, sendFrom, message)
   Email.send(
     {
       Host: "www.gmail.com",
-      Username: "nmc288@nau.edu",
+      Username: "",
       Password: "",
       To: sendTo,
       From: sendFrom,
