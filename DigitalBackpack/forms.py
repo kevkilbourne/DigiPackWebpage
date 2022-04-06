@@ -1,5 +1,6 @@
 from django import forms
-from .models import Teachers, Students
+from django.forms import ModelForm
+from .models import Teachers, Students, Assignments
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import user_passes_test
@@ -119,6 +120,26 @@ class AddStudentForm(forms.Form):
             # generate extra fields in the number specified via extra_fields
             self.fields['email_{index}'.format(index=index)] = \
                     forms.EmailField(required=False)
+
+class AssignmentForm(forms.Form):
+    
+    classChoice = forms.ChoiceField()
+    assignmentTitle = forms.CharField()
+    assignmentInstructions = forms.CharField(widget=forms.Textarea)
+    assignmentDueDate = forms.DateTimeField()
+    assignmentAttachment = forms.FileField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        options = []
+        teacherUser = kwargs.pop('teacher')
+        teacherClasses = list(Teachers.objects.filter(user=User.objects.get(username=teacherUser)))
+
+        for teacherClass in teacherClasses:
+            options.append((teacherClass.id, teacherClass.classname))
+
+        super(AssignmentForm, self).__init__(*args, **kwargs)
+
+        self.fields['classChoice'] = forms.ChoiceField(choices=options, widget=forms.Select)
 
 class RatingForm(forms.Form):
     def __init__(self,*args,**kwargs):
