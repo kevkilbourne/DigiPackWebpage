@@ -8,56 +8,34 @@ function swapFlag(event, element)
 {
   if (element.className == "notFlagged")
   {
-    let teacherInput = prompt("What level would you like to flag the student, 1 or 2?");
+    element.className = "flagged";
 
-    switch (teacherInput)
+    alert("Student has been successfully flagged.");
+
+    let teachInput = prompt("Would you like to send an email, text, both, or none?").toLowerCase();
+
+    switch (teachInput)
     {
-      case "1":
-        // change id value
-        element.className = "flaggedlvl1";
+      case "email":
+        let userEmail = prompt("Write your message here.");
 
-        // prompt user that it was successful
-        alert("Student has been successfully flagged to level 1 (base).");
-
+        sendEmail(sendTo, sendFrom, userEmail);
         break;
 
-      case "2":
-        // change id value
-        element.className = "flaggedlvl2";
+      case "text":
+        let userText = prompt("Write your message here.");
 
-        // prompt user that it was successful
-        alert("Student has been successfully flagged to level 2 (severe).");
+        sendText(sendTo, sendFrom, userText);
+        break;
 
-        let teachInput = prompt("Would you like to send an email, text, both, or none?").toLowerCase();
+      case "both":
+        let userMessage = prompt("Write your message here.");
 
-        switch (teachInput)
-        {
-          case "email":
-            let userEmail = prompt("Write your message here.");
+        sendEmail(sendTo, sendFrom, userMessage);
+        sendText(sendTo, sendFrom, userMessage);
+        break;
 
-            sendEmail(sendTo, sendFrom, userEmail);
-            break;
-
-          case "text":
-            let userText = prompt("Write your message here.");
-
-            sendText(sendTo, sendFrom, userText);
-            break;
-
-          case "both":
-            let userMessage = prompt("Write your message here.");
-
-            sendEmail(sendTo, sendFrom, userMessage);
-            sendText(sendTo, sendFrom, userMessage);
-            break;
-
-          case "none":
-            break;
-
-          default:
-            break;
-        }
-
+      case "none":
         break;
 
       default:
