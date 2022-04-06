@@ -25,6 +25,17 @@
     <div class="mainBody">
       <div class="classList">
         <h2 class="classTitle">Classes</h2>
+	{% if classes %}
+	  {% for class in classes %}
+	    {% if class.id == currentClass %}
+	      <u><h3 class="class" id="class{{ class.id }}">{{ class.classname }}</h3></u>
+	    {% else %}
+	      <h3 class="class" id="class{{ class.id }}">{{ class.classname }}</h3>
+	    {% endif %}
+	  {% endfor %}
+	{% else %}
+	  <h2>No classes to show</h2>
+	{% endif %}
       </div>
 
       <div class="classRoster">
@@ -33,6 +44,32 @@
         </div>
         <div class="classRosterBox">
           <br><br><br><br><br><br>
+	  {% if students %}
+	    {% for student in students %}
+	      {% if student.flagged %}
+	        <button id="student{{ student.id }}" class="flagged" onclick="swapFlag(event, this)">
+		{% if student.first %}
+  		  {{ student.first }} {{ student.last }}
+		{% else %}
+		  {{ student.email }}
+		{% endif %}
+		</button>
+		<hr id="rosterLines">
+	      {% else %}
+	        <button id="student{{ student.id }}" class="notFlagged" onclick="swapFlag(event, this)">
+		{% if student.first %}
+		  {{ student.first }} {{ student.last }}
+		{% else %}
+		  {{ student.email }}
+		{% endif %}
+		</button>
+		<hr id="rosterLines">
+	      {% endif %}
+	    {% endfor %}
+	  {% else %}
+	    <h3>Empty Roster</h3>
+	  {% endif %}
+
           <button id="studentFlag1" class="notFlagged" onclick="swapFlag(event, this)">Terrance Fields</button>
           <hr id="rosterLines">
           <button id="studentFlag2" class="notFlagged" onclick="swapFlag(event, this)">Carolyn Price</button>
@@ -57,12 +94,22 @@
             <button type="button" id="addAssignmentButton">Add Assignment</button>
 	  </a>
 
-          <a href="add_assignment/" style="text-decoration:none">
+	  <a href="{% url 'new_assignment' %}" style="text-decoration:none">
             <button type="button" id="addAssignmentButton">Add Assignment</button>
           </a>
 
         </div>
         <div class="assignmentBox">
+		<br><br><br><br><br>
+	{% if assignments %}
+	  {% for assignment in assignments %}
+	    <h3 class="assignment" id="assignment{{ assignment.id }}">{{ assignment.title }}</h3>
+	    <h4 class="duedate">{{ assignment.dueDate }}</h4>
+  	    <hr id="rosterLines">
+	  {% endfor %}
+	{% else %}
+	  <h3>No Active Assignments</h3>
+	{% endif %}
 
         </div>
       </div>

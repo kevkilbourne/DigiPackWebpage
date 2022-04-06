@@ -38,19 +38,16 @@
           <br><br><br>
           <div class="userType">
 
-            <a href="/login/student/" style="text-decoration:none">
-
-            <a href="student/" style="text-decoration:none">
-
+	    <a href="{% url 'student_login' %}" style="text-decoration:none">
+	    <a href="{% url 'student_login' %}" style="text-decoration:none">
               <button type="button" class="toStudentPage">
                 <h3>Student</h3>
               </button>
             </a>
 
 
-            <a href="/login/teacher/" style="text-decoration:none">
-
-            <a href="teacher/" style="text-decoration:none">
+	    <a href="{% url 'teacher_login' %}" style="text-decoration:none">
+	    <a href="{% url 'teacher_login' %}" style="text-decoration:none">
 
               <button type="button" class="toTeacherPage">
                 <h3>Teacher</h3>
