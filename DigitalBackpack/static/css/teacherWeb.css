@@ -1,10 +1,9 @@
 @font-face {
-    src: url(fonts/Montserrat-VariableFont_wght.ttf);
-    font-family: Montserrat;
+    font-family: Arial;
 }
 
 html {
-    font-family: Montserrat;
+    font-family: Arial;
 }
 
 body {
@@ -50,8 +49,8 @@ p {
   left: 13px;
 }
 
-.flagged {
-  background-color: #fc5c51;
+.flaggedlvl1 {
+  background-color: #f08080;
   font-weight: bolder;
 
   font-size: 16px;
@@ -63,14 +62,17 @@ p {
   left: 13px;
 }
 
-.notFlagged:hover {
-  background-color: #ebebeb;
-  color: black;
-}
+.flaggedlvl2 {
+  background-color: #ff0000;
+  font-weight: bolder;
 
-.flagged:hover {
-  background-color: #ebebeb;
-  color: black;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 2px solid black;
+  transition-duration: 0.2s;
+  width: 60%;
+  position: relative;
+  left: 13px;
 }
 
 #addAssignmentButton {

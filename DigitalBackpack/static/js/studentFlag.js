@@ -1,49 +1,102 @@
+/*
+For Views.py
+def landing_page(request):
+    return render(request, 'DigitalBackpack/sendEmail.html')
+*/
+
 function swapFlag(event, element)
 {
   if (element.className == "notFlagged")
   {
-    // change id value
-    element.className = "flaggedlvl1";
+    let teacherInput = prompt("What level would you like to flag the student, 1 or 2?");
 
-    // prompt user that it was successful
-    alert("Student has been successfully flagged to level 1 (base).");
+    switch (teacherInput)
+    {
+      case "1":
+        // change id value
+        element.className = "flaggedlvl1";
+
+        // prompt user that it was successful
+        alert("Student has been successfully flagged to level 1 (base).");
+
+        break;
+
+      case "2":
+        // change id value
+        element.className = "flaggedlvl2";
+
+        // prompt user that it was successful
+        alert("Student has been successfully flagged to level 2 (severe).");
+
+        let teachInput = prompt("Would you like to send an email, text, both, or none?").toLowerCase();
+
+        switch (teachInput)
+        {
+          case "email":
+            let userEmail = prompt("Write your message here.");
+
+            sendEmail(sendTo, sendFrom, userEmail);
+            break;
+
+          case "text":
+            let userText = prompt("Write your message here.");
+
+            sendText(sendTo, sendFrom, userText);
+            break;
+
+          case "both":
+            let userMessage = prompt("Write your message here.");
+
+            sendEmail(sendTo, sendFrom, userMessage);
+            sendText(sendTo, sendFrom, userMessage);
+            break;
+
+          case "none":
+            break;
+
+          default:
+            break;
+        }
+
+        break;
+
+      default:
+        break;
+    }
 
     return element;
   }
 
-    // change ID from "notFlagged" to "flagged"
-    else if (element.className == "flaggedlvl1")
+  else
+  {
+    element.className = "notFlagged";
+
+    // prompt user that it was successful
+    alert("Student has been successfully unflagged.");
+
+    return element;
+  }
+}
+
+function sendEmail(sendTo, sendFrom, message)
+{
+  Email.send(
     {
-      // change id value
-      element.className = "flaggedlvl2";
-
-      // prompt user that it was successful
-      alert("Student has been successfully flagged to level 2 (intermediate).");
-
-      return element;
-    }
-
-    // change ID from "notFlagged" to "flagged"
-    else if (element.className == "flaggedlvl2")
+      Host: "www.gmail.com",
+      Username: "",
+      Password: "",
+      To: sendTo,
+      From: sendFrom,
+      Subject: "test",
+      Body: message,
+    })
+    .then(function (message)
     {
-      // change id value
-      element.className = "flaggedlvl3";
+      alert("Email sent successfully");
+    });
+}
 
-      // prompt user that it was successful
-      alert("Student has been successfully flagged to level 3 (severe).");
-
-      return element;
-    }
-
-    // change ID from "notFlagged" to "flagged"
-    else if (element.className == "flaggedlvl3")
-    {
-      // change id value
-      element.className = "notFlagged";
-
-      // prompt user that it was successful
-      alert("Student has been successfully unflagged.");
-
-      return element;
-    }
+function sendText(sendTo, sendFrom, message)
+{
+  return ;
 }
