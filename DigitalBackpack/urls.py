@@ -20,4 +20,5 @@ urlpatterns = [
     path( 'teacher/submitNewAssignment/', views.submit_new_assignment, name='submit_new_assignment' ),
     path( 'ratings/', views.ratings, name='ratings'),
     path( 'student/connectivity/', views.connection_page, name='connection_timeframe_page' ),
+    path( 'studentbs/', views.student_page_bs, name='student_bootstrap_page' ),
 ]

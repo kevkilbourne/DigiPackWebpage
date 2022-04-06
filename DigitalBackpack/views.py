@@ -513,3 +513,6 @@ def connection_page(request):
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
+def student_page_bs(request):
+    return render(request, 'DigitalBackpack/studentpage_bs.html')
+
