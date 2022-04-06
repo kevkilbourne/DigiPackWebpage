@@ -10,6 +10,7 @@ import DigitalBackpack.models as models
 from .forms import RatingForm
 import csv, datetime
 from .forms import RatingForm, TeacherRegistrationForm, ClassRegistrationForm, AddStudentForm, StudentRegistrationForm, StudentAccountCompletionForm, AssignmentForm
+import DigitalBackpack.utils as utils
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth import authenticate, login
@@ -40,16 +41,16 @@ def landing_page(request):
 # invisible view by which the system can check group permissions to decide where a user will be
 # routed upon login
 def login_reroute(request):
-    # redirect to teacher page
-    print("Groups:")
-    print(str(User.objects.get(id=request.session.get('_auth_user_id')).groups.first()))
-    if str(User.objects.get(id=request.session.get('_auth_user_id')).groups.first()) == "Teachers":
-        return redirect('teacher_page')
+    try:
+        if str(User.objects.get(id=request.session.get('_auth_user_id')).groups.first()) == "Teachers":
+            request.session['currentClass'] = models.Teachers.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
+            return redirect('teacher_page')
 
-    elif str(User.objects.get(id=request.session.get('_auth_user_id')).groups.first()) == "Students":
-        return redirect('student_page')
+        else:
+            request.session['currentClass'] = models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
+            return redirect('student_page')
 
-    else:
+    except User.DoesNotExist:
         return redirect('landing_page')
 
 # student view page
@@ -105,7 +106,17 @@ def student_page(request):
 # returns teacher homepage
 @group_required('Teachers')
 def teacher_page(request):
-    return render(request, 'DigitalBackpack/TeacherWebpage.html')
+    # fetch our class and student info
+    classes = models.Teachers.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).all()
+    currentClassID = request.session['currentClass']
+    students = models.Students.objects.filter(classname=models.Teachers.objects.get(id=currentClassID)).all()
+    assignments = models.Assignments.objects.filter(classname=models.Teachers.objects.get(id=currentClassID)).all()
+    print(classes)
+    print(currentClassID)
+    print(students)
+    print(assignments)
+    # render our request with this info
+    return render(request, 'DigitalBackpack/TeacherWebpage.html', {'classes': classes, 'students': students, 'currentClass': currentClassID, 'assignments': assignments})
 
 # class registration page
 #
@@ -131,6 +142,9 @@ def class_registration(request):
             
             # save this information to the database
             teacher.save()
+
+            # reset our session variable focus to this class
+            request.session['currentClass'] = teacher.id
 
             # indicate success
             print("Successfully created class " + data['classname'] + ", taught by " + User.objects.filter(username=data['username']).first().username)
@@ -340,7 +354,7 @@ def new_assignment(request):
         
         if 'keywords' in request.POST:
             keywords = request.POST.get('keywords', '')
-            resources = models.SearchingAlgorithm(keywords)
+            resources = utils.searchingAlgorithm(keywords)
 
             return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form, 'resources': resources })
 
@@ -395,7 +409,7 @@ def submit_new_assignment(request):
             # see if the teacher fetched resources
             try:
                 resources = request.POST.getlist('resources')
-                models.DownloadWebsites(resources, str(assignmentID))
+                utils.downloadWebsites(resources, str(assignmentID))
 
             except KeyError as error:
                 print("Teacher opted for no resources")
