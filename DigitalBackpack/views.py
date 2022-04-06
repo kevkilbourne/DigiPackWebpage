@@ -51,13 +51,6 @@ def login_reroute(request):
 
     else:
         return redirect('landing_page')
-    
-# student page view
-#
-# returns student homepage
-@group_required('Students')
-def landing_page(request):
-    return render(request, 'DigitalBackpack/LandingWebpage.html')
 
 # student view page
 #
