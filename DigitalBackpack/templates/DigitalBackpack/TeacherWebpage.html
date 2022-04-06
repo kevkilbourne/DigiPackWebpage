@@ -52,7 +52,15 @@
       <div class="assignments">
         <div class="flex-container assignmentHeadBox">
           <h1>Active Assignments</h1>
-          <button type="button" id="addAssignmentButton">Add Assignment</button>
+
+	  <a href={% url 'new_assignment' %}>
+            <button type="button" id="addAssignmentButton">Add Assignment</button>
+	  </a>
+
+          <a href="add_assignment/" style="text-decoration:none">
+            <button type="button" id="addAssignmentButton">Add Assignment</button>
+          </a>
+
         </div>
         <div class="assignmentBox">
 
