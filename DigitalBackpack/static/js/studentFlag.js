@@ -10,7 +10,7 @@ function swapFlag(event, element)
   {
     let teacherInput = prompt("What level would you like to flag the student, 1 or 2?");
 
-    switch (teachInput)
+    switch (teacherInput)
     {
       case "1":
         // change id value
@@ -19,7 +19,6 @@ function swapFlag(event, element)
         // prompt user that it was successful
         alert("Student has been successfully flagged to level 1 (base).");
 
-        return element;
         break;
 
       case "2":
@@ -29,36 +28,43 @@ function swapFlag(event, element)
         // prompt user that it was successful
         alert("Student has been successfully flagged to level 2 (severe).");
 
-        let teacherInput = prompt("Would you like to send an email, text, both, or none?");
+        let teachInput = prompt("Would you like to send an email, text, both, or none?").toLowerCase();
 
-          switch (teachInput)
-          {
-            case "email":
-              sendEmail(sendTo, sendFrom, message);
-              break;
+        switch (teachInput)
+        {
+          case "email":
+            let userEmail = prompt("Write your message here.");
 
-            case "text":
-              sendText(sendTo, sendFrom, message);
-              break;
+            sendEmail(sendTo, sendFrom, userEmail);
+            break;
 
-            case "both":
-              sendEmail(sendTo, sendFrom, message);
-              sendText(sendTo, sendFrom, message);
-              break;
+          case "text":
+            let userText = prompt("Write your message here.");
 
-            case "none":
-              break;
+            sendText(sendTo, sendFrom, userText);
+            break;
 
-            default:
-              break;
-          }
+          case "both":
+            let userMessage = prompt("Write your message here.");
 
-        return element;
+            sendEmail(sendTo, sendFrom, userMessage);
+            sendText(sendTo, sendFrom, userMessage);
+            break;
+
+          case "none":
+            break;
+
+          default:
+            break;
+        }
+
         break;
 
       default:
         break;
     }
+
+    return element;
   }
 
   else
@@ -70,7 +76,7 @@ function swapFlag(event, element)
 
     return element;
   }
-
+}
 
 function sendEmail(sendTo, sendFrom, message)
 {
@@ -86,6 +92,11 @@ function sendEmail(sendTo, sendFrom, message)
     })
     .then(function (message)
     {
-      alert("Email sent successfully")
+      alert("Email sent successfully");
     });
+}
+
+function sendText(sendTo, sendFrom, message)
+{
+  return ;
 }
