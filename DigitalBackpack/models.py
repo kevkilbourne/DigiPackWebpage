@@ -25,6 +25,7 @@ class Students(models.Model):
     classname = models.ForeignKey(Teachers, on_delete=models.CASCADE)
     first = models.CharField(max_length=100, blank=True)
     last = models.CharField(max_length=100, blank=True)
+    flagged = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email + " - " + self.classname.classname
@@ -118,70 +119,53 @@ def submitRatings(post):
 
     return True
 
-def SearchingAlgorithm(post):
+def searchingAlgorithm(textInput):
     #initalize variables
-    index = 0;
-    Query = []
-    QueryString = ""
-    WebsiteResult = []
-    TextInput = ""
-    PDFConversion = []
-    DirectPath = os.path.expanduser("~")+"/Downloads/"
-    DirectPath = DirectPath.replace('/', '\\')
-
-
-    print('DIRECT PATH: ' + DirectPath)
-
-    #Ask for input from the user
-    TextInput = post
+    webResults = []
 
     #For each website in the google search. Search on Google using the keywords that we provide
-    for Websites in search(TextInput, tld="com", num = 10, stop = 10, pause = 2):
+    for website in search(textInput, tld="com", num = 10, stop = 10, pause = 2):
         #Checks to see if the collected website is not a .pdf file already
-        if('pdf' not in Websites):
+        if('pdf' not in website):
             #If so, then it checks if the collected website is not a YouTube page
-            if('youtube.com' not in Websites):
+            if('youtube.com' not in website):
                 #If so, adds the website to the results list
-                WebsiteResult.append(Websites)
+                webResults.append(website)
 
-    return WebsiteResult
+    return webResults
 
 
-def DownloadWebsites(LinksList, path):
+def downloadWebsites(links, path):
 
     BASE_DIR = Path(__file__).resolve().parent.parent
     print(BASE_DIR)
     index = 0
-    WebsiteNumber = 1
-    WebsiteStrings = []
+    websiteCount = 1
+    websiteNames = []
     DirectPath = os.path.join(BASE_DIR, 'Assignments/' + path + '/') 
     print(LinksList)
     #Checks the length of the Results List
-    LengthWebsiteResult = len(LinksList)
+    numResults = len(links)
     if not os.path.exists(DirectPath):
         os.makedirs(DirectPath)
     #While the website number is less then the length of the results list
-    while(WebsiteNumber-1 < LengthWebsiteResult):
+    while(websiteCount - 1 < numResults):
         #Appends a Resource_# to a website String used to name the file
-        WebsiteStrings.append("Resource_" + str(WebsiteNumber))
+        websiteNames.append("Resource_" + str(websiteCount))
         #increments WebsiteNumber by 1
-        WebsiteNumber += 1
+        websiteCount += 1
 
     #For every website in the results list
-    for Websites in LinksList:
+    for website in links:
         #Checks if the WebsiteStrings is not equal to None
-        if(WebsiteStrings[index] != None):
+        if(websiteNames[index] != None):
            print(f"Converting: {Websites}...")
 
-           #Converts the html website into a pdf website calling the file to the
-           #correct numbering system in WebsiteStrings.
-           #This then downloads into the same spot where this python file is located
-           pdfkit.from_url(Websites, DirectPath + WebsiteStrings[index] +'.pdf')
-           #Copies the file and sends it to a new destination
-           #newPath = shutil.copy(WebsiteStrings[index]+'.pdf', 'DirectPath')
-           #shutil.move(WebsiteStrings[index]+'.pdf', DirectPath)
-           #Deletes the original pdf file
-           #os.remove(WebsiteStrings[index]+'.pdf')
+           #Converts the html website into a pdf website 
+
+           #This then downloads into the determined location
+           pdfkit.from_url(website, DirectPath + websiteNames[index] +'.pdf')
+           
            #increments index
            index += 1
 
