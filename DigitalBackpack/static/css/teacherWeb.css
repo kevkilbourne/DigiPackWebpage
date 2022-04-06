@@ -1,10 +1,9 @@
 @font-face {
-    src: url(fonts/Montserrat-VariableFont_wght.ttf);
-    font-family: Montserrat;
+    font-family: Arial;
 }
 
 html {
-    font-family: Montserrat;
+    font-family: Arial;
 }
 
 body {
@@ -74,16 +73,6 @@ p {
   width: 60%;
   position: relative;
   left: 13px;
-}
-
-.notFlagged:hover {
-  background-color: #ebebeb;
-  color: black;
-}
-
-.flagged:hover {
-  background-color: #ebebeb;
-  color: black;
 }
 
 #addAssignmentButton {
