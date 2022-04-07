@@ -1,7 +1,7 @@
 body {
   background: #fafafa;
   color: #333333;
-  margin-top: 5rem;
+
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -13,7 +13,7 @@ ul {
 }
 
 .bg-steel {
-  background-color: #4ea8ba;
+  background-color: #38b6ff;
   height: 100px;
 }
 
@@ -29,83 +29,45 @@ ul {
   font-weight: 500;
 }
 
+.navbar-brand {
+  font-size: 35px;
+}
+
+.navbar-brand:hover {
+  font-weight: 500;
+}
+
 .content-section {
   background: #ffffff;
-  padding: 10px 20px;
+  padding: 20px;
   border: 1px solid #dddddd;
   border-radius: 3px;
   margin-bottom: 20px;
-}
-
-.article-title {
-  color: #444444;
-}
-
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
-
-.article-content {
-  white-space: pre-line;
-}
-
-.article-img {
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
-}
-
-.article-metadata {
-  padding-bottom: 1px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
-}
-
-.article-metadata a:hover {
-  color: #333;
-  text-decoration: none;
-}
-
-.article-svg {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-}
-
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
-
-.account-heading {
-  font-size: 2.5rem;
 }
 
 .dropdown_container {
   position: relative;
 }
 
-.assignments .submissions {
-  margin: auto;
+.col {
+  border: 5px solid #dddddd;
+  padding: 20px;
 }
 
-.assignment_head .submissions_head {
+.assignment_head .submissions_head .current_resources{
   border: 2px solid #dddddd;
   width: 575px;
   text-align: center;
 }
 
-.current_assignments .current_submissions {
+.current_assignments .current_submissions .current_resources{
   border: 2px solid #dddddd;
   width: 575px;
   text-align: left;
 }
 
 .container-fluid {
-  padding-top: 100px;
+  padding-top: 50px;
   padding-left: 250px;
   padding-right: 250px;
 }
@@ -115,20 +77,22 @@ a.article-title:hover {
 }
 
 .side_nav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 200px; /* Set the width of the sidebar */
+  height: 100%;
+  width: 225px;
   position: fixed; /* Fixed Sidebar (stay in place on scroll) */
   z-index: 1; /* Stay on top */
   left: 0;
   background-color: #cccecf;
   overflow-x: hidden; /* Disable horizontal scroll */
-
+  border-top: 2px solid black;
+  border-right: 2px solid black;
 }
 
 .class_head {
   padding: 20px;
   text-align: center;
   text-decoration: underline;
+  font-color: #444444;
 }
 
 .class_list li{
@@ -137,4 +101,9 @@ a.article-title:hover {
   font-size: 15px;
   padding: 10px;
 }
+
+.timeframe_head .timeframe {
+  width: 200px;
+}
+
 

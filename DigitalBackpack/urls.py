@@ -20,5 +20,19 @@ urlpatterns = [
     path( 'teacher/submitNewAssignment/', views.submit_new_assignment, name='submit_new_assignment' ),
     path( 'ratings/', views.ratings, name='ratings'),
     path( 'student/connectivity/', views.connection_page, name='connection_timeframe_page' ),
+
+
     path( 'studentbs/', views.student_page_bs, name='student_bootstrap_page' ),
+    path( 'teacherbs/', views.teacher_page_bs, name='teacher_bootstrap_page' ),
+    path( 'studentregistrationbs/', views.student_registration_bs, name='student_registration_page' ),
+    path( 'teacherregistrationbs/', views.teacher_registration_bs, name='teacher_registration_page' ),
+    path( 'studentloginbs/', auth_views.LoginView.as_view(template_name='DigitalBackpack/bs/studentlogin_bs.html'), name='student_login_page' ),
+    path( 'teacherloginbs/', auth_views.LoginView.as_view(template_name='DigitalBackpack/bs/teacherlogin_bs.html'), name='teacher_login_page' ),
+    path( 'classregistrationbs/', views.class_registration_bs, name='class_registration_page' ),
+    path( 'logoutbs/', views.logout_bs, name='logout_page' ),
+    path( 'ratingsbs/', views.ratings_bs, name='ratings_page' ),
+    path( 'newassignmentbs/', views.new_assignment_bs, name='newassignment_page' ),
+    path( 'addstudentsbs/', views.add_students_bs, name='addstudents_page' ),
+    path( 'studentaccountcompletionbs/', views.student_account_completion_bs, name='student_account_completion_page' ),
+    path( 'teacherviewstudentbs/', views.teacher_view_student_bs, name='teacher_view_student_page' ),
 ]

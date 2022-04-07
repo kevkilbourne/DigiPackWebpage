@@ -300,7 +300,7 @@ def student_registration(request):
     # see if we've received a post input
     if request.method == 'POST':
         # if so, load the filled form
-        form = TeacherRegistrationForm(request.POST)
+        form = StudentRegistrationForm(request.POST)
 
         # check if our form is valid
         if form.is_valid():
@@ -513,6 +513,193 @@ def connection_page(request):
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
+
+
+# =============== Bootstrap =============== #
+
 def student_page_bs(request):
-    return render(request, 'DigitalBackpack/studentpage_bs.html')
+    return render(request, 'DigitalBackpack/bs/studentpage_bs.html')
+
+def teacher_page_bs(request):
+    return render(request, 'DigitalBackpack/bs/teacherpage_bs.html')
+
+def student_registration_bs(request):
+    # see if we've received a post input
+    if request.method == 'POST':
+        # if so, load the filled form
+        form = StudentRegistrationForm(request.POST)
+
+        # check if our form is valid
+        if form.is_valid():
+            # if so, load new info into our user database
+
+            # grab our username
+            uname = form.cleaned_data['username']
+
+            # save our form and user to the authentication db
+            form.save()
+
+            # and finally add them to the student group
+            studentGroup, created = Group.objects.get_or_create(name='Students')
+            newUser = User.objects.get(username=uname)
+            newUser.groups.add(studentGroup)
+            studentGroup.user_set.add(newUser)
+
+            # authenticate user
+            user_login = authenticate(username=form.cleaned_data['username'],
+                                      password=form.cleaned_data['password1'], )
+            login(request, user_login)
+
+            # redirect to final registration
+            return redirect('student_account_completion_page')
+
+        else:
+            # otherwise, kick the form back
+            return render(request, 'DigitalBackpack/bs/studentregistration_bs.html', {'form': form})
+
+    else:
+        # otherwise, initialize our form
+        form = StudentRegistrationForm()
+
+        # render our form
+        return render(request, 'DigitalBackpack/bs/studentregistration_bs.html', {'form': form})
+
+def teacher_registration_bs(request):
+    # see if we've received new class input
+    if request.method == 'POST':
+        print(request.POST)
+        # if so, load the filled form
+        form = TeacherRegistrationForm(request.POST)
+
+        # check if our form is valid
+        if form.is_valid():
+
+            # if so, load new info into our user database
+
+            # grab our user
+            uname = form.cleaned_data['username']
+
+            # save our form and user to the authentication db
+            form.save()
+
+            # and finally add them to the teacher group
+            teacherGroup, created = Group.objects.get_or_create(name='Teachers')
+            newUser = User.objects.get(username=uname)
+            newUser.groups.add(teacherGroup)
+            teacherGroup.user_set.add(newUser)
+
+            # authenticate user
+            user_login = authenticate(username=form.cleaned_data['username'],
+                                      password=form.cleaned_data['password1'], )
+            login(request, user_login)
+
+            # redirect to class registration
+            return redirect('class_registration_page')
+
+        else:
+
+            return render(request, 'DigitalBackpack/bs/teacherregistration_bs.html', {'form': form})
+
+    else:
+        # initialize our form
+        form = TeacherRegistrationForm()
+        return render(request, 'DigitalBackpack/bs/teacherregistration_bs.html', {'form': form})
+
+def student_login_bs(request):
+    return render(request, 'DigitalBackpack/bs/studentlogin_bs.html')
+
+def teacher_login_bs(request):
+    return render(request, 'DigitalBackpack/bs/teacherlogin_bs.html')
+
+@group_required('Teachers')
+def class_registration_bs(request):
+    # if we've received input for loading into the db
+    if request.method == 'POST':
+        # call our model submission
+        form = ClassRegistrationForm(request.POST, request.POST)
+
+        # ensure form is valid
+        if form.is_valid():
+
+            # grab our cleaned data
+            data = form.cleaned_data
+
+            # pass our cleaned date to the model for database interacton
+            teacher = models.Teachers(user=User.objects.filter(username=data['username']).first(),
+                                      first=data['first'],
+                                      last=data['last'],
+                                      classname=data['classname'])
+
+            # save this information to the database
+            teacher.save()
+
+            # indicate success
+            print("Successfully created class " + data['classname'] + ", taught by " + User.objects.filter(
+                username=data['username']).first().username)
+
+        else:
+            # otherwise, kick back the form
+            return render(request, 'DigitalBackpack/bs/classregistration_bs.html', {'form': form})
+
+        # redirect our teacher to add students to this class
+        return redirect('add_students')
+
+    else:
+        # pass our session to the form
+        form = ClassRegistrationForm(None, username=request.session)
+
+        # render our form
+        return render(request, 'DigitalBackpack/bs/classregistration_bs.html', {'form': form})
+
+def logout_bs(request):
+    return render(request, 'DigitalBackpack/bs/logout_bs.html')
+
+def ratings_bs(request):
+    # if we've received input for loading into the db
+    if request.method == 'POST':
+        # initialize loading variables
+        input = request.POST
+
+        # call our model submission
+        success = models.submitRatings(input)
+
+        # redirect our student back to their homepage
+        return redirect('student_bootstrap_page')
+
+    else:
+        # grab our sites
+        ratingSites = request.GET
+        form = RatingForm(None, sites=ratingSites)
+
+        # if they are sent via get to send ratings, give them the page
+        return render(request, 'DigitalBackpack/bs/ratings_bs.html', {'form': form})
+
+@group_required('Teachers')
+def new_assignment_bs(request):
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+
+        if 'keywords' in request.POST:
+            keywords = request.POST.get('keywords', '')
+            resources = models.SearchingAlgorithm(keywords)
+
+            return render(request, 'DigitalBackpack/bs/newassignment_bs.html', {'form': form, 'resources': resources})
+
+    else:
+        form = AssignmentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+    return render(request, 'DigitalBackpack/bs/newassignment_bs.html', {'form': form})
+
+@group_required('Teachers')
+def add_students_bs(request):
+    if request.method == 'POST':
+        form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+    else:
+        form = AddStudentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
+    return render(request, 'DigitalBackpack/bs/addstudents_bs.html', {'form': form})
+
+def student_account_completion_bs(request):
+    return render(request, 'DigitalBackpack/bs/studentaccountcompletion_bs.html')
+
+def teacher_view_student_bs(request):
+    return render(request, 'DigitalBackpack/bs/teacherviewstudent_bs.html')
 

@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <title>View Student</title>
+    <script src="{% static 'js/viewStudent.js' %}"></script>
+  </head>
+
+  <body>
+  {% if sessionID > 0 %}
+  <h3 id="studentfullname">Student's Full Name: {{student.first}} {{student.last}}</h3>
+  <h3 id="studentemail">Student's Email: {{student.email}}</h3>
+  <h3 id="studentflagged">Student Flagged: {{student.flagged}}</h3>
+
+  <form method = "post">
+  {% csrf_token %}
+  <button id="studentFlag1" name="flagStudent" class="notFlagged" formaction="{% url 'view_student_page' %}">Flag/Unflag Student</button>
+  </form>
+
+  <div class="heatmap_box">
+    <img id="heatmap" src="{% static onlineconnectivity %}" alt="Heatmap">
+  </div>
+
+  {% else %}
+  <p>You are accessing a page that requires a student ID. Please click the button below to to go back home.</p>
+  {% endif %}
+  <a href="/teacher">
+      <button id="HomeButton" class="Home" onclick="location.href='{% url 'teacher_page' %}'">Return Home</button>
+  </a>
+  </body>
+</html>
