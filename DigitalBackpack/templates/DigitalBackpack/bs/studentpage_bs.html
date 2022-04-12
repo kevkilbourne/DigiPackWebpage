@@ -26,7 +26,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'landing_page' %}">DigitalBackpack</a>
+          <a class="navbar-brand mr-4" href="{% url 'landing_bootstrap_page' %}">DigitalBackpack</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -47,8 +47,8 @@
                   Register
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'student_registration' %}">Register as Student</a>
-                  <a class="dropdown-item" href="{% url 'teacher_registration' %}">Register as Teacher</a>
+                  <a class="dropdown-item" href="{% url 'student_registration_page' %}">Register as Student</a>
+                  <a class="dropdown-item" href="{% url 'teacher_registration_page' %}">Register as Teacher</a>
                 </div>
               </div>
             </div>
@@ -60,8 +60,8 @@
                   Login
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'student_login' %}">Login as Student</a>
-                  <a class="dropdown-item" href="{% url 'teacher_login' %}">Login as Teacher</a>
+                  <a class="dropdown-item" href="{% url 'student_login_page' %}">Login as Student</a>
+                  <a class="dropdown-item" href="{% url 'teacher_login_page' %}">Login as Teacher</a>
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@
     </header>
 
     <!-- Main body of the webpage -->
-    <main role="main" class="container-fluid">
+    <main role="main" class="container-fluid mt-5">
       <!-- First row of the page including assignments and submissions -->
       <div class="row">
 

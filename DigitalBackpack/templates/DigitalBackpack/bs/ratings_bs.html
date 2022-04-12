@@ -25,8 +25,8 @@
     <!-- Header bar at the top of the webpage -->
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-        <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'landing_page' %}">DigitalBackpack</a>
+        <div class="container header_container">
+          <a class="navbar-brand mr-4" href="{% url 'landing_bootstrap_page' %}">DigitalBackpack</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -49,11 +49,16 @@
     <!-- Main body of the webpage -->
     <main role="main" class="container-fluid">
 
-      <span id="formContainer" class="container">
-          <h2 class="title">
-              Resource Ratings
-          </h2>
-          <form class="ratings" action="{% url 'ratings' %}" id="websiteRatingsForm" method="post">
+      <div class="row">
+        <div class="col">
+          <h1 class="ratings_header">Resource Ratings</h1>
+          <h5>(worst) 1 - 5 (best)</h5>
+        </div>
+      </div>
+
+      <div class="row">
+        <span class="col ratings_container container">
+          <form class="ratings" action="{% url 'ratings_page' %}" id="websiteRatingsForm" method="post">
             {% csrf_token %}
             {% if form.fields %}
                 {{ form.as_table }}
@@ -64,6 +69,7 @@
             {% endif %}
           </form>
         </span>
+      </div>
 
     </main>
 

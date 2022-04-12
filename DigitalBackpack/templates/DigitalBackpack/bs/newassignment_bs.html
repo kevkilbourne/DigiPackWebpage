@@ -28,7 +28,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'landing_page' %}">DigitalBackpack</a>
+          <a class="navbar-brand mr-4" href="{% url 'landing_bootstrap_page' %}">DigitalBackpack</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -53,17 +53,18 @@
 
       {% block content %}
       <script src="{% static 'js/newAssignment.js' %}"></script>
-      <form id="newAssignmentForm" class="formContent" method="POST" action="{% url 'submit_new_assignment' %}">
+      <form id="newAssignmentForm" class="formContent" method="POST" action="{% url 'submit_new_assignment_page' %}">
         {% csrf_token %}
         <fieldset id="newAssignmentFieldset" class="form-group">
           <legend>Create New Assignment</legend>
           {{ form.as_p }}
           <label for="keywords">Search Keywords:</label>
           <input type="text" id="keywords" name="keywords">
-          <button type="submit" id="fetch-resources" formaction="{% url 'new_assignment' %}">Fetch Resources</button>
+          <button type="submit" id="fetch-resources" formaction="{% url 'newassignment_page' %}">Fetch Resources</button>
           {% if resources %}
             <fieldset id="resourceFieldset">
             <legend>Resources</legend>
+            <p>(Delete by pressing the x)</p>
               {% for resource in resources %}
             <div>
               <input type="hidden" class="resource" name="resources" id="{{ resource }}" value="{{ resource }}">
@@ -74,7 +75,7 @@
                 {% endfor %}
           </fieldset>
             {% endif %}
-            <input type="submit" value="Submit Student List">
+            <input type="submit" value="Create Assignment" class="mt-4 mb-3">
           </fieldset>
         </form>
       {% endblock content %}

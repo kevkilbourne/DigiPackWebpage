@@ -49,11 +49,6 @@ ul {
   position: relative;
 }
 
-.col {
-  border: 5px solid #dddddd;
-  padding: 20px;
-}
-
 .assignment_head .submissions_head .current_resources{
   border: 2px solid #dddddd;
   width: 575px;
@@ -103,5 +98,16 @@ ul {
 .timeframe_head .timeframe {
   width: 200px;
 }
+
+.main_text {
+  border: 2px solid #dddddd;
+  text-align: center;
+  padding: 50px;
+}
+
+img {
+  margin: 40px;
+}
+
 
 

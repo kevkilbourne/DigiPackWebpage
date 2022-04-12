@@ -1,6 +1,7 @@
 body {
   background: #fafafa;
   color: #333333;
+  margin-top: 5rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -59,18 +60,14 @@ ul {
   text-align: center;
 }
 
-.current_assignments .current_submissions {
+.current_assignments .current_submissions .current_resources{
   border: 2px solid #dddddd;
   width: 575px;
   text-align: left;
 }
 
-.new_assignment_button {
-
-}
-
 .container-fluid {
-  padding-top: 100px;
+  padding-top: 50px;
   padding-left: 250px;
   padding-right: 250px;
 }
@@ -87,17 +84,16 @@ ul {
   left: 0;
   background-color: #cccecf;
   overflow-x: hidden; /* Disable horizontal scroll */
-  border-right: 2px solid black;
 }
 
-.roster_head {
-  padding-top: 20px;
+.class_head {
+  padding: 20px;
   text-align: center;
   text-decoration: underline;
   font-color: #444444;
 }
 
-.roster_list li{
+.class_list li{
   background-color: #cccecf;
   color: black;
   font-size: 15px;
@@ -108,23 +104,12 @@ ul {
   width: 200px;
 }
 
-.classes_container {
-  width: 90%;
-  padding-left: 10px;
-  width: 575px;
+.img_div {
+  border: 5px solid #dddddd;
+  padding: 0;
 }
 
-.class_name {
-  font-size: 16px;
-}
+.semester_heatmap .weekly_heatmap {
 
-.list-group {
-  display: flex;
-  justify-content: flex-start;
 }
-
-.classes_row {
-  width: 725px;
-}
-
 

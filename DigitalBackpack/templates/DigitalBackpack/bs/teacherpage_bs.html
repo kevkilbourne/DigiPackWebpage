@@ -26,7 +26,7 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="{% url 'landing_page' %}">DigitalBackpack</a>
+          <a class="navbar-brand mr-4" href="{% url 'landing_bootstrap_page' %}">DigitalBackpack</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
@@ -47,8 +47,8 @@
                   Register
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'student_registration' %}">Register as Student</a>
-                  <a class="dropdown-item" href="{% url 'teacher_registration' %}">Register as Teacher</a>
+                  <a class="dropdown-item" href="{% url 'student_registration_page' %}">Register as Student</a>
+                  <a class="dropdown-item" href="{% url 'teacher_registration_page' %}">Register as Teacher</a>
                 </div>
               </div>
             </div>
@@ -60,8 +60,8 @@
                   Login
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="{% url 'student_login' %}">Login as Student</a>
-                  <a class="dropdown-item" href="{% url 'teacher_login' %}">Login as Teacher</a>
+                  <a class="dropdown-item" href="{% url 'student_login_page' %}">Login as Student</a>
+                  <a class="dropdown-item" href="{% url 'teacher_login_page' %}">Login as Teacher</a>
                 </div>
               </div>
             </div>
@@ -86,11 +86,11 @@
           <div class="roster_head">
             <h2>Class Roster</h2>
           </div>
-
             <div class="roster list-group">
               <ul class="roster_list">
                 <!-- This will have to grab students belonging to the Teacher's classes (loop through class roster) -->
                 <!-- When the student gets clicked, take to student's page -->
+                <!-- Update teacher_page_bs() in views.py w/ code present in dev_branch -->
                 <li class="roster_student list-group-item-light">Jacob Novin</li>
                 <li class="roster_student list-group-item-light">Kevin Kilbourne</li>
                 <li class="roster_student list-group-item-light">Jon Nation</li>
@@ -102,6 +102,9 @@
         <!-- Assignments Box -->
           <div class="col mt-4 ml-5 mr-3">
             <div class="assignment_head">
+              <a href="{% url 'newassignment_page' %}">
+                <button type="button" class="new_assignment_button primary btn-sm float-right">Add New Assignment</button>
+              </a>
               <h2>Active Assignments</h2>
             </div>
 
@@ -137,17 +140,22 @@
 
       </div>
 
-      <!-- Div right under the page header showing the Teacher's classes -->
+      <!-- Div showing the Teacher's Active classes -->
       <div class="row classes_row">
         <div class="col mt-4 ml-5 mr-3">
           <div class="classes_container">
+            <a href="{% url 'class_registration_page' %}">
+              <button type="button" class="new_class_button primary btn-sm float-right">Add New Class</button>
+            </a>
             <h5>Current Active Classes</h5>
 
-            <ul class="class_list list-group">
-              <li class="class_name list-group-item-light">CS480 - Operating Systems</li>
-              <li class="class_name list-group-item-light">CS465 - Distributed Systems</li>
-              <li class="class_name list-group-item-light">AST210 - Indigenous Astronomy</li>
-            </ul>
+            <div class="current_classes">
+              <ul class="class_list list-group">
+                <li class="class_name list-group-item-light">CS480 - Operating Systems</li>
+                <li class="class_name list-group-item-light">CS465 - Distributed Systems</li>
+                <li class="class_name list-group-item-light">AST210 - Indigenous Astronomy</li>
+              </ul>
+            </div>
 
           </div>
         </div>

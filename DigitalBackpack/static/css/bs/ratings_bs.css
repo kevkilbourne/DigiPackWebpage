@@ -54,18 +54,6 @@ ul {
   padding: 20px;
 }
 
-.assignment_head .submissions_head .current_resources{
-  border: 2px solid #dddddd;
-  width: 575px;
-  text-align: center;
-}
-
-.current_assignments .current_submissions .current_resources{
-  border: 2px solid #dddddd;
-  width: 575px;
-  text-align: left;
-}
-
 .container-fluid {
   padding-top: 50px;
   padding-left: 250px;
@@ -74,37 +62,10 @@ ul {
 
 .row {
   justify-content: center;
-}
-
-.side_nav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 225px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  left: 0;
-  background-color: #cccecf;
-  overflow-x: hidden; /* Disable horizontal scroll */
-}
-
-.class_head {
-  padding: 20px;
-  text-align: center;
-  text-decoration: underline;
-  font-color: #444444;
-}
-
-.class_list li{
-  background-color: #cccecf;
-  color: black;
-  font-size: 15px;
   padding: 10px;
 }
 
-.timeframe_head .timeframe {
-  width: 200px;
-}
-
-.container {
+.ratings_container {
   display: grid;
   grid-template-columns: 0.3fr 1fr 0.3fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -125,11 +86,12 @@ ul {
 }
 
 .title {
-grid-area: title;
-border: 5px solid #000000;
-background-color: #333333;
-font-size: 28pt;
+  grid-area: title;
+  border: 5px solid #000000;
+  font-size: 28pt;
 }
+
+
 
 .rBorder {  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -148,8 +110,8 @@ font-size: 28pt;
   justify-self: stretch;
   align-self: stretch;
   grid-area: ratings;
-  background-color: #336699;
-  border: 5px solid #000000;
+  background-color: #38b6ff;
+  border: 5px solid #dddddd;
 }
 
 div {
@@ -163,5 +125,13 @@ label {
 
 #submit {
   float: right;
+}
+
+form {
+  background-color: #e6e6e6;
+}
+
+.header_container {
+  color: #38b6ff;
 }
 
