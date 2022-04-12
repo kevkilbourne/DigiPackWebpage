@@ -34,7 +34,7 @@ def group_required(*group_names):
 #
 # primary landing page for digital backpack
 def landing_page(request):
-    return render(request, 'DigitalBackpack/LandingWebpage.html')
+    return render(request, 'DigitalBackpack/landingpage.html')
 
 # login reroute view
 #
@@ -99,7 +99,7 @@ def student_page(request):
     file.close()
     new_file.close()
 
-    return render(request, 'DigitalBackpack/StudentWebpage.html')
+    return render(request, 'DigitalBackpack/studentpage.html')
 
 # teacher view page
 #
@@ -116,7 +116,7 @@ def teacher_page(request):
     print(students)
     print(assignments)
     # render our request with this info
-    return render(request, 'DigitalBackpack/TeacherWebpage.html', {'classes': classes, 'students': students, 'currentClass': currentClassID, 'assignments': assignments})
+    return render(request, 'DigitalBackpack/teacherpage.html', {'classes': classes, 'students': students, 'currentClass': currentClassID, 'assignments': assignments})
 
 # class registration page
 #
@@ -151,7 +151,7 @@ def class_registration(request):
 
         else:
             # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/classregistration.html', {'form': form})
 
         # redirect our teacher to add students to this class
         return redirect('add_students')
@@ -161,7 +161,7 @@ def class_registration(request):
         form = ClassRegistrationForm(None, username=request.session)
 
         # render our form
-        return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/classregistration.html', {'form': form})
 
 # student account completion view
 #
@@ -188,14 +188,14 @@ def student_account_completion(request):
 
         else:
             # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
+            return render(request, 'DigitalBackpack/studentaccountcompletion.html', {'form': form})
 
     else:
         # pass our session info to the form
         form = StudentAccountCompletionForm(None, username=request.session)
 
         # render page
-        return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
+        return render(request, 'DigitalBackpack/studentaccountcompletion.html', {'form': form})
 
 # add students form view
 #
@@ -206,7 +206,7 @@ def add_students(request):
         form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
     else:
         form = AddStudentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/AddStudents.html', {'form': form})
+    return render(request, 'DigitalBackpack/addstudents.html', {'form': form})
 
 # submit student additions view
 #
@@ -254,7 +254,7 @@ def submit_student_addition(request):
             return redirect('teacher_page')
 
     # if anything goes wrong, kick back to the add students page
-    return redirect('add_students')
+    return redirect('addstudents_page')
 
 # teacher registration view
 #
@@ -293,12 +293,12 @@ def teacher_registration(request):
 
         else:
 
-            return render(request, 'DigitalBackpack/TeacherRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/teacherregistration.html', {'form': form})
 
     else:
         # initialize our form
         form = TeacherRegistrationForm()
-        return render(request, 'DigitalBackpack/TeacherRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/teacherregistration.html', {'form': form})
 
 # student registration view
 #
@@ -307,7 +307,7 @@ def student_registration(request):
     # see if we've received a post input
     if request.method == 'POST':
         # if so, load the filled form
-        form = TeacherRegistrationForm(request.POST)
+        form = StudentRegistrationForm(request.POST)
 
         # check if our form is valid
         if form.is_valid():
@@ -335,14 +335,14 @@ def student_registration(request):
 
         else:
             # otherwise, kick the form back
-            return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/studentregistration.html', {'form': form})
 
     else:
         # otherwise, initialize our form
         form = StudentRegistrationForm()
 
         # render our form
-        return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/studentregistration.html', {'form': form})
 
 # add assignment view
 #
@@ -356,11 +356,11 @@ def new_assignment(request):
             keywords = request.POST.get('keywords', '')
             resources = utils.searchingAlgorithm(keywords)
 
-            return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form, 'resources': resources })
+            return render(request, 'DigitalBackpack/newassignment.html', {'form': form, 'resources': resources })
 
     else:
         form = AssignmentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form})
+    return render(request, 'DigitalBackpack/newassignment.html', {'form': form})
 
 @group_required('Teachers')
 def submit_new_assignment(request):
@@ -422,10 +422,10 @@ def submit_new_assignment(request):
 
         else:
             # if something goes wrong, kick back to the new assignment page
-            return redirect('new_assignment')
+            return redirect('newassignment_page')
 
     else:
-        return redirect('new_assignment')
+        return redirect('newassignment_page')
 
 # ratings view
 #
@@ -449,7 +449,7 @@ def ratings(request):
 
 
         # if they are sent via get to send ratings, give them the page
-        return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
+        return render(request, 'DigitalBackpack/ratings.html', {'form': form})
 
 def connection_page(request):
 
@@ -520,3 +520,59 @@ def connection_page(request):
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
+@group_required('Teachers')
+def view_student(request):
+    # This grabs the studentID that was sent from the button press in the Teacher Webpage
+    # currentStudentID = request.session['studentID']
+    currentStudentID = 1 # CHANGE (for testing purposes)
+
+    # This is the location of the personal student's heatmap that is needed for
+    # the viewstudent webpage.
+    studentOnlineConnectivityPath = 'Users/Students/student_' + str(currentStudentID) + '/student_' + str(
+        currentStudentID) + '_heatmap.png'
+
+    # This prints the location as a test to see if the location is correct within
+    # the terminal
+    print(studentOnlineConnectivityPath)
+
+    # This checks to see if the student at the current location is real or not.
+    if (models.Students.objects.get(id=currentStudentID) == None):
+        # If the student does not exist in the teacher's class list, then the student object will be set to None
+        student = None
+
+    # If the student is in their class list, this will set the object models.Students into one variable that can call its
+    # other instances inside the models.students
+    else:
+        student = models.Students.objects.get(id=currentStudentID)
+
+    # This checks to see if the button that allows teachers to flag students is
+    # in the current post request.
+    if (request.method == 'POST' and 'flagStudent' in request.POST):
+        # If so, the system will check if the student is currently flagged or not.
+        # If the student is not flagged when the button is clicked.
+        if (student.flagged == False):
+            # Update the flagged instance as True.
+            student.flagged = True
+            student.save()
+            return redirect('view_student')
+
+        # If the student is already flagged.
+        else:
+            # Update the flagged instance as False
+            student.flagged = False
+            student.save()
+            return redirect('view_student')
+
+    # Save the changes made into the student Database
+    student.save()
+
+    # Once that is done, render the page again to update the page with the latest
+    # information that was changed. The render sends the student's information,
+    # the session ID that was sent in, and the location of the online connectivity
+    # heatmap
+    return render(request, 'DigitalBackpack/viewstudent.html',
+                  {
+                      "studentID": currentStudentID,
+                      "student": student,
+                      "onlineconnectivity": studentOnlineConnectivityPath,
+                  })
