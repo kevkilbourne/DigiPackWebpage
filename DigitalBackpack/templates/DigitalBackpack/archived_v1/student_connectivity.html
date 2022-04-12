@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Student | Recent Connections Timeframe
+    </title>
+    <link rel="stylesheet" href="{% static 'css/student_connectivity.css' %}">
+  </head>
+
+  <body>
+	  <div class="header">
+       <div class="headBox">
+         <h1>Digital Backpack</h1>
+       </div>
+     </div>
+
+	  <div class="mainBody">
+
+		  <div class="heatmap_box">
+			  <img id="heatmap" src="{% static 'img/heatmap_timeframe.png' %}" alt="Heatmap">
+		  </div>
+
+	  </div>
+  </body>
+</html>

@@ -1,0 +1,83 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/landingpage.css' %}">
+
+    <title>
+      DigitalBackpack - Landing Page
+    </title>
+
+  </head>
+
+  <body>
+
+    <!-- Header bar at the top of the webpage -->
+    <header class="site-header">
+      <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+          <a class="navbar-brand mr-4" href="{% url 'landing_page' %}">DigitalBackpack</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarToggle">
+            <div class="navbar-nav mr-auto">
+              <!-- Add any navigation links here
+              <a class="nav-item nav-link" href="/">Home</a>
+              -->
+            </div>
+
+            <!-- Right side of navbar -->
+
+
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main body of the webpage -->
+    <main role="main" class="container-fluid">
+
+      <div class="row">
+        <div class="col main_text">
+          <h1 style="padding: 20px; text-decoration: underline;">Welcome to the DigitalBackpack!</h1>
+          <h3 style="padding: 20px;">Which user are you?</h3>
+          <div class="main_buttons">
+            <a href="{% url 'student_login' %}">
+              <button type="button" class="logout_button primary btn-lg mr-5">Student</button>
+            </a>
+            <a href="{% url 'teacher_login' %}">
+              <button type="button" class="logout_button primary btn-lg ml-5">Teacher</button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="pictures_div text-center col mt-5">
+          <img src="../static/img/CANIS.png" alt="CANIS" height="200" width="300">
+          <img src="../static/img/Team_Logout_logo.png" alt="Team Logout" height="200" width="200">
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>
