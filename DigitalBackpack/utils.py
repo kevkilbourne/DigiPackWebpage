@@ -13,13 +13,13 @@ def searchingAlgorithm(textInput):
     #initalize variables
     webResults = []
 
-    #For each website in the google search. Search on Google using the keywords that we provide
+    # For each website in the google search. Search on Google using the keywords that we provide
     for website in search(textInput, tld="com", num = 10, stop = 10, pause = 2):
-        #Checks to see if the collected website is not a .pdf file already
+        # Checks to see if the collected website is not a .pdf file already
         if('pdf' not in website):
-            #If so, then it checks if the collected website is not a YouTube page
+            # If so, then it checks if the collected website is not a YouTube page
             if('youtube.com' not in website):
-                #If so, adds the website to the results list
+                # If so, adds the website to the results list
                 webResults.append(website)
 
     return webResults
