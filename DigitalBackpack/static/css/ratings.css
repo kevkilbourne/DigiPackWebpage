@@ -1,22 +1,71 @@
 body {
-  padding: 0;
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+ul {
   margin: 0;
-  background-color: #336699;
 }
 
-.header{
-  width: auto;
-  height: 5.3vw;
-  background-color: #333333;
+.bg-steel {
+  background-color: #38b6ff;
+  height: 100px;
 }
 
-.headBox {
-  width: 20vw;
-  height: 4vw;
-  background-color: #e6e6e6;
-  border: 5px solid #000000;
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
 
-.container {  
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.navbar-brand {
+  font-size: 35px;
+}
+
+.navbar-brand:hover {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.dropdown_container {
+  position: relative;
+}
+
+.col {
+  border: 5px solid #dddddd;
+  padding: 20px;
+}
+
+.container-fluid {
+  padding-top: 50px;
+  padding-left: 250px;
+  padding-right: 250px;
+}
+
+.row {
+  justify-content: center;
+  padding: 10px;
+}
+
+.ratings_container {
   display: grid;
   grid-template-columns: 0.3fr 1fr 0.3fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -37,11 +86,12 @@ body {
 }
 
 .title {
-grid-area: title;
-border: 5px solid #000000;
-background-color: #333333;
-font-size: 28pt;
+  grid-area: title;
+  border: 5px solid #000000;
+  font-size: 28pt;
 }
+
+
 
 .rBorder {  display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -60,8 +110,8 @@ font-size: 28pt;
   justify-self: stretch;
   align-self: stretch;
   grid-area: ratings;
-  background-color: #336699;
-  border: 5px solid #000000;
+  background-color: #38b6ff;
+  border: 5px solid #dddddd;
 }
 
 div {
@@ -76,3 +126,12 @@ label {
 #submit {
   float: right;
 }
+
+form {
+  background-color: #e6e6e6;
+}
+
+.header_container {
+  color: #38b6ff;
+}
+

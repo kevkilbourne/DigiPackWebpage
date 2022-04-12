@@ -34,7 +34,7 @@ def group_required(*group_names):
 #
 # primary landing page for digital backpack
 def landing_page(request):
-    return render(request, 'DigitalBackpack/LandingWebpage.html')
+    return render(request, 'DigitalBackpack/landingpage.html')
 
 # login reroute view
 #
@@ -99,7 +99,7 @@ def student_page(request):
     file.close()
     new_file.close()
 
-    return render(request, 'DigitalBackpack/StudentWebpage.html')
+    return render(request, 'DigitalBackpack/studentpage.html')
 
 # teacher view page
 #
@@ -116,7 +116,7 @@ def teacher_page(request):
     print(students)
     print(assignments)
     # render our request with this info
-    return render(request, 'DigitalBackpack/TeacherWebpage.html', {'classes': classes, 'students': students, 'currentClass': currentClassID, 'assignments': assignments})
+    return render(request, 'DigitalBackpack/teacherpage.html', {'classes': classes, 'students': students, 'currentClass': currentClassID, 'assignments': assignments})
 
 # class registration page
 #
@@ -151,7 +151,7 @@ def class_registration(request):
 
         else:
             # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/classregistration.html', {'form': form})
 
         # redirect our teacher to add students to this class
         return redirect('add_students')
@@ -161,7 +161,7 @@ def class_registration(request):
         form = ClassRegistrationForm(None, username=request.session)
 
         # render our form
-        return render(request, 'DigitalBackpack/ClassRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/classregistration.html', {'form': form})
 
 # student account completion view
 #
@@ -188,14 +188,14 @@ def student_account_completion(request):
 
         else:
             # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
+            return render(request, 'DigitalBackpack/studentaccountcompletion.html', {'form': form})
 
     else:
         # pass our session info to the form
         form = StudentAccountCompletionForm(None, username=request.session)
 
         # render page
-        return render(request, 'DigitalBackpack/StudentAccountCompletion.html', {'form': form})
+        return render(request, 'DigitalBackpack/studentaccountcompletion.html', {'form': form})
 
 # add students form view
 #
@@ -206,7 +206,7 @@ def add_students(request):
         form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
     else:
         form = AddStudentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/AddStudents.html', {'form': form})
+    return render(request, 'DigitalBackpack/addstudents.html', {'form': form})
 
 # submit student additions view
 #
@@ -254,7 +254,7 @@ def submit_student_addition(request):
             return redirect('teacher_page')
 
     # if anything goes wrong, kick back to the add students page
-    return redirect('add_students')
+    return redirect('addstudents_page')
 
 # teacher registration view
 #
@@ -293,12 +293,12 @@ def teacher_registration(request):
 
         else:
 
-            return render(request, 'DigitalBackpack/TeacherRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/teacherregistration.html', {'form': form})
 
     else:
         # initialize our form
         form = TeacherRegistrationForm()
-        return render(request, 'DigitalBackpack/TeacherRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/teacherregistration.html', {'form': form})
 
 # student registration view
 #
@@ -335,14 +335,14 @@ def student_registration(request):
 
         else:
             # otherwise, kick the form back
-            return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
+            return render(request, 'DigitalBackpack/studentregistration.html', {'form': form})
 
     else:
         # otherwise, initialize our form
         form = StudentRegistrationForm()
 
         # render our form
-        return render(request, 'DigitalBackpack/StudentRegistration.html', {'form': form})
+        return render(request, 'DigitalBackpack/studentregistration.html', {'form': form})
 
 # add assignment view
 #
@@ -356,11 +356,11 @@ def new_assignment(request):
             keywords = request.POST.get('keywords', '')
             resources = utils.searchingAlgorithm(keywords)
 
-            return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form, 'resources': resources })
+            return render(request, 'DigitalBackpack/newassignment.html', {'form': form, 'resources': resources })
 
     else:
         form = AssignmentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/NewAssignment.html', {'form': form})
+    return render(request, 'DigitalBackpack/newassignment.html', {'form': form})
 
 @group_required('Teachers')
 def submit_new_assignment(request):
@@ -422,10 +422,10 @@ def submit_new_assignment(request):
 
         else:
             # if something goes wrong, kick back to the new assignment page
-            return redirect('new_assignment')
+            return redirect('newassignment_page')
 
     else:
-        return redirect('new_assignment')
+        return redirect('newassignment_page')
 
 # ratings view
 #
@@ -449,7 +449,7 @@ def ratings(request):
 
 
         # if they are sent via get to send ratings, give them the page
-        return render(request, 'DigitalBackpack/Ratings.html', {'form': form})
+        return render(request, 'DigitalBackpack/ratings.html', {'form': form})
 
 def connection_page(request):
 
@@ -520,235 +520,11 @@ def connection_page(request):
 
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
-
-
-# =============== Bootstrap =============== #
-
-def student_page_bs(request):
-    return render(request, 'DigitalBackpack/bs/studentpage_bs.html')
-
-def teacher_page_bs(request):
-    return render(request, 'DigitalBackpack/bs/teacherpage_bs.html')
-
-def landing_page_bs(request):
-    return render(request, 'DigitalBackpack/bs/landingpage_bs.html')
-
-def student_registration_bs(request):
-    # see if we've received a post input
-    if request.method == 'POST':
-        # if so, load the filled form
-        form = StudentRegistrationForm(request.POST)
-
-        # check if our form is valid
-        if form.is_valid():
-            # if so, load new info into our user database
-
-            # grab our username
-            uname = form.cleaned_data['username']
-
-            # save our form and user to the authentication db
-            form.save()
-
-            # and finally add them to the student group
-            studentGroup, created = Group.objects.get_or_create(name='Students')
-            newUser = User.objects.get(username=uname)
-            newUser.groups.add(studentGroup)
-            studentGroup.user_set.add(newUser)
-
-            # authenticate user
-            user_login = authenticate(username=form.cleaned_data['username'],
-                                      password=form.cleaned_data['password1'], )
-            login(request, user_login)
-
-            # redirect to final registration
-            return redirect('student_account_completion_page')
-
-        else:
-            # otherwise, kick the form back
-            return render(request, 'DigitalBackpack/bs/studentregistration_bs.html', {'form': form})
-
-    else:
-        # otherwise, initialize our form
-        form = StudentRegistrationForm()
-
-        # render our form
-        return render(request, 'DigitalBackpack/bs/studentregistration_bs.html', {'form': form})
-
-def teacher_registration_bs(request):
-    # see if we've received new class input
-    if request.method == 'POST':
-        print(request.POST)
-        # if so, load the filled form
-        form = TeacherRegistrationForm(request.POST)
-
-        # check if our form is valid
-        if form.is_valid():
-
-            # if so, load new info into our user database
-
-            # grab our user
-            uname = form.cleaned_data['username']
-
-            # save our form and user to the authentication db
-            form.save()
-
-            # and finally add them to the teacher group
-            teacherGroup, created = Group.objects.get_or_create(name='Teachers')
-            newUser = User.objects.get(username=uname)
-            newUser.groups.add(teacherGroup)
-            teacherGroup.user_set.add(newUser)
-
-            # authenticate user
-            user_login = authenticate(username=form.cleaned_data['username'],
-                                      password=form.cleaned_data['password1'], )
-            login(request, user_login)
-
-            # redirect to class registration
-            return redirect('class_registration_page')
-
-        else:
-
-            return render(request, 'DigitalBackpack/bs/teacherregistration_bs.html', {'form': form})
-
-    else:
-        # initialize our form
-        form = TeacherRegistrationForm()
-        return render(request, 'DigitalBackpack/bs/teacherregistration_bs.html', {'form': form})
-
-def student_login_bs(request):
-    return render(request, 'DigitalBackpack/bs/studentlogin_bs.html')
-
-def teacher_login_bs(request):
-    return render(request, 'DigitalBackpack/bs/teacherlogin_bs.html')
-
 @group_required('Teachers')
-def class_registration_bs(request):
-    # if we've received input for loading into the db
-    if request.method == 'POST':
-        # call our model submission
-        form = ClassRegistrationForm(request.POST, request.POST)
-
-        # ensure form is valid
-        if form.is_valid():
-
-            # grab our cleaned data
-            data = form.cleaned_data
-
-            # pass our cleaned date to the model for database interaction
-            teacher = models.Teachers(user=User.objects.filter(username=data['username']).first(),
-                                      first=data['first'],
-                                      last=data['last'],
-                                      classname=data['classname'])
-
-            # save this information to the database
-            teacher.save()
-
-            # reset our session variable focus to this class
-            request.session['currentClass'] = teacher.id
-
-            # indicate success
-            print("Successfully created class " + data['classname'] + ", taught by " + User.objects.filter(
-                username=data['username']).first().username)
-
-        else:
-            # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/bs/classregistration_bs.html', {'form': form})
-
-        # redirect our teacher to add students to this class
-        return redirect('addstudents_page')
-
-    else:
-        # pass our session to the form
-        form = ClassRegistrationForm(None, username=request.session)
-
-        # render our form
-        return render(request, 'DigitalBackpack/bs/classregistration_bs.html', {'form': form})
-
-def logout_bs(request):
-    return render(request, 'DigitalBackpack/bs/logout_bs.html')
-
-def ratings_bs(request):
-    # if we've received input for loading into the db
-    if request.method == 'POST':
-        # initialize loading variables
-        input = request.POST
-
-        # call our model submission
-        success = models.submitRatings(input)
-
-        # redirect our student back to their homepage
-        return redirect('student_bootstrap_page')
-
-    else:
-        # grab our sites
-        ratingSites = request.GET
-        form = RatingForm(None, sites=ratingSites)
-
-        # if they are sent via get to send ratings, give them the page
-        return render(request, 'DigitalBackpack/bs/ratings_bs.html', {'form': form})
-
-@group_required('Teachers')
-def new_assignment_bs(request):
-    if request.method == 'POST':
-        form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-
-        if 'keywords' in request.POST:
-            keywords = request.POST.get('keywords', '')
-            resources = utils.searchingAlgorithm(keywords) # changed models. to utils.
-
-            return render(request, 'DigitalBackpack/bs/newassignment_bs.html', {'form': form, 'resources': resources})
-
-    else:
-        form = AssignmentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/bs/newassignment_bs.html', {'form': form})
-
-@group_required('Teachers')
-def add_students_bs(request):
-    if request.method == 'POST':
-        form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'), teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    else:
-        form = AddStudentForm(None, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-    return render(request, 'DigitalBackpack/bs/addstudents_bs.html', {'form': form})
-
-def student_account_completion_bs(request):
-    # if we've received input for updating the db
-    if request.method == 'POST':
-        # call our form creation
-        form = StudentAccountCompletionForm(request.POST, request.POST)
-
-        # ensure form is valid
-        if form.is_valid():
-            # grab our cleaned data
-            data = form.cleaned_data
-
-            # update our first name
-            models.Students.objects.filter(
-                email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(first=data.get('first'))
-            models.Students.objects.filter(
-                email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(last=data.get('last'))
-            models.Students.objects.filter(
-                email=User.objects.get(id=request.session.get('_auth_user_id')).email).update(
-                user=User.objects.get(username=data.get('username')))
-
-            # redirect our student to the homepage
-            return redirect('student_page')
-
-        else:
-            # otherwise, kick back the form
-            return render(request, 'DigitalBackpack/bs/studentaccountcompletion_bs.html', {'form': form})
-
-    else:
-        # pass our session info to the form
-        form = StudentAccountCompletionForm(None, username=request.session)
-
-        # render page
-        return render(request, 'DigitalBackpack/bs/studentaccountcompletion_bs.html', {'form': form})
-
-# @group_required('Teachers') <--- Uncomment when done testing
-def view_student_bs(request):
+def view_student(request):
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
     # currentStudentID = request.session['studentID']
-    currentStudentID = 1
+    currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This is the location of the personal student's heatmap that is needed for
     # the viewstudent webpage.
@@ -778,14 +554,14 @@ def view_student_bs(request):
             # Update the flagged instance as True.
             student.flagged = True
             student.save()
-            return redirect('view_student_page')
+            return redirect('view_student')
 
         # If the student is already flagged.
         else:
             # Update the flagged instance as False
             student.flagged = False
             student.save()
-            return redirect('view_student_page')
+            return redirect('view_student')
 
     # Save the changes made into the student Database
     student.save()
@@ -794,135 +570,9 @@ def view_student_bs(request):
     # information that was changed. The render sends the student's information,
     # the session ID that was sent in, and the location of the online connectivity
     # heatmap
-    return render(request, 'DigitalBackpack/bs/viewstudent_bs.html',
+    return render(request, 'DigitalBackpack/viewstudent.html',
                   {
                       "studentID": currentStudentID,
                       "student": student,
                       "onlineconnectivity": studentOnlineConnectivityPath,
                   })
-
-@group_required('Teachers')
-def submit_student_addition_bs(request):
-    if request.method == 'POST':
-        # build a form based off of the provided students to add
-        form = AddStudentForm(request.POST, extra=request.POST.get('extraFieldCount'),
-                              teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-
-        # ensure form is valid
-        if form.is_valid():
-            # if it is, load new students in
-
-            # grab our form's cleaned data
-            form = form.cleaned_data
-
-            # pop off our class for use, as well as our number of arguments
-            receivingClass = form.pop('classChoice')
-            emailCount = form.pop('extraFieldCount')
-
-            # loop through our remaining form items
-            for studentEmail in form:
-                # see if this user already has an account present
-                if models.Students.objects.filter(email=form.get(studentEmail)).first():
-                    # if they do, grab their user data to load into the new student account
-                    student = models.Students(email=form.get(studentEmail),
-                                              classname=models.Teachers.objects.get(id=receivingClass),
-                                              first=models.Students.objects.filter(
-                                                  email=form.get(studentEmail)).first().first,
-                                              last=models.Students.objects.filter(
-                                                  email=form.get(studentEmail)).first().last)
-
-                else:
-                    # otherwise, do the base initialization for the new student
-                    student = models.Students(email=form.get(studentEmail),
-                                              classname=models.Teachers.objects.get(id=receivingClass))
-
-                # regardless of how we initialize, save our changes
-                student.save()
-
-                # indicate success to our additions
-                print("Added student " + str(form.get(studentEmail) + " to " + str(receivingClass)))
-
-            # redirect back to the homepage
-            return redirect('teacher_bootstrap_page')
-
-    # if anything goes wrong, kick back to the add students page
-    return redirect('addstudents_page')
-
-def login_reroute_bs(request):
-    try:
-        if str(User.objects.get(id=request.session.get('_auth_user_id')).groups.first()) == "Teachers":
-            request.session['currentClass'] = models.Teachers.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
-            return redirect('teacher_bootstrap_page')
-
-        else:
-            request.session['currentClass'] = models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
-            return redirect('student_bootstrap_page')
-
-    except User.DoesNotExist:
-        return redirect('landing_bootstrap_page')
-
-
-# @group_required('Teachers') <--- Uncomment when done testing
-def submit_new_assignment_bs(request):
-    if request.method == 'POST':
-        print(request.POST)
-        # build a form based off of the provided students to add
-        form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-
-        # ensure form is valid
-        if form.is_valid():
-            # if it is, create our new assignment
-
-            # grab our form's cleaned data
-            form = form.cleaned_data
-
-            # pop off our class for use, as well as our number of arguments
-            receivingClass = form.pop('classChoice')
-            newTitle = form.pop('assignmentTitle')
-            newDueDate = form.pop('assignmentDueDate')
-            newInstructions = form.pop('assignmentInstructions')
-            if (form.get('assignmentAttachment')):
-                newAttachment = form.pop('assignmentAttachment', None)
-
-                # if there is, load everything in with the attachment
-                assignment = models.Assignments(title=newTitle,
-                                                dueDate=newDueDate,
-                                                classname=models.Teachers.objects.get(id=receivingClass),
-                                                instructions=newInstructions,
-                                                attachment=newAttachment)
-
-            else:
-                # otherwise, make one without
-                assignment = models.Assignments(title=newTitle,
-                                                dueDate=newDueDate,
-                                                classname=models.Teachers.objects.get(id=receivingClass),
-                                                instructions=newInstructions)
-
-            # regardless of how we initialize, save our changes
-            assignment.save()
-
-            # now we move on to creating our resources
-
-            # grab the assignment ID
-            assignmentID = assignment.id
-
-            # see if the teacher fetched resources
-            try:
-                resources = request.POST.getlist('resources')
-                utils.downloadWebsites(resources, str(assignmentID))
-
-            except KeyError as error:
-                print("Teacher opted for no resources")
-
-            # print success
-            print("successfully created assignment")
-
-            # redirect back to teacher page
-            return redirect('teacher_bootstrap_page')
-
-        else:
-            # if something goes wrong, kick back to the new assignment page
-            return redirect('newassignment_page')
-
-    else:
-        return redirect('newassignment_page')
