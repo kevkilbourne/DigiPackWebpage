@@ -531,8 +531,8 @@ def connection_page(request):
 def view_students(request):
 
     #This grabs the studentID that was sent from the button press in the Teacher Webpage
-    #currentStudentID = request.session['studentID']
-    currentStudentID = 1 # CHANGE (for testing purposes)
+    currentStudentID = request.session['studentID']
+    #currentStudentID = 1 # CHANGE (for testing purposes)
 
     #This checks to see if the currentStudentID is larger than the total number of students in model.py object.
     if(currentStudentID > models.Students.objects.count() or currentStudentID < 1):
