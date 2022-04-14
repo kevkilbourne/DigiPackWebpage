@@ -47,8 +47,6 @@ def login_reroute(request):
             return redirect('teacher_page')
 
         else:
-            print("Testing id:")
-            print(models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))))
             request.session['currentClass'] = models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
             return redirect('student_page')
 
