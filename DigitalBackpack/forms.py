@@ -15,6 +15,19 @@ class TeacherRegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class StudentRegistrationForm(UserCreationForm):
+
+    def registeredEmail(self):
+        # grab our email
+        data = self.data['email']
+
+        # see if its valid
+        if (not Students.objects.filter(email=data)):
+            # if not, raise an error
+            self.add_error('email', 'Provided email not associated with any current classes. Try again later once your instructor has added you to a class.')
+
+        # return cleaned email
+        return data
+
     # add our email input item
     email = forms.EmailField()
 

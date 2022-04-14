@@ -47,6 +47,8 @@ def login_reroute(request):
             return redirect('teacher_page')
 
         else:
+            print("Testing id:")
+            print(models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))))
             request.session['currentClass'] = models.Students.objects.filter(user=User.objects.get(id=request.session.get('_auth_user_id'))).first().id
             return redirect('student_page')
 
@@ -310,28 +312,35 @@ def student_registration(request):
         form = StudentRegistrationForm(request.POST)
 
         # check if our form is valid
-        if form.is_valid():
+        if form.registeredEmail() and form.is_valid():
             # if so, load new info into our user database
         
             # grab our username
             uname = form.cleaned_data['username']
+            studentEmail = form.cleaned_data['email']
 
-            # save our form and user to the authentication db
-            form.save()
+            if models.Students.objects.filter(email=studentEmail):
+                # save our form and user to the authentication db
+                form.save()
 
-            # and finally add them to the student group
-            studentGroup, created = Group.objects.get_or_create(name='Students')
-            newUser = User.objects.get(username=uname)
-            newUser.groups.add(studentGroup)
-            studentGroup.user_set.add(newUser)
-            
-            # authenticate user
-            user_login = authenticate(username=form.cleaned_data['username'],
-                                      password=form.cleaned_data['password1'],)
-            login(request, user_login)
+                # and finally add them to the student group
+                studentGroup, created = Group.objects.get_or_create(name='Students')
+                newUser = User.objects.get(username=uname)
+                newUser.groups.add(studentGroup)
+                studentGroup.user_set.add(newUser)
 
-            # redirect to final registration
-            return redirect('student_account_completion')
+                # authenticate user
+                user_login = authenticate(username=form.cleaned_data['username'],
+                                          password=form.cleaned_data['password1'],)
+
+                login(request, user_login)
+
+                # redirect to final registration
+                return redirect('student_account_completion')
+
+            else:
+                # otherwise, no email registered with the class
+                return render(request, 'DigitalBackpack/studentregistration.html', {'form': form})
 
         else:
             # otherwise, kick the form back

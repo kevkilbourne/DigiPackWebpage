@@ -104,4 +104,6 @@ ul {
   width: 200px;
 }
 
-
+.errorlist {
+  color: #b80e02;
+}
