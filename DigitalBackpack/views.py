@@ -139,7 +139,7 @@ def class_registration(request):
                                       first = data['first'],
                                       last = data['last'],
                                       classname = data['classname'])
-            
+
             # save this information to the database
             teacher.save()
 
@@ -246,7 +246,7 @@ def submit_student_addition(request):
 
                 # regardless of how we initialize, save our changes
                 student.save()
-                
+
                 # indicate success to our additions
                 print("Added student " + str(form.get(studentEmail) + " to " + str(receivingClass)))
 
@@ -265,15 +265,15 @@ def teacher_registration(request):
         print(request.POST)
         # if so, load the filled form
         form = TeacherRegistrationForm(request.POST)
-        
+
         # check if our form is valid
         if form.is_valid():
-            
+
             # if so, load new info into our user database
-            
-            # grab our user 
+
+            # grab our user
             uname = form.cleaned_data['username']
-            
+
             # save our form and user to the authentication db
             form.save()
 
@@ -312,7 +312,7 @@ def student_registration(request):
         # check if our form is valid
         if form.is_valid():
             # if so, load new info into our user database
-        
+
             # grab our username
             uname = form.cleaned_data['username']
 
@@ -324,7 +324,7 @@ def student_registration(request):
             newUser = User.objects.get(username=uname)
             newUser.groups.add(studentGroup)
             studentGroup.user_set.add(newUser)
-            
+
             # authenticate user
             user_login = authenticate(username=form.cleaned_data['username'],
                                       password=form.cleaned_data['password1'],)
@@ -351,7 +351,7 @@ def student_registration(request):
 def new_assignment(request):
     if request.method == 'POST':
         form = AssignmentForm(request.POST, teacher=User.objects.get(id=request.session.get('_auth_user_id')).username)
-        
+
         if 'keywords' in request.POST:
             keywords = request.POST.get('keywords', '')
             resources = utils.searchingAlgorithm(keywords)
@@ -402,10 +402,10 @@ def submit_new_assignment(request):
             assignment.save()
 
             # now we move on to creating our resources
-            
+
             # grab the assignment ID
             assignmentID = assignment.id
-            
+
             # see if the teacher fetched resources
             try:
                 resources = request.POST.getlist('resources')
@@ -430,12 +430,12 @@ def submit_new_assignment(request):
 # ratings view
 #
 # view for the website rating system.
-def ratings(request): 
+def ratings(request):
     # if we've received input for loading into the db
     if request.method == 'POST':
         # initialize loading variables
         input = request.POST
-        
+
         # call our model submission
         success = models.submitRatings(input)
 
@@ -521,56 +521,71 @@ def connection_page(request):
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
 @group_required('Teachers')
-def view_student(request):
-    # This grabs the studentID that was sent from the button press in the Teacher Webpage
-    # currentStudentID = request.session['studentID']
+def view_students(request):
+
+    #This grabs the studentID that was sent from the button press in the Teacher Webpage
+    #currentStudentID = request.session['studentID']
     currentStudentID = 1 # CHANGE (for testing purposes)
 
-    # This is the location of the personal student's heatmap that is needed for
-    # the viewstudent webpage.
-    studentOnlineConnectivityPath = 'Users/Students/student_' + str(currentStudentID) + '/student_' + str(
-        currentStudentID) + '_heatmap.png'
-
-    # This prints the location as a test to see if the location is correct within
-    # the terminal
-    print(studentOnlineConnectivityPath)
-
-    # This checks to see if the student at the current location is real or not.
-    if (models.Students.objects.get(id=currentStudentID) == None):
-        # If the student does not exist in the teacher's class list, then the student object will be set to None
+    #This checks to see if the currentStudentID is larger than the total number of students in model.py object.
+    if(currentStudentID > models.Students.objects.count() or currentStudentID < 1):
+        #If the student does not exist in the teacher's class list, then the student object will be set to None
         student = None
 
-    # If the student is in their class list, this will set the object models.Students into one variable that can call its
-    # other instances inside the models.students
+        #This sents the location of the studentOnlineConnectivityPath to None since
+        #the student does not exist in the Database
+        studentOnlineConnectivityPath = None
+
+    #If the student is in their class list, this will set the object models.Students into one variable that can call its
+    #other instances inside the models.students
     else:
-        student = models.Students.objects.get(id=currentStudentID)
+        #This sents the student from the student database at the currentStudentID
+        student = models.Students.objects.get(id = currentStudentID)
 
-    # This checks to see if the button that allows teachers to flag students is
-    # in the current post request.
-    if (request.method == 'POST' and 'flagStudent' in request.POST):
-        # If so, the system will check if the student is currently flagged or not.
-        # If the student is not flagged when the button is clicked.
-        if (student.flagged == False):
-            # Update the flagged instance as True.
+        #This is the location of the personal student's heatmap that is needed for
+        #the viewstudent webpage.
+        studentOnlineConnectivityPath = 'Users/Students/student_' + str(currentStudentID) + '/student_' + str(currentStudentID) + '_heatmap.png'
+
+    #This prints the location as a test to see if the location is correct within
+    #the terminal
+    print(studentOnlineConnectivityPath)
+
+    #This checks if the method on the request is POST. It also checks to see if
+    #inside the POST request has the 'flagStudent' parameter. If so then enter
+    #this if block statement. If there is there is no 'POST' in the request and
+    #'flagStudent' is not in the POST request, then skip this if block statement
+    if(request.method == 'POST' and 'flagStudent' in request.POST):
+        #If so, the system will check if the student is currently flagged or not.
+        #If the student is not flagged when the button is clicked.
+        if(student.flagged == False):
+            #Update the flagged instance as True.
             student.flagged = True
+            #Save the changes made into the student Database
             student.save()
-            return redirect('view_student')
+            #Redirect the viewer to the same page. This redirect's purpose is
+            #to remove the "flagStudent" in the POST. This also prevents the
+            #form to make a pop up asking to use the information to carry over
+            #on the refresh of the page.
+            return redirect('view_student_page')
 
-        # If the student is already flagged.
+        #If the student is already flagged.
         else:
-            # Update the flagged instance as False
+            #Update the flagged instance as False
             student.flagged = False
+            #Save the changes made into the student Database
             student.save()
-            return redirect('view_student')
+            #Redirect the viewer to the same page. This redirect's purpose is
+            #to remove the "flagStudent" in the POST. This also prevents the
+            #form to make a pop up asking to use the information to carry over
+            #on the refresh of the page.
+            return redirect('view_student_page')
 
-    # Save the changes made into the student Database
-    student.save()
 
-    # Once that is done, render the page again to update the page with the latest
-    # information that was changed. The render sends the student's information,
-    # the session ID that was sent in, and the location of the online connectivity
-    # heatmap
-    return render(request, 'DigitalBackpack/viewstudent.html',
+    #Once that is done, render the page again to update the page with the latest
+    #information that was changed. The render sends the student's information,
+    #the session ID that was sent in, and the location of the online connectivity
+    #heatmap.
+    return render(request, 'DigitalBackpack/TeacherViewStudent.html',
                   {
                       "studentID": currentStudentID,
                       "student": student,
