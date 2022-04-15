@@ -1,0 +1,63 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>
+      Welcome to DigiPack
+    </title>
+
+    <link rel="stylesheet" href="{% static 'css/studentWeb.css' %}">
+
+  </head>
+
+  <body>
+    <div class="header">
+      <div class="headBox">
+        <h1>Digital Backpack</h1>
+      </div>
+    </div>
+
+    <div class="mainBody">
+      <div class="classList">
+        <h2 class="classTitle">Classes</h2>
+      </div>
+
+      <a href="connectivity/">
+        <button type="button" class="onlineConnect">
+            <h3>View My Online Connectivity</h3>
+        </button>
+      </a>
+
+      <div id="assignments">
+        <div class="assignmentHeadBox">
+          <h1>Active assignments</h1>
+        </div>
+        <div class="assignmentBox">
+
+        </div>
+      </div>
+
+      <div id="submissions">
+        <div class="submissionsHeadBox">
+          <h1>My Submissions</h1>
+        </div>
+        <div class="submissionsBox">
+
+        </div>
+      </div>
+
+      <div id="resources">
+        <div class="resourcesHeadBox">
+          <h1>Assignment resources</h1>
+        </div>
+        <div class="resourcesBox">
+
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

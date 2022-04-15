@@ -1,0 +1,12 @@
+{% extends "DigitalBackpack/base.html" %}
+{% block content %}
+
+  <form class="formContent" method="POST">
+    {% csrf_token %}
+    <fieldset class="form-group">
+      <legend>Class Creation</legend>
+      {{ form.as_p }}
+      <input type="submit" value="Create Class">
+    </fieldset>
+{% endblock content %}
+
