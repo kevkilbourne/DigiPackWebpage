@@ -528,7 +528,7 @@ def connection_page(request):
     return render(request, 'DigitalBackpack/student_connectivity.html')
 
 @group_required('Teachers')
-def view_students(request):
+def view_student(request):
 
     #This grabs the studentID that was sent from the button press in the Teacher Webpage
     currentStudentID = request.session['studentID']
