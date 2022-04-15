@@ -592,7 +592,7 @@ def view_student(request):
     #information that was changed. The render sends the student's information,
     #the session ID that was sent in, and the location of the online connectivity
     #heatmap.
-    return render(request, 'DigitalBackpack/TeacherViewStudent.html',
+    return render(request, 'DigitalBackpack/viewstudent.html',
                   {
                       "studentID": currentStudentID,
                       "student": student,
