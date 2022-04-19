@@ -1,41 +1,31 @@
-/*
-For Views.py
-def landing_page(request):
-    return render(request, 'DigitalBackpack/sendEmail.html')
-*/
+import models from django.db;
 
 function swapFlag(event, element)
 {
   if (element.className == "notFlagged")
   {
     element.className = "flagged";
+/*
+    Model.objects.filter(id = notFlagged).update(field1 = flagged);
 
+    Student.flagged = "flagged";
+    Student.save();
+
+*/
     alert("Student has been successfully flagged.");
 
-    let teachInput = prompt("Would you like to send an email, text, both, or none?").toLowerCase();
+    let teachInput = prompt("Would you like to send an email to the student's parents/guardians (yes or no)?").toLowerCase();
 
     switch (teachInput)
     {
-      case "email":
-        let userEmail = prompt("Write your message here.");
+      case "yes":
+        let sendTo = prompt("Who is this email going to (ex: john.doe@gmail.com)?");
+        let userMessage = prompt("Write your email's message here.");
 
-        sendEmail(sendTo, sendFrom, userEmail);
+        sendEmail(sendTo, userEmail);
         break;
 
-      case "text":
-        let userText = prompt("Write your message here.");
-
-        sendText(sendTo, sendFrom, userText);
-        break;
-
-      case "both":
-        let userMessage = prompt("Write your message here.");
-
-        sendEmail(sendTo, sendFrom, userMessage);
-        sendText(sendTo, sendFrom, userMessage);
-        break;
-
-      case "none":
+      case "no":
         break;
 
       default:
@@ -48,7 +38,13 @@ function swapFlag(event, element)
   else
   {
     element.className = "notFlagged";
+/*
+    Model.objects.filter(id = flagged).update(field1 = notFlagged);
 
+    Student.flagged = "notFlagged";
+    Student.save();
+
+*/
     // prompt user that it was successful
     alert("Student has been successfully unflagged.");
 
@@ -56,7 +52,7 @@ function swapFlag(event, element)
   }
 }
 
-function sendEmail(sendTo, sendFrom, message)
+function sendEmail(sendTo, message)
 {
   Email.send(
     {
@@ -64,17 +60,12 @@ function sendEmail(sendTo, sendFrom, message)
       Username: "",
       Password: "",
       To: sendTo,
-      From: sendFrom,
-      Subject: "test",
+      From: User.objects.get(id=request.session.get('_auth_user_id')).email,
+      Subject: "Regarding Your Students Activity in Class",
       Body: message,
     })
     .then(function (message)
     {
       alert("Email sent successfully");
     });
-}
-
-function sendText(sendTo, sendFrom, message)
-{
-  return ;
 }
