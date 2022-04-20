@@ -19,6 +19,7 @@ urlpatterns = [
     path( 'teacher/newAssignment/', views.new_assignment, name='new_assignment' ),
     path( 'teacher/submitNewAssignment/', views.submit_new_assignment, name='submit_new_assignment' ),
     path( 'ratings/', views.ratings, name='ratings'),
-    path( 'student/connectivity/', views.connection_page, name='connection_timeframe_page' ),
+    # path( 'student/viewmyself/', views.connection_page, name='connection_timeframe_page' ),
     path( 'teacher/viewstudent/', views.view_student, name='view_student' ),
+    path( 'student/viewmyself/', views.view_myself, name='view_myself' ),
 ]
