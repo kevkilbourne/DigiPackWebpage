@@ -610,6 +610,7 @@ def view_student(request):
     currentStudentID = int(request.POST['studentID'])
     print("CURRENTSTUDENTID")
     print(currentStudentID)
+
     # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
@@ -637,10 +638,10 @@ def view_student(request):
             # This is the location of the personal student's heatmap that is needed for
             # the viewstudent webpage.
             studentOnlineConnectivityPath = studentHeatmapCSV
-
         else:
             # otherwise, set our location to none
             studentOnlineConnectivityPath = None
+
 
     # This prints the location as a test to see if the location is correct within
     # the terminal
@@ -662,6 +663,7 @@ def view_student(request):
             # to remove the "flagStudent" in the POST. This also prevents the
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
+
             return render(request, 'DigitalBackpack/viewstudent.html', 
                           {
                               "studentID": currentStudentID, 
@@ -684,7 +686,7 @@ def view_student(request):
                               "studentID": currentStudentID,
                               "student": student,
                               "onlineconnectivity": studentOnlineConnectivityPath
-                          })
+                           })
 
 
     # Once that is done, render the page again to update the page with the latest

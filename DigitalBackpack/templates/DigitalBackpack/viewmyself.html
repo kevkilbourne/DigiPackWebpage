@@ -14,7 +14,13 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/viewstudent.css' %}">
 
-    <script src="{% static 'js/viewStudent.js' %}"></script>
+    <script type="text/javascript">
+      function getPaths() {
+        document.getElementById('weekly').src = "DigitalBackpack/Users/Students/student_" + {{username}} + "/" + username + "_weekly_heatmap.png";
+        document.getElementById('semester').src = "DigitalBackpack/Users/Students/student_" + {{username}} + "/" + username + "_semester_heatmap.png";
+      }
+      window.onload = getPaths;
+    </script>
 
     <title>
       DigitalBackpack - View Student
@@ -80,11 +86,7 @@
       <div class="row">
         <div class="col mb-2">
           <h3 style="text-decoration: underline;">Student's Name:</h3>
-	  {% if student.first %}
-            <h4 id="studentfullname">{{student.first}} {{student.last}}</h4>
-	  {% else %}
-	    <h4 id="studentfullname">Student has not yet registered/completed their account</h4>
-	  {% endif %}
+          <h4 id="studentfullname">{{student.first}} {{student.last}}</h4>
         </div>
       </div>
 
@@ -101,33 +103,20 @@
         <div class="col mb-5">
           <h3 style="text-decoration: underline;">Student Flagged Status: </h3>
           <h4 id="studentflagged">{{student.flagged}}</h4>
-          <form method = "post">
-            {% csrf_token %}
-            <input type="hidden" name="studentID" value={{ student.id }}>
-            <button id="studentFlag1" name="flagStudent" class="notFlagged" formaction="{% url 'view_student' %}">Swap Flag</button>
-          </form>
         </div>
       </div>
 
       <!-- Student Heatmap row -->
       <div class="row">
-	<h4>Student Online Connectivity</h4>
-	{% if onlineconnectivity %}
-          <div class="img_div text-center mb-3">
-            <h5 class="mt-2 mb-2">Semester View</h5>
-            <img class="weekly_heatmap" src="{% static 'Users/Students/student_x/semester_heatmap_student_x.png' %}" alt="Semester Heatmap" style="width: 90%; height: 90%">
-          </div>
+        <div class="img_div text-center mb-3">
+          <h5 class="mt-2 mb-2">Semester View</h5>
+          <img class="weekly_heatmap" src="" alt="Semester Heatmap" style="width: 90%; height: 90%" id="semester">
+        </div>
 
-          <div class="img_div text-center">
-            <h5 class="mt-2 mb-2">Weekly View</h5>
-            <img class="semester_heatmap" src="{% static 'Users/Students/student_{{student.username}}/student_{{student.username}}_heatmap.png' %}" alt="Weekly Heatmap" style="width: 90%;">
-          </div>
-	{% else %}
-	  <div class="text-center mb-3">
-	    <br><h5>Student has no availability logged</h5>
-	  </div>
-	{% endif %}
-
+        <div class="img_div text-center">
+          <h5 class="mt-2 mb-2">Weekly View</h5>
+          <img class="semester_heatmap" src="" alt="Weekly Heatmap" style="width: 90%;" id="weekly">
+        </div>
 
       </div>
 
@@ -135,8 +124,8 @@
       {% else %}
       <p>You are accessing a page that requires a student ID. Click the button below to go back to teacher page.</p>
       {% endif %}
-      <a href="/teacher">
-        <button id="HomeButton" class="Home mb-5" onclick="location.href='{% url 'teacher_page' %}'">Return to Teacher Page</button>
+      <a href="/student">
+        <button id="HomeButton" class="Home mb-5" onclick="location.href='{% url 'student_page' %}'">Return to Student Page</button>
       </a>
 
     </main>
