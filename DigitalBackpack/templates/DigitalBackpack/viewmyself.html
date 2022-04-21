@@ -14,9 +14,12 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/viewstudent.css' %}">
 
-    <script src="{% static 'js/viewStudent.js' %}">
-      document.getElementById('weekly').src = "DigitalBackpack/Users/Students/student_" + username + "/" + username + "_weekly_heatmap.png";
-      document.getElementById('semester').src = "DigitalBackpack/Users/Students/student_" + username + "/" + username + "_semester_heatmap.png";
+    <script type="text/javascript">
+      function getPaths() {
+        document.getElementById('weekly').src = "DigitalBackpack/Users/Students/student_" + {{username}} + "/" + username + "_weekly_heatmap.png";
+        document.getElementById('semester').src = "DigitalBackpack/Users/Students/student_" + {{username}} + "/" + username + "_semester_heatmap.png";
+      }
+      window.onload = getPaths;
     </script>
 
     <title>
