@@ -76,15 +76,26 @@ def student_page(request):
     weekly_heatmap_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
     semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
 
-    # Opens the weekly .csv file to be converted to 2D array
-    with open(weekly_heatmap_csv, newline='') as weekly_file:
-        weekly_result_list = list(csv.reader(weekly_file))
+    # Will grab empty, unused csv if student is created without file creation
+    with open('DigitalBackpack/static/csv/empty_weekly.csv', newline='') as empty_file:
+        weekly_result_list = list(csv.reader(empty_file))
     weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
 
-    # Opens the semester .csv file to be converted to 2D array
-    with open(semester_heatmap_csv, newline='') as semester_file:
-        semester_result_list = list(csv.reader(semester_file))
-    semester_data_array = np.array(semester_result_list)  # Converts semester .csv to 2D array
+    try:
+        # Opens the weekly .csv file to be converted to 2D array
+        with open(weekly_heatmap_csv, newline='') as weekly_file:
+            weekly_result_list = list(csv.reader(weekly_file))
+        weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
+    except FileNotFoundError:
+        print("File not found")
+
+    try:
+        # Opens the semester .csv file to be converted to 2D array
+        with open(semester_heatmap_csv, newline='') as semester_file:
+            semester_result_list = list(csv.reader(semester_file))
+        semester_data_array = np.array(semester_result_list)  # Converts semester .csv to 2D array
+    except FileNotFoundError:
+        print("File not found")
 
     # Weekly Heatmap Data Input
     # Finds the correct position within 2D array and sets value to 1 (meaning connection detected)
@@ -103,17 +114,23 @@ def student_page(request):
     else:
         weekly_data_array[hour][6] = 1
 
-    # Converts newly updated weekly 2D array back into .csv file
-    updated_timeframes = weekly_data_array
-    with open(weekly_heatmap_csv, "w+", newline='') as new_weekly_file:
-        csv_writer = csv.writer(new_weekly_file, delimiter=',')
-        csv_writer.writerows(updated_timeframes)
+    try:
+        # Converts newly updated weekly 2D array back into .csv file
+        updated_timeframes = weekly_data_array
+        with open(weekly_heatmap_csv, "w+", newline='') as new_weekly_file:
+            csv_writer = csv.writer(new_weekly_file, delimiter=',')
+            csv_writer.writerows(updated_timeframes)
+    except FileNotFoundError:
+        print("File not found")
 
-    # Converts newly updated semester 2D array back into .csv file
-    updated_timeframes = semester_data_array
-    with open(semester_heatmap_csv, "w+", newline='') as new_semester_file:
-        csv_writer = csv.writer(new_semester_file, delimiter=',')
-        csv_writer.writerows(updated_timeframes)
+    try:
+        # Converts newly updated semester 2D array back into .csv file
+        updated_timeframes = semester_data_array
+        with open(semester_heatmap_csv, "w+", newline='') as new_semester_file:
+            csv_writer = csv.writer(new_semester_file, delimiter=',')
+            csv_writer.writerows(updated_timeframes)
+    except FileNotFoundError:
+        print("File not found")
 
     weekly_file.close()
     new_weekly_file.close()
@@ -671,8 +688,8 @@ def view_myself(request):
     semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
 
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
-    # currentStudentID = request.session['studentID']
-    currentStudentID = 1 # CHANGE (for testing purposes)
+    currentStudentID = request.session['studentID']
+    # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
     if(currentStudentID > models.Students.objects.count() or currentStudentID < 1):
