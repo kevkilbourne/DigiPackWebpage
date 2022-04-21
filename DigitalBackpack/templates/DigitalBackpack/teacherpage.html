@@ -91,10 +91,30 @@
                 <!-- This will have to grab students belonging to the Teacher's classes (loop through class roster) -->
                 <!-- When the student gets clicked, take to student's page -->
                 <!-- Update teacher_page_bs() in views.py w/ code present in dev_branch -->
-                <li class="roster_student list-group-item-light">Jacob Novin</li>
-                <li class="roster_student list-group-item-light">Kevin Kilbourne</li>
-                <li class="roster_student list-group-item-light">Jon Nation</li>
-                <li class="roster_student list-group-item-light">Nick Caporusso</li>
+                {% if students %}
+                  {% for student in students %}
+                    <form method="POST" action="{% url 'view_student' %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="studentID" value={{ student.id }}>
+                      {% if student.flagged %}
+                        {% if student.first %}
+                          <input type="submit" value="{{ student.first }} {{ student.last }}" id="student{{ student.id }}" class="flagged">
+                        {% else %}
+                          <input type="submit" value="{{ student.email }}" id="student{{ student.id }}" class="flagged">
+                        {% endif %}
+                      {% else %}
+                        {% if student.first %}
+                          <input type="submit" value="{{ student.first }} {{ student.last }}" id="student{{ student.id }}" class="notFlagged">
+                        {% else %}
+                          <input type="submit" value="{{ student.email }}" id="student{{ student.id }}" class="notFlagged">
+                        {% endif %}
+                      {% endif %}
+                      <hr id="rosterLines">
+                    </form>
+                  {% endfor %}
+                {% else %}
+                  <h3>Empty Roster</h3>
+                {% endif %}
               </ul>
             </div>
         </div>
@@ -111,10 +131,14 @@
             <div class="current_assignments">
               <ul class="assignment_list">
                 <!-- This will have to grab classes belonging to the student (loop through student's classes) -->
-                <li class="class_item list-group-item-light">CS480 - Sim03</li>
-                <li class="class_item list-group-item-light">CS465 - Reading Assignment #8</li>
-                <li class="class_item list-group-item-light">CS249 - Merge Sort</li>
-                <li class="class_item list-group-item-light">AST201 - Week 12 Activity</li>
+                {% if assignments %}
+                  {% for assignment in assignments %}
+                    <li class="class_item list-group-item-light" id="assignment{{ assignment.id }}">{{ assignment.title }}</li>
+                    <hr id="rosterLines">
+                  {% endfor %}
+                {% else %}
+                  <h3>No Active Assignments</h3>
+                {% endif %}
               </ul>
             </div>
           </div>
@@ -129,11 +153,11 @@
             <div class="current_submissions">
               <ul class="submissions_list">
                 <!-- This will have to grab submissions belonging to the student (loop through student's submissions) -->
-                <li class="class_item list-group-item-light">CS480 - Sim03</li>
-                <li class="class_item list-group-item-light">CS465 - Reading Assignment #6</li>
-                <li class="class_item list-group-item-light">CS465 - Reading Assignment #7</li>
-                <li class="class_item list-group-item-light">CS249 - Bubble Sort</li>
-                <li class="class_item list-group-item-light">AST201 - Week 11 Quiz</li>
+                <li class="class_item list-group-item-light">Jake Novin - Sim03</li>
+                <li class="class_item list-group-item-light">Kevin Kilbourne - Reading Assignment #6</li>
+                <li class="class_item list-group-item-light">Jake Novin - Reading Assignment #7</li>
+                <li class="class_item list-group-item-light">Nick Caporusso - Bubble Sort</li>
+                <li class="class_item list-group-item-light">Jon Nation - Week 11 Quiz</li>
               </ul>
             </div>
           </div>
@@ -151,9 +175,17 @@
 
             <div class="current_classes">
               <ul class="class_list list-group">
-                <li class="class_name list-group-item-light">CS480 - Operating Systems</li>
-                <li class="class_name list-group-item-light">CS465 - Distributed Systems</li>
-                <li class="class_name list-group-item-light">AST210 - Indigenous Astronomy</li>
+                {% if classes %}
+                  {% for class in classes %}
+                    {% if class.id == currentClass %}
+                      <u><li class="class" id="class{{ class.id }}">{{ class.classname }}</li></u>
+                    {% else %}
+                      <li class="class" id="class{{ class.id }}">{{ class.classname }}</li>
+                    {% endif %}
+                  {% endfor %}
+                {% else %}
+                  <h2>No classes to show</h2>
+                {% endif %}
               </ul>
             </div>
 
