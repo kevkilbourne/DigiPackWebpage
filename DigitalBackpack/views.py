@@ -606,10 +606,6 @@ def ratings(request):
 @group_required('Teachers')
 def view_student(request):
 
-    student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
-    student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
-    student_heatmap_csv = student_heatmap_path + '/student_' + student_username + '_heatmap.csv'
-
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
     currentStudentID = int(request.POST['studentID'])
     print("CURRENTSTUDENTID")
@@ -631,10 +627,21 @@ def view_student(request):
     else:
         # This sents the student from the student database at the currentStudentID
         student = models.Students.objects.get(id = currentStudentID)
+        
+        # if our student has registered their account
+        if(student.user):
+            # fetch some of our student info
+            studentUname = student.user.username
+            studentHeatmapPath = 'DigitalBackpack/static/Users/Students/student_' + studentUname
+            studentHeatmapCSV = studentHeatmapPath + '/student_' + studentUname + '_heatmap.csv'
 
-        # This is the location of the personal student's heatmap that is needed for
-        # the viewstudent webpage.
-        studentOnlineConnectivityPath = student_heatmap_csv
+            # This is the location of the personal student's heatmap that is needed for
+            # the viewstudent webpage.
+            studentOnlineConnectivityPath = studentHeatmapCSV
+        else:
+            # otherwise, set our location to none
+            studentOnlineConnectivityPath = None
+
 
     # This prints the location as a test to see if the location is correct within
     # the terminal
@@ -656,11 +663,12 @@ def view_student(request):
             # to remove the "flagStudent" in the POST. This also prevents the
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
-            return render(request, 'DigitalBackpack/viewstudent.html',
+
+            return render(request, 'DigitalBackpack/viewstudent.html', 
                           {
-                              "studentID": currentStudentID,
-                              "student": student,
-                              "onlineconnectivity": studentOnlineConnectivityPath,
+                              "studentID": currentStudentID, 
+                              "student": student, 
+                              "onlineconnectivity": studentOnlineConnectivityPath
                           })
 
         # If the student is already flagged.
@@ -677,8 +685,8 @@ def view_student(request):
                           {
                               "studentID": currentStudentID,
                               "student": student,
-                              "onlineconnectivity": studentOnlineConnectivityPath,
-                          })
+                              "onlineconnectivity": studentOnlineConnectivityPath
+                           })
 
 
     # Once that is done, render the page again to update the page with the latest
