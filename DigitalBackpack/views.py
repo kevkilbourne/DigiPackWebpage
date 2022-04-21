@@ -81,18 +81,11 @@ def student_page(request):
         weekly_result_list = list(csv.reader(empty_file))
     weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
 
-    # Will grab empty, unused csv if student is created without file creation
-    with open('DigitalBackpack/static/csv/empty_semester.csv', newline='') as empty_file:
-        semester_result_list = list(csv.reader(empty_file))
-    semester_data_array = np.array(semester_result_list)  # Converts weekly .csv to 2D array
-
     try:
         # Opens the weekly .csv file to be converted to 2D array
         with open(weekly_heatmap_csv, newline='') as weekly_file:
             weekly_result_list = list(csv.reader(weekly_file))
         weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
-
-        weekly_file.close()
     except FileNotFoundError:
         print("File not found")
 
@@ -101,8 +94,6 @@ def student_page(request):
         with open(semester_heatmap_csv, newline='') as semester_file:
             semester_result_list = list(csv.reader(semester_file))
         semester_data_array = np.array(semester_result_list)  # Converts semester .csv to 2D array
-
-        semester_file.close()
     except FileNotFoundError:
         print("File not found")
 
@@ -129,8 +120,6 @@ def student_page(request):
         with open(weekly_heatmap_csv, "w+", newline='') as new_weekly_file:
             csv_writer = csv.writer(new_weekly_file, delimiter=',')
             csv_writer.writerows(updated_timeframes)
-
-        new_weekly_file.close()
     except FileNotFoundError:
         print("File not found")
 
@@ -140,10 +129,13 @@ def student_page(request):
         with open(semester_heatmap_csv, "w+", newline='') as new_semester_file:
             csv_writer = csv.writer(new_semester_file, delimiter=',')
             csv_writer.writerows(updated_timeframes)
-
-        new_semester_file.close()
     except FileNotFoundError:
         print("File not found")
+
+    weekly_file.close()
+    new_weekly_file.close()
+    semester_file.close()
+    new_semester_file.close()
 
     # ----------------- Creation of Heatmap ----------------- #
 
@@ -622,6 +614,7 @@ def view_student(request):
     currentStudentID = int(request.POST['studentID'])
     print("CURRENTSTUDENTID")
     print(currentStudentID)
+
     # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
@@ -663,7 +656,12 @@ def view_student(request):
             # to remove the "flagStudent" in the POST. This also prevents the
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
-            return redirect('view_student')
+            return render(request, 'DigitalBackpack/viewstudent.html',
+                          {
+                              "studentID": currentStudentID,
+                              "student": student,
+                              "onlineconnectivity": studentOnlineConnectivityPath,
+                          })
 
         # If the student is already flagged.
         else:
@@ -675,7 +673,12 @@ def view_student(request):
             # to remove the "flagStudent" in the POST. This also prevents the
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
-            return redirect('view_student')
+            return render(request, 'DigitalBackpack/viewstudent.html',
+                          {
+                              "studentID": currentStudentID,
+                              "student": student,
+                              "onlineconnectivity": studentOnlineConnectivityPath,
+                          })
 
 
     # Once that is done, render the page again to update the page with the latest
