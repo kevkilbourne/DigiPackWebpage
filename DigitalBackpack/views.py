@@ -611,7 +611,9 @@ def view_student(request):
     student_heatmap_csv = student_heatmap_path + '/student_' + student_username + '_heatmap.csv'
 
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
-    currentStudentID = request.POST['studentID']
+    currentStudentID = int(request.POST['studentID'])
+    print("CURRENTSTUDENTID")
+    print(currentStudentID)
     # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
@@ -688,7 +690,7 @@ def view_myself(request):
     semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
 
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
-    currentStudentID = request.POST['studentID']
+    currentStudentID = int(request.POST['studentID'])
     # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
