@@ -692,11 +692,49 @@ def view_student(request):
                       "onlineconnectivity": studentOnlineConnectivityPath,
                   })
 
+@group_required('Students')
 def view_myself(request):
 
+    student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
+    student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
+    weekly_heatmap_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
+    semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
+
+    # This grabs the studentID that was sent from the button press in the Teacher Webpage
+    currentStudentID = int(request.POST['studentID'])
+    # currentStudentID = 1 # CHANGE (for testing purposes)
+
+    # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
+    if(currentStudentID > models.Students.objects.count() or currentStudentID < 1):
+        # If the student does not exist in the teacher's class list, then the student object will be set to None
+        student = None
+
+        # This sents the location of the studentOnlineConnectivityPath to None since
+        # the student does not exist in the Database
+        studentWeeklyConnectivityPath = None
+        studentSemesterConnectivityPath = None
+
+    # If the student is in their class list, this will set the object models.Students into one variable that can call its
+    # other instances inside the models.students
+    else:
+        # This sents the student from the student database at the currentStudentID
+        student = models.Students.objects.get(id = currentStudentID)
+        username = User.objects.get(id=request.session.get('_auth_user_id')).username
+
+        # This is the location of the personal student's heatmap that is needed for
+        # the viewstudent webpage.
+        studentWeeklyConnectivityPath = weekly_heatmap_csv
+        studentSemesterConnectivityPath = semester_heatmap_csv
 
     # Once that is done, render the page again to update the page with the latest
     # information that was changed. The render sends the student's information,
     # the session ID that was sent in, and the location of the online connectivity
     # heatmap.
-    return render(request, 'DigitalBackpack/viewmyself.html')
+    return render(request, 'DigitalBackpack/viewmyself.html',
+                  {
+                      "studentID": currentStudentID,
+                      "student": student,
+                      "username": username,
+                      "weeklyconnectivity": studentWeeklyConnectivityPath,
+                      "semesterconnectivity": studentSemesterConnectivityPath,
+                  })
