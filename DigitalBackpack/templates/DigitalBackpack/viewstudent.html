@@ -80,7 +80,11 @@
       <div class="row">
         <div class="col mb-2">
           <h3 style="text-decoration: underline;">Student's Name:</h3>
-          <h4 id="studentfullname">{{student.first}} {{student.last}}</h4>
+	  {% if student.first %}
+            <h4 id="studentfullname">{{student.first}} {{student.last}}</h4>
+	  {% else %}
+	    <h4 id="studentfullname">Student has not yet registered/completed their account</h4>
+	  {% endif %}
         </div>
       </div>
 
@@ -107,15 +111,23 @@
 
       <!-- Student Heatmap row -->
       <div class="row">
-        <div class="img_div text-center mb-3">
-          <h5 class="mt-2 mb-2">Semester View</h5>
-          <img class="weekly_heatmap" src="{% static 'Users/Students/student_x/semester_heatmap_student_x.png' %}" alt="Semester Heatmap" style="width: 90%; height: 90%">
-        </div>
+	<h4>Student Online Connectivity</h4>
+	{% if onlineconnectivity %}
+          <div class="img_div text-center mb-3">
+            <h5 class="mt-2 mb-2">Semester View</h5>
+            <img class="weekly_heatmap" src="{% static 'Users/Students/student_x/semester_heatmap_student_x.png' %}" alt="Semester Heatmap" style="width: 90%; height: 90%">
+          </div>
 
-        <div class="img_div text-center">
-          <h5 class="mt-2 mb-2">Weekly View</h5>
-          <img class="semester_heatmap" src="{% static 'Users/Students/student_{{student.username}}/student_{{student.username}}_heatmap.png' %}" alt="Weekly Heatmap" style="width: 90%;">
-        </div>
+          <div class="img_div text-center">
+            <h5 class="mt-2 mb-2">Weekly View</h5>
+            <img class="semester_heatmap" src="{% static 'Users/Students/student_{{student.username}}/student_{{student.username}}_heatmap.png' %}" alt="Weekly Heatmap" style="width: 90%;">
+          </div>
+	{% else %}
+	  <div class="text-center mb-3">
+	    <br><h5>Student has no availability logged</h5>
+	  </div>
+	{% endif %}
+
 
       </div>
 
