@@ -1,3 +1,4 @@
+
 function swapFlag(event, element)
 {
   if (element.className == "notFlagged")

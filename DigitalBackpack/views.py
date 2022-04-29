@@ -7,6 +7,8 @@ import sqlite3
 import importlib
 import numpy as np
 import matplotlib.pyplot as plt, mpld3
+from matplotlib.colors import LinearSegmentedColormap
+from PIL import Image
 import seaborn as sns
 from pandas import read_csv
 import DigitalBackpack.models as models
@@ -70,72 +72,99 @@ def student_page(request):
     day = current_datetime.weekday()  # provides weekdays as indexes (where 'day' = 0 through 6) starting with Monday
     hour = current_datetime.hour
 
-    # Get student email and path to their Heatmap
+    # Get student username and path to their Heatmap
     student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
     student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
-    weekly_heatmap_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
-    semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
+    display_heatmap_csv = student_heatmap_path + '/' + student_username + '_display_heatmap.csv'
+    working_heatmap_csv = student_heatmap_path + '/' + student_username + '_working_heatmap.csv'
 
     # Will grab empty, unused csv if student is created without file creation
     with open('DigitalBackpack/static/csv/empty_weekly.csv', newline='') as empty_file:
         weekly_result_list = list(csv.reader(empty_file))
-    weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
+    working_data_array = np.array(weekly_result_list)
+    display_data_array = np.array(weekly_result_list)
+    result_data_array = np.array(weekly_result_list)
 
     try:
-        # Opens the weekly .csv file to be converted to 2D array
-        with open(weekly_heatmap_csv, newline='') as weekly_file:
-            weekly_result_list = list(csv.reader(weekly_file))
-        weekly_data_array = np.array(weekly_result_list)  # Converts weekly .csv to 2D array
+        # Opens the student's display .csv file to be converted to 2D array
+        with open(display_heatmap_csv, newline='') as display_file:
+            display_result_list = list(csv.reader(display_file))
+        display_data_array = np.array(display_result_list)  # Converts student's display .csv to 2D array
     except FileNotFoundError:
-        print("File not found")
+        print("Display File not found")
 
     try:
-        # Opens the semester .csv file to be converted to 2D array
-        with open(semester_heatmap_csv, newline='') as semester_file:
-            semester_result_list = list(csv.reader(semester_file))
-        semester_data_array = np.array(semester_result_list)  # Converts semester .csv to 2D array
+        # Opens the student's working .csv file to be converted to 2D array
+        with open(working_heatmap_csv, newline='') as working_file:
+            working_result_list = list(csv.reader(working_file))
+        working_data_array = np.array(working_result_list)  # Converts student's working .csv to 2D array
     except FileNotFoundError:
-        print("File not found")
+        print("Working File not found")
 
-    # Weekly Heatmap Data Input
-    # Finds the correct position within 2D array and sets value to 1 (meaning connection detected)
+    try:
+        # Opens the empty result .csv file to be converted to 2D array
+        with open('DigitalBackpack/static/csv/empty_weekly.csv', newline='') as result_file:
+            result_list = list(csv.reader(result_file))
+        result_data_array = np.array(result_list)  # Converts student's working .csv to 2D array
+    except FileNotFoundError:
+        print("Result File not found")
+
+    # Working Heatmap Data Input
+    # Finds the correct position within working 2D array and sets value to 1 (meaning connection detected)
     if day == 0:
-        weekly_data_array[hour][0] = 1
+        working_data_array[hour][0] = 1
     elif day == 1:
-        weekly_data_array[hour][1] = 1
+        working_data_array[hour][1] = 1
     elif day == 2:
-        weekly_data_array[hour][2] = 1
+        working_data_array[hour][2] = 1
     elif day == 3:
-        weekly_data_array[hour][3] = 1
+        working_data_array[hour][3] = 1
     elif day == 4:
-        weekly_data_array[hour][4] = 1
+        working_data_array[hour][4] = 1
     elif day == 5:
-        weekly_data_array[hour][5] = 1
+        working_data_array[hour][5] = 1
     else:
-        weekly_data_array[hour][6] = 1
+        working_data_array[hour][6] = 1
+
+    # ----------------- Adding Working .csv file's data into Display .csv file ----------------- #
+
+    # Adding working and display values together, placing them in temp result array
+    for row in range(len(working_data_array)):
+        for col in range(len(working_data_array[0])):
+            result_data_array[row][col] = int(display_data_array[row][col]) + int(working_data_array[row][col])
+
+    # Copying the Result file back into the Display file
+    display_data_array = result_data_array.copy()
+
+    # Resetting the Working csv file to all 0s
+    working_data_array = np.array(weekly_result_list)
+
+    # ----------------- Conversion of 2D arrays back into .csv files ----------------- #
 
     try:
-        # Converts newly updated weekly 2D array back into .csv file
-        updated_timeframes = weekly_data_array
-        with open(weekly_heatmap_csv, "w+", newline='') as new_weekly_file:
-            csv_writer = csv.writer(new_weekly_file, delimiter=',')
-            csv_writer.writerows(updated_timeframes)
+        # Converts newly updated display 2D array back into .csv file
+        updated_display = display_data_array
+        with open(display_heatmap_csv, "w+", newline='') as new_display_file:
+            csv_writer = csv.writer(new_display_file, delimiter=',')
+            csv_writer.writerows(updated_display)
     except FileNotFoundError:
-        print("File not found")
+        print("Display File not found when trying to write to file")
 
     try:
-        # Converts newly updated semester 2D array back into .csv file
-        updated_timeframes = semester_data_array
-        with open(semester_heatmap_csv, "w+", newline='') as new_semester_file:
-            csv_writer = csv.writer(new_semester_file, delimiter=',')
-            csv_writer.writerows(updated_timeframes)
+        # Converts newly updated working 2D array back into .csv file
+        updated_working = working_data_array
+        with open(working_heatmap_csv, "w+", newline='') as new_working_file:
+            csv_writer = csv.writer(new_working_file, delimiter=',')
+            csv_writer.writerows(updated_working)
     except FileNotFoundError:
-        print("File not found")
+        print("Working File not found when trying to write to file")
 
-    weekly_file.close()
-    new_weekly_file.close()
-    semester_file.close()
-    new_semester_file.close()
+    empty_file.close()
+    display_file.close()
+    working_file.close()
+    result_file.close()
+    new_display_file.close()
+    new_working_file.close()
 
     # ----------------- Creation of Heatmap ----------------- #
 
@@ -143,25 +172,14 @@ def student_page(request):
     current_datetime = datetime.datetime.now()
     day = current_datetime.weekday()
 
-    # Gathers student information
-    student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
-    student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
-    weekly_heatmap_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
-    semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
+    display_heatmap_csv = student_heatmap_path + '/' + student_username + '_display_heatmap.csv'
+    working_heatmap_csv = student_heatmap_path + '/' + student_username + '_working_heatmap.csv'
 
     # Open weekly .csv file and read
     try:
-        weekly_dataset = read_csv(weekly_heatmap_csv)
+        display_dataset = read_csv(display_heatmap_csv)
     except FileNotFoundError:
-        weekly_dataset = read_csv("DigitalBackpack/static/csv/empty_weekly.csv")
-
-    # Open semester .csv file and read
-    try:
-        semester_dataset = read_csv(semester_heatmap_csv)
-    except FileNotFoundError:
-        semester_dataset = read_csv("DigitalBackpack/static/csv/empty_semester.csv")
-
-    # ---------- Weekly Heatmap ---------- #
+        display_dataset = read_csv("DigitalBackpack/static/csv/empty_weekly.csv")
 
     # Checking to see if recording the future date is necessary
     future_day = None
@@ -184,42 +202,34 @@ def student_page(request):
     plt.xlabel("Days of the week", size=15)
     plt.ylabel("Time of day", size=15)
 
+    # Customizing the colormap colors (left value = lightest, right value = darkest)
+    colormap = LinearSegmentedColormap.from_list('connection cmap', ['#99dcfc', '#448cbc'], N=100)
+
     # Creation of the heatmap with specific characteristics
-    weekly_heatmap = sns.heatmap(weekly_dataset, linewidths=0.5, square=True, cmap=["#5d7682", "#38b6ff"], cbar=False)
+    weekly_heatmap = sns.heatmap(display_dataset, linewidths=0.75, square=True, cmap=colormap)
 
     # Adjustments made to the heatmap's characteristics
+    day_ticks = ["Mon.", "Tues.", "Wed.", "Thurs.", "Fri.", "Sat", "Sun"]
     time_ticks = ["12:00AM", "1:00AM", "2:00AM", "3:00AM", "4:00AM", "5:00AM", "6:00AM", "7:00AM", "8:00AM", "9:00AM",
                   "10:00AM", "11:00AM", "12:00PM", "1:00PM", "2:00PM", "3:00PM", "4:00PM", "5:00PM", "6:00PM", "7:00PM",
                   "8:00PM", "9:00PM", "10:00PM", "11:00PM"]
+
     weekly_heatmap.invert_yaxis()
-    plt.yticks(np.arange(24), time_ticks)  # Arranges 24 ticks and labels them with corresponding value in 'time_ticks'
-    plt.xticks(rotation=45)
+    plt.yticks(np.arange(24), time_ticks)  # Arranges 24 y-axis ticks from 'time_ticks'
     plt.yticks(rotation=0)
-
-    # plt.savefig - Saves the figure as specified format for later usage
-    complete_file = student_heatmap_path + "/" + student_username + "_weekly_heatmap.png"
-    plt.savefig(complete_file, format='png')
-
-    # ---------- Semester Heatmap ---------- #
-
-    # Sets up general heatmap attributes including size, title, and x and y axes
-    plt.figure(figsize=(8, 8))
-    plt.xlabel("Days in the semester", size=15)
-    plt.ylabel("Time of day", size=15)
-
-    # Creation of the heatmap with specific characteristics
-    semester_heatmap = sns.heatmap(semester_dataset, linewidths=0.5, square=True, cmap=["#5d7682", "#38b6ff"],
-                                   cbar=False)
-
-    semester_heatmap.invert_yaxis()
-    plt.yticks(np.arange(24), time_ticks)  # Arranges 24 ticks and labels them with corresponding value in 'time_ticks'
     plt.yticks(np.arange(0, 24, 4))
+    plt.xticks(np.arange(7), day_ticks)  # Arranges 7 x-axis ticks from 'day_ticks'
     plt.xticks(rotation=45)
-    plt.yticks(rotation=0)
 
     # plt.savefig - Saves the figure as specified format for later usage
-    complete_file = student_heatmap_path + "/" + student_username + "_semester_heatmap.png"
-    plt.savefig(complete_file, format='png')
+    complete_file_path = student_heatmap_path + "/" + student_username + "_display_heatmap.png"
+    plt.savefig(complete_file_path, format='png')
+
+    # Cropping the Heatmap image
+    heatmap_img = Image.open(complete_file_path)
+    dimensions = (325, 75, 700, 775)
+    img = heatmap_img.crop(dimensions)
+    img = img.save(complete_file_path)
 
     return render(request, 'DigitalBackpack/studentpage.html')
 
@@ -310,23 +320,22 @@ def student_account_completion(request):
             student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
             os.mkdir(student_heatmap_path)
 
-            # Create an empty weekly csv file that will be copied to
+            # Create an empty, cumulative csv file that will be copied to; This is the main csv
             df = pd.DataFrame(list())
-            df.to_csv(student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv')
+            df.to_csv(student_heatmap_path + '/' + student_username + '_display_heatmap.csv')
 
-            # Create an empty semester csv file that will be copied to
+            # Create an empty, working csv file that will be copied to
             df = pd.DataFrame(list())
-            df.to_csv(student_heatmap_path + '/' + student_username + '_semester_heatmap.csv')
+            df.to_csv(student_heatmap_path + '/' + student_username + '_working_heatmap.csv')
 
-            # Set up student initially with an empty weekly connection heatmap, copying from empty template
+            # Set up student initially with an empty display heatmap, copying from empty template
             empty_heatmap_weekly = "DigitalBackpack/static/csv/empty_weekly.csv"
-            new_weekly_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
-            shutil.copyfile(empty_heatmap_weekly, new_weekly_csv)
+            new_display_csv = student_heatmap_path + '/' + student_username + '_display_heatmap.csv'
+            shutil.copyfile(empty_heatmap_weekly, new_display_csv)
 
-            # Set up student initially with an empty semester connection heatmap, copying from empty template
-            empty_heatmap_semester = "DigitalBackpack/static/csv/empty_semester.csv"
-            new_semester_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
-            shutil.copyfile(empty_heatmap_semester, new_semester_csv)
+            # Set up student initially with an empty working heatmap, copying from empty template
+            new_working_csv = student_heatmap_path + '/' + student_username + '_working_heatmap.csv'
+            shutil.copyfile(empty_heatmap_weekly, new_working_csv)
 
             # redirect our student to the homepage
             return redirect('student_page')
@@ -626,18 +635,18 @@ def view_student(request):
     # other instances inside the models.students
     else:
         # This sents the student from the student database at the currentStudentID
-        student = models.Students.objects.get(id = currentStudentID)
+        student = models.Students.objects.get(id=currentStudentID)
         
         # if our student has registered their account
         if(student.user):
             # fetch some of our student info
             studentUname = student.user.username
-            studentHeatmapPath = 'DigitalBackpack/static/Users/Students/student_' + studentUname
-            studentHeatmapCSV = studentHeatmapPath + '/student_' + studentUname + '_heatmap.csv'
+            studentHeatmapPath = '/Users/Students/student_' + studentUname
+            studentHeatmapPNG = studentHeatmapPath + '/' + studentUname + '_display_heatmap.png'
 
             # This is the location of the personal student's heatmap that is needed for
             # the viewstudent webpage.
-            studentOnlineConnectivityPath = studentHeatmapCSV
+            studentOnlineConnectivityPath = studentHeatmapPNG
         else:
             # otherwise, set our location to none
             studentOnlineConnectivityPath = None
@@ -667,7 +676,7 @@ def view_student(request):
             return render(request, 'DigitalBackpack/viewstudent.html', 
                           {
                               "studentID": currentStudentID, 
-                              "student": student, 
+                              "student": student,
                               "onlineconnectivity": studentOnlineConnectivityPath
                           })
 
@@ -702,47 +711,94 @@ def view_student(request):
 
 @group_required('Students')
 def view_myself(request):
-
-    student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
-    student_heatmap_path = 'DigitalBackpack/static/Users/Students/student_' + student_username
-    weekly_heatmap_csv = student_heatmap_path + '/' + student_username + '_weekly_heatmap.csv'
-    semester_heatmap_csv = student_heatmap_path + '/' + student_username + '_semester_heatmap.csv'
-
     # This grabs the studentID that was sent from the button press in the Teacher Webpage
     currentStudentID = int(request.POST['studentID'])
+    print("CURRENTSTUDENTID")
+    print(currentStudentID)
+
     # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
-    if(currentStudentID > models.Students.objects.count() or currentStudentID < 1):
+    if (currentStudentID > models.Students.objects.count() or currentStudentID < 1):
         # If the student does not exist in the teacher's class list, then the student object will be set to None
         student = None
 
         # This sents the location of the studentOnlineConnectivityPath to None since
         # the student does not exist in the Database
-        studentWeeklyConnectivityPath = None
-        studentSemesterConnectivityPath = None
+        studentOnlineConnectivityPath = None
 
     # If the student is in their class list, this will set the object models.Students into one variable that can call its
     # other instances inside the models.students
     else:
         # This sents the student from the student database at the currentStudentID
-        student = models.Students.objects.get(id = currentStudentID)
-        username = User.objects.get(id=request.session.get('_auth_user_id')).username
+        student = models.Students.objects.get(id=currentStudentID)
 
-        # This is the location of the personal student's heatmap that is needed for
-        # the viewstudent webpage.
-        studentWeeklyConnectivityPath = weekly_heatmap_csv
-        studentSemesterConnectivityPath = semester_heatmap_csv
+        # if our student has registered their account
+        if (student.user):
+            # fetch some of our student info
+            studentUname = student.user.username
+            studentHeatmapPath = '/Users/Students/student_' + studentUname
+            studentHeatmapPNG = studentHeatmapPath + '/' + studentUname + '_display_heatmap.png'
+
+            # This is the location of the personal student's heatmap that is needed for
+            # the viewstudent webpage.
+            studentOnlineConnectivityPath = studentHeatmapPNG
+        else:
+            # otherwise, set our location to none
+            studentOnlineConnectivityPath = None
+
+    # This prints the location as a test to see if the location is correct within
+    # the terminal
+    print(studentOnlineConnectivityPath)
+
+    # This checks if the method on the request is POST. It also checks to see if
+    # inside the POST request has the 'flagStudent' parameter. If so then enter
+    # this if block statement. If there is no 'POST' in the request and
+    # 'flagStudent' is not in the POST request, then skip this if block statement
+    if (request.method == 'POST' and 'flagStudent' in request.POST):
+        # If so, the system will check if the student is currently flagged or not.
+        # If the student is not flagged when the button is clicked.
+        if (student.flagged == False):
+            # Update the flagged instance as True.
+            student.flagged = True
+            # Save the changes made into the student Database
+            student.save()
+            # Redirect the viewer to the same page. This redirect's purpose is
+            # to remove the "flagStudent" in the POST. This also prevents the
+            # form to make a pop up asking to use the information to carry over
+            # on the refresh of the page.
+
+            return render(request, 'DigitalBackpack/viewstudent.html',
+                          {
+                              "studentID": currentStudentID,
+                              "student": student,
+                              "onlineconnectivity": studentOnlineConnectivityPath
+                          })
+
+        # If the student is already flagged.
+        else:
+            # Update the flagged instance as False
+            student.flagged = False
+            # Save the changes made into the student Database
+            student.save()
+            # Redirect the viewer to the same page. This redirect's purpose is
+            # to remove the "flagStudent" in the POST. This also prevents the
+            # form to make a pop up asking to use the information to carry over
+            # on the refresh of the page.
+            return render(request, 'DigitalBackpack/viewstudent.html',
+                          {
+                              "studentID": currentStudentID,
+                              "student": student,
+                              "onlineconnectivity": studentOnlineConnectivityPath
+                          })
 
     # Once that is done, render the page again to update the page with the latest
     # information that was changed. The render sends the student's information,
     # the session ID that was sent in, and the location of the online connectivity
     # heatmap.
-    return render(request, 'DigitalBackpack/viewmyself.html',
+    return render(request, 'DigitalBackpack/viewstudent.html',
                   {
                       "studentID": currentStudentID,
                       "student": student,
-                      "username": username,
-                      "weeklyconnectivity": studentWeeklyConnectivityPath,
-                      "semesterconnectivity": studentSemesterConnectivityPath,
+                      "onlineconnectivity": studentOnlineConnectivityPath,
                   })
