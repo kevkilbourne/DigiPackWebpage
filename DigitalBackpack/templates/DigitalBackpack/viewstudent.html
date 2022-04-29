@@ -111,16 +111,12 @@
 
       <!-- Student Heatmap row -->
       <div class="row">
-	<h4>Student Online Connectivity</h4>
+        <h3>Online Connectivity</h3>
+      </div>
+      <div class="row">
 	{% if onlineconnectivity %}
-          <div class="img_div text-center mb-3">
-            <h5 class="mt-2 mb-2">Semester View</h5>
-            <img class="weekly_heatmap" src="{% static 'Users/Students/student_x/semester_heatmap_student_x.png' %}" alt="Semester Heatmap" style="width: 90%; height: 90%">
-          </div>
-
           <div class="img_div text-center">
-            <h5 class="mt-2 mb-2">Weekly View</h5>
-            <img class="semester_heatmap" src="{% static 'Users/Students/student_{{student.username}}/student_{{student.username}}_heatmap.png' %}" alt="Weekly Heatmap" style="width: 90%;">
+            <img id="heatmap" src="{% static onlineconnectivity %}" alt="Weekly Heatmap" style="width: 90%; height: 90%">
           </div>
 	{% else %}
 	  <div class="text-center mb-3">
