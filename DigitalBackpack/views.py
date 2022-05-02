@@ -65,10 +65,14 @@ def login_reroute(request):
 # returns student homepage
 def student_page(request):
 
+    # Getting the current student's information
+    student = models.Students.objects.get(id=request.session["currentClass"])  # Student ID for current class
     student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
+
+    # Calling makeHeatmap() in utils.py to generate/add for this specific student
     utils.makeHeatmap(student_username)
 
-    return render(request, 'DigitalBackpack/studentpage.html')
+    return render(request, 'DigitalBackpack/studentpage.html', {"student": student})
 
 # teacher view page
 #
@@ -605,7 +609,7 @@ def view_myself(request):
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
 
-            return render(request, 'DigitalBackpack/viewstudent.html',
+            return render(request, 'DigitalBackpack/viewmyself.html',
                           {
                               "studentID": currentStudentID,
                               "student": student,
@@ -622,7 +626,7 @@ def view_myself(request):
             # to remove the "flagStudent" in the POST. This also prevents the
             # form to make a pop up asking to use the information to carry over
             # on the refresh of the page.
-            return render(request, 'DigitalBackpack/viewstudent.html',
+            return render(request, 'DigitalBackpack/viewmyself.html',
                           {
                               "studentID": currentStudentID,
                               "student": student,
@@ -633,7 +637,7 @@ def view_myself(request):
     # information that was changed. The render sends the student's information,
     # the session ID that was sent in, and the location of the online connectivity
     # heatmap.
-    return render(request, 'DigitalBackpack/viewstudent.html',
+    return render(request, 'DigitalBackpack/viewmyself.html',
                   {
                       "studentID": currentStudentID,
                       "student": student,

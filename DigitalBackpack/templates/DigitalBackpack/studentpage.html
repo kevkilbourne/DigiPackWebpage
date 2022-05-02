@@ -171,11 +171,13 @@
                 Redirect to a snapshot of your previous recorded times on the website
               </p>
               <!-- Redirects to connection page with Heatmap of that individual student -->
-              <a href="{% url 'view_myself' %}">
-                <button type="button" class="timeframe_button btn-primary btn-lg">
+              <form method="POST" action="{% url 'view_myself' %}" id="id_form">
+                {% csrf_token %}
+                <input type="hidden" name="studentID" value="{{ student.id }}">
+                <button type="submit" class="timeframe_button btn-primary btn-lg" form="id_form">
                   View My Connections
                 </button>
-              </a>
+              </form>
             </div>
           </div>
       </div>
