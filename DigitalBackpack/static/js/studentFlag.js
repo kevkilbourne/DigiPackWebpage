@@ -1,4 +1,4 @@
-// import models from django.db;
+import models from django.db;
 
 function swapFlag(event, element)
 {
@@ -7,7 +7,7 @@ function swapFlag(event, element)
     element.className = "flagged";
 
     alert("Student has been successfully flagged.");
-
+    
     let teachInput = prompt("Would you like to send an email to the student's parents/guardians (yes or no)?").toLowerCase();
 
     switch (teachInput)
