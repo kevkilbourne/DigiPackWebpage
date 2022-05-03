@@ -1,4 +1,4 @@
-import models from django.db;
+// import models from django.db;
 
 function swapFlag(event, element)
 {
