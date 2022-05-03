@@ -8,6 +8,7 @@ function swapFlag(event, element)
 
     alert("Student has been successfully flagged.");
     
+    /*
     let teachInput = prompt("Would you like to send an email to the student's parents/guardians (yes or no)?").toLowerCase();
 
     switch (teachInput)
@@ -22,6 +23,7 @@ function swapFlag(event, element)
       default:
         break;
     }
+    */
 
     return element;
   }
