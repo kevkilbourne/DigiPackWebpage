@@ -104,7 +104,7 @@
           <form method = "post">
             {% csrf_token %}
             <input type="hidden" name="studentID" value={{ student.id }}>
-            <button id="studentFlag1" name="flagStudent" class="notFlagged" formaction="{% url 'view_student' %}">Swap Flag</button>
+            <button id="studentFlag1" name="flagStudent" class="notFlagged" onclick="swapFlag(event, this)" formaction="{% url 'view_student' %}">Swap Flag</button>
           </form>
         </div>
       </div>
