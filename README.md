@@ -1,4 +1,4 @@
-# DigitalBackpack
+# Digital Backpack
 ##### Our role in expanding the Digital Backpack consists of better connecting everyone with their school-related work by building new features into the system and developing a fresh and accessible user interface. 
 
 ### Problem Statement
