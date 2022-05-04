@@ -66,7 +66,7 @@ def login_reroute(request):
 def student_page(request):
 
     # Getting the current student's information
-    student = models.Students.objects.get(id=request.session["currentClass"])  # Student ID for current class
+    student = models.Students.objects.get(id=request.session['currentClass'])  # Student ID for current class
     student_username = User.objects.get(id=request.session.get('_auth_user_id')).username
 
     # Calling makeHeatmap() in utils.py to generate/add for this specific student
@@ -179,7 +179,7 @@ def student_account_completion(request):
             shutil.copyfile(empty_heatmap_weekly, new_working_csv)
 
             # redirect our student to the homepage
-            return redirect('student_page')
+            return redirect('login_reroute')
 
         else:
             # otherwise, kick back the form
@@ -557,7 +557,6 @@ def view_myself(request):
     print("CURRENTSTUDENTID")
     print(currentStudentID)
 
-    # currentStudentID = 1 # CHANGE (for testing purposes)
 
     # This checks to see if the currentStudentID is larger than the total number of students in model.py object.
     if (currentStudentID > models.Students.objects.count() or currentStudentID < 1):
