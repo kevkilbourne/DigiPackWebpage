@@ -126,13 +126,15 @@ class AddStudentForm(forms.Form):
         super(AddStudentForm, self).__init__(*args, **kwargs)
 
         self.fields['classChoice'] = forms.ChoiceField(choices=options, widget=forms.Select)
-
+        self.fields['classChoice'].label = 'Class'
         self.fields['extraFieldCount'].initial = extraFields
+
 
         for index in range(int(extraFields)):
             # generate extra fields in the number specified via extra_fields
             self.fields['email_{index}'.format(index=index)] = \
-                    forms.EmailField(required=False)
+                    forms.EmailField(required=False, label='Email ' + str(index + 1))
+
 
 class AssignmentForm(forms.Form):
     
@@ -153,6 +155,11 @@ class AssignmentForm(forms.Form):
         super(AssignmentForm, self).__init__(*args, **kwargs)
 
         self.fields['classChoice'] = forms.ChoiceField(choices=options, widget=forms.Select)
+        self.fields['classChoice'].label = 'Class'
+        self.fields['assignmentTitle'].label = 'Assignment Title'
+        self.fields['assignmentInstructions'].label = 'Instructions'
+        self.fields['assignmentDueDate'].label = 'Assignment Due Date'
+        self.fields['assignmentAttachment'].label = 'Attachment'
 
 class RatingForm(forms.Form):
     def __init__(self,*args,**kwargs):
